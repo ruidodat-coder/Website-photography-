@@ -1,6 +1,7 @@
 # ruidodat.com: Website Plan (Horse + Wedding Photography)
 
-Status: draft v1 · 2026-10-01
+Status: draft v2 · 2026-10-01
+Base: Germersheim (76726), Südpfalz · Kleinunternehmer (§19 UStG, no VAT)
 Current site: ruidodat.com is a self-hosted WordPress site with Jetpack ("Rui Dodat – Professional Horse Photographer"). It was last updated in 2023.
 
 ---
@@ -25,6 +26,8 @@ The two worlds share the logo, the cart/checkout, the legal pages and the "About
 - **Wedding world**: light and airy (ivory, blush/sage, soft grey). It uses an elegant serif headline font, a lot of white space and slow fades.
 
 Separating the worlds matters because the clients don't overlap. A rider does not want to scroll through brides, and a couple does not care about show jumping. It also helps SEO: "Pferdefotograf + city" and "Hochzeitsfotograf + city" each get their own landing page.
+
+Local SEO targets: Germersheim, Speyer, Landau, Karlsruhe, Südpfalz, Rhein-Neckar, Mannheim and Heidelberg. Examples: "Pferdefotograf Südpfalz", "Hochzeitsfotograf Speyer", "Hochzeitsfotograf Karlsruhe".
 
 Language: German first, with English as a second language. Customers are in Germany, and the English version also covers expat couples and international riders.
 
@@ -170,7 +173,7 @@ Market data: [pix.wedding](https://www.pix.wedding/hochzeitsfotograf-kosten-2026
 
 ## 5. Proposed prices (2026/27)
 
-These sit at the **upper mid-market**. That is premium enough to look professional, with a cheap entry point to win new clients. Prices are gross. If you're a Kleinunternehmer (§19 UStG), keep them as they are and add "gem. §19 UStG keine MwSt."
+These sit at the **upper mid-market**. That is premium enough to look professional, with a cheap entry point to win new clients. You are a Kleinunternehmer, so all prices are final prices with no VAT. Every price list, checkout and invoice must show: *"Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."* Watch the limits: previous-year turnover must be ≤ €25,000 and the current year ≤ €100,000. If wedding bookings grow, you could pass €25k. Then you would add 19 % VAT on top from the following year, or lower the margins.
 
 ### 5.1 Horse shootings (100 % pre-paid)
 | Package | Price | Includes |
@@ -183,7 +186,7 @@ These sit at the **upper mid-market**. That is premium enough to look profession
 | **Fohlen / Verkaufsfotos** | €169 | Conformation + movement photos for sales ads, 8 images, delivery in 48h |
 
 Add-ons: extra image €25 · bundles of 5 images €99 / 10 €179 / all images €249 · extra horse +€49 · extra person +€25 · drone +€59 · 48h express +€49
-Travel: 30 km free, then €0.40/km.
+Travel: see **5.6 Travel costs**.
 
 ### 5.2 Horse shows (Turnierfotografie)
 | Product | Price |
@@ -209,7 +212,7 @@ Organisers: free coverage for shows with more than about 250 starts (I earn from
 
 Add-ons: extra hour €190 · second photographer €590 · drone €249 · express delivery (2 weeks) €190 · photo box with 30 fine-art prints €249
 Off-season (Nov–Mar) and Mon–Thu: **−10 %**
-Travel: 50 km free, then €0.40/km, plus an overnight stay if over 250 km.
+Travel: see **5.6 Travel costs**.
 
 ### 5.4 Couple shoots (100 % pre-paid)
 | Shoot | Price |
@@ -229,6 +232,20 @@ Travel: 50 km free, then €0.40/km, plus an overnight stay if over 250 km.
 | Acrylic (AluDibond) 60×90 | €269 |
 | Gift voucher | any amount from €50, or per package; valid 3 years |
 
+### 5.6 Travel costs (from 76726 Germersheim)
+Zones use the one-way road distance from Germersheim. One flat price per zone is easier to understand than counting kilometres, and the booking form can calculate it from the postcode.
+
+| Zone | Distance | Example places (approx.) | Horse shoots | Weddings / couple shoots |
+|---|---|---|---|---|
+| 1 | up to 30 km | Speyer, Landau, Karlsruhe, Bruchsal, Hockenheim, Philippsburg, Bellheim, Lingenfeld, Rülzheim, Kandel | **free** | **free** |
+| 2 | 30–60 km | Mannheim, Heidelberg, Ludwigshafen, Neustadt/W., Bad Dürkheim, Wörth, Rastatt, Pforzheim | **€25** | **free** |
+| 3 | 60–100 km | Kaiserslautern, Pirmasens, Baden-Baden, Heilbronn, Worms, Mainz area | **€49** | **€49** |
+| 4 | over 100 km | Stuttgart, Frankfurt, Saarland … | €49 + €0.40 per km beyond 100 km (one way, counted ×2) | €49 + €0.40/km beyond 100 km (×2); overnight stay (max. €120) if over 200 km or the wedding ends after midnight |
+
+- **Group days and Stalltag:** the travel fee is charged once and split between all horses. It is usually €0–10 per horse.
+- **Shows:** no travel fee for riders. The organiser fee covers it.
+- **Why €0.40/km:** that is the real full cost of a car (fuel, wear, insurance), the market standard is €0.30–0.50, and it is above the tax allowance of €0.30. It is fair and covers your costs.
+
 Expected margins: lab cost is about 25–35 % of the sale price for prints and albums. For shoots, editing time is the main cost.
 
 ---
@@ -237,13 +254,14 @@ Expected margins: lab cost is about 25–35 % of the sale price for prints and a
 - Impressum, a DSGVO privacy policy and cookie consent (Borlabs or Complianz).
 - AGB that cover cancellation, weather, copyright/usage rights (private use only) and the model release.
 - **Widerrufsrecht**: digital downloads need an explicit checkbox where the customer waives withdrawal. Bookings for a specific date are exempt under §312g BGB (leisure services with a fixed date). Have a lawyer or the legal-text service confirm this.
+- Kleinunternehmer notice (§19 UStG) in the footer, product pages, checkout and invoices.
 - Show photos: the organiser agreement must allow photography and sale. Add a note on the shop page.
 - Prices shown with VAT info and shipping costs (PAngV).
 
 ---
 
 ## 7. Roadmap
-1. **Phase 0 – Decisions** (you): confirm prices and package names, region/home base, Kleinunternehmer yes or no, and whether to use Pictrs.
+1. **Phase 0 – Decisions** (you): confirm prices and package names, and whether to use Pictrs. (Done: base Germersheim, Kleinunternehmer.)
 2. **Phase 1 – Foundation**: give me an Application Password for ruidodat.com. I make a backup and a staging copy, install the theme and plugins, and build the split home page plus both worlds.
 3. **Phase 2 – Booking and shop**: booking calendar with pre-payment and deposit, vouchers, print/album products, and connection to the print lab.
 4. **Phase 3 – Events**: Pictrs account, show calendar, presale flat rate, organiser page.
@@ -252,7 +270,5 @@ Expected margins: lab cost is about 25–35 % of the sale price for prints and a
 
 ## 8. What I need from you
 - 20–40 of your best horse images and any wedding images you have (or a plan for building a wedding portfolio).
-- Home base or city for travel pricing and SEO.
 - Logo and font/colour preferences (or I propose them).
-- Business status: Kleinunternehmer or VAT registered.
 - WordPress Application Password once you're ready.
