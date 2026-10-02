@@ -1,0 +1,133 @@
+/* ===== Rui Dodat Fotografie: global styles (Twenty Twenty-Five) ===== */
+@font-face{font-family:"Literata";font-style:normal;font-weight:300;font-display:swap;src:url(/wp-content/themes/twentytwentyfive/assets/fonts/literata/Literata72pt-Light.woff2) format("woff2")}
+@font-face{font-family:"Literata";font-style:italic;font-weight:300;font-display:swap;src:url(/wp-content/themes/twentytwentyfive/assets/fonts/literata/Literata72pt-LightItalic.woff2) format("woff2")}
+@font-face{font-family:"Literata";font-style:normal;font-weight:400;font-display:swap;src:url(/wp-content/themes/twentytwentyfive/assets/fonts/literata/Literata72pt-Regular.woff2) format("woff2")}
+
+:root{
+  --rd-forest:#1E2A22; --rd-green:#3E5C47; --rd-sand:#F3EFE7; --rd-saddle:#9B6B3A; --rd-stone:#D9D2C3;
+  --rd-ivory:#FBF8F4; --rd-ink:#3B3431; --rd-rose:#B4877A; --rd-sage:#8F9C88; --rd-blush:#F1E6E1;
+  --rd-sans:Manrope,system-ui,sans-serif; --rd-serif:Literata,Georgia,serif;
+  --rd-bg:#F7F5F1; --rd-fg:#22201E; --rd-accent:#3E5C47; --rd-accent-fg:#fff; --rd-muted:#E9E4DA; --rd-head:var(--rd-sans);
+}
+body{background:var(--rd-bg);color:var(--rd-fg);font-family:var(--rd-sans)}
+body:has(.world-pferde){--rd-bg:var(--rd-sand);--rd-fg:var(--rd-forest);--rd-accent:var(--rd-saddle);--rd-muted:var(--rd-stone)}
+body:has(.world-hochzeit){--rd-bg:var(--rd-ivory);--rd-fg:var(--rd-ink);--rd-accent:var(--rd-rose);--rd-muted:var(--rd-blush);--rd-head:var(--rd-serif)}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--rd-head);color:var(--rd-fg)}
+.world-pferde h1,.world-pferde h2{text-transform:uppercase;letter-spacing:.04em;font-weight:800}
+.world-pferde h3{font-weight:700}
+.world-hochzeit h1,.world-hochzeit h2,.world-hochzeit h3{font-weight:300;letter-spacing:.01em}
+.world-hochzeit h1 em,.world-hochzeit h2 em{font-style:italic;color:var(--rd-rose)}
+.rd-eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:.78rem;font-weight:600;opacity:.75;margin-bottom:.4rem}
+.rd-lead{font-size:1.2rem;line-height:1.6;max-width:44rem}
+.rd-section h1{font-size:clamp(2rem,4.5vw,3.4rem);line-height:1.1}
+.rd-small{font-size:.85rem;opacity:.8}
+
+/* buttons */
+.wp-block-button__link{background:var(--rd-accent);color:var(--rd-accent-fg);border-radius:2px;padding:.9em 1.8em;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.85rem;transition:transform .2s,opacity .2s}
+.wp-block-button__link:hover{opacity:.9;transform:translateY(-1px)}
+.is-style-outline .wp-block-button__link{background:transparent;color:inherit;border:1.5px solid currentColor}
+
+/* header */
+.rd-header{padding:1rem clamp(1rem,4vw,3rem);gap:1rem;position:sticky;top:0;z-index:50}
+.rd-header .rd-logo img{height:44px;width:auto}
+.rd-header .rd-world{text-transform:uppercase;letter-spacing:.2em;font-size:.72rem;margin:0}
+.rd-header .rd-world a{text-decoration:none}
+.rd-header-pferde{background:var(--rd-forest);color:var(--rd-sand)}
+.rd-header-pferde .rd-logo img{filter:invert(1)}
+.rd-header-hochzeit{background:rgba(251,248,244,.94);backdrop-filter:blur(6px);color:var(--rd-ink);border-bottom:1px solid var(--rd-blush)}
+.rd-header-main{background:#fff;color:#22201E;border-bottom:1px solid #eee}
+.rd-header .wp-block-navigation{font-size:.9rem;font-weight:500}
+.rd-header .wp-block-navigation a{text-decoration:none}
+.rd-header .wp-block-navigation__responsive-container.is-menu-open{background:var(--rd-bg);color:var(--rd-fg)}
+
+/* sections */
+.rd-section{padding:clamp(3rem,8vw,6rem) clamp(1rem,4vw,2rem)}
+.rd-dark{background:var(--rd-forest);color:var(--rd-sand)}
+.rd-dark h2,.rd-dark h3{color:var(--rd-sand)}
+.rd-tint{background:var(--rd-muted)}
+.world-hochzeit .rd-tint{background:var(--rd-blush)}
+
+/* hero */
+.rd-hero{min-height:82vh;display:flex;flex-direction:column;justify-content:flex-end;position:relative;padding:clamp(2rem,6vw,5rem) clamp(1rem,4vw,3rem)!important;color:#fff;isolation:isolate}
+.rd-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.6));z-index:-1}
+.rd-hero h1,.rd-hero p{color:#fff}
+.rd-hero h1{font-size:clamp(2.2rem,6vw,4.6rem);line-height:1.05;margin:0 0 1rem}
+.rd-hero-soft{min-height:62vh;background:linear-gradient(135deg,var(--rd-blush),var(--rd-ivory) 60%,#E8ECE4);color:var(--rd-ink);justify-content:center;text-align:center}
+.rd-hero-soft::before{display:none}
+.rd-hero-soft h1,.rd-hero-soft p{color:var(--rd-ink)}
+.rd-hero-soft .wp-block-buttons{justify-content:center}
+.rd-hero-short{min-height:46vh}
+
+/* split home */
+.rd-split{margin:0!important;gap:0!important;min-height:100vh}
+.rd-split>.wp-block-column{min-height:50vh;display:flex}
+.rd-split .rd-half{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(2rem,5vw,4rem)!important;position:relative;isolation:isolate;overflow:hidden;transition:filter .4s}
+.rd-split .rd-half-pferde{color:#fff}
+.rd-split .rd-half-pferde::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(20,28,22,.75));z-index:-1}
+.rd-split .rd-half-hochzeit{background:linear-gradient(160deg,#F1E6E1,#FBF8F4 55%,#E6EBE2);color:var(--rd-ink)}
+.rd-split h2{font-size:clamp(2rem,5vw,3.8rem);margin:0 0 .5rem;line-height:1}
+.rd-half-pferde h2{font-family:var(--rd-sans);font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff}
+.rd-half-hochzeit h2{font-family:var(--rd-serif);font-weight:300;font-style:italic;color:var(--rd-ink)}
+.rd-split p{max-width:28rem}
+.rd-half-pferde p{color:#fff}
+.rd-split .rd-brandmark{position:absolute;top:clamp(1rem,3vw,2rem);left:clamp(1rem,3vw,2rem);margin:0}
+.rd-split .rd-brandmark img{height:54px;width:auto}
+.rd-half-pferde .rd-brandmark img{filter:invert(1)}
+@media (min-width:782px){.rd-split>.wp-block-column{min-height:100vh}.rd-split:hover .rd-half{filter:saturate(.7) brightness(.92)}.rd-split .rd-half:hover{filter:none}}
+.rd-splitbar{background:#fff;padding:.9rem 1rem!important;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase}
+.rd-splitbar a{text-decoration:none;margin:0 .8rem}
+
+/* cards (packages) */
+.rd-cards{gap:1.5rem!important}
+.rd-cards>.wp-block-column{background:#fff;padding:2rem 1.6rem!important;border:1px solid var(--rd-muted);border-radius:4px;display:flex;flex-direction:column;position:relative}
+.rd-cards>.wp-block-column .wp-block-buttons{margin-top:auto;padding-top:1rem}
+.rd-cards h3{margin:0 0 .3rem}
+.rd-cards .rd-price{font-size:2.2rem;font-weight:800;margin:.2rem 0 .8rem;font-family:var(--rd-sans)}
+.world-hochzeit .rd-cards .rd-price{font-family:var(--rd-serif);font-weight:300}
+.rd-cards ul{padding-left:1.1rem;font-size:.95rem;line-height:1.7}
+.rd-popular{border:2px solid var(--rd-accent)!important;box-shadow:0 18px 40px -24px rgba(0,0,0,.35)}
+.rd-popular::before{content:"Am beliebtesten";position:absolute;top:-.8rem;left:1.6rem;background:var(--rd-accent);color:#fff;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .7rem;border-radius:2px}
+
+/* usp */
+.rd-usps h3{font-size:1.1rem;margin-bottom:.3rem}
+.rd-usps .wp-block-column{border-top:2px solid var(--rd-accent);padding-top:1rem}
+
+/* gallery */
+.rd-gallery{gap:.6rem!important}
+.rd-gallery img{transition:transform .5s}
+.rd-gallery figure{overflow:hidden}
+.rd-gallery figure:hover img{transform:scale(1.04)}
+
+/* tables */
+.wp-block-table table{border-collapse:collapse;width:100%;background:#fff}
+.wp-block-table th{text-align:left;background:var(--rd-muted);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em}
+.wp-block-table td,.wp-block-table th{border:1px solid var(--rd-muted)!important;padding:.75rem .9rem}
+.wp-block-table td:last-child{white-space:nowrap}
+
+/* steps */
+.rd-steps .wp-block-column{counter-increment:step}
+.rd-steps{counter-reset:step}
+.rd-steps .wp-block-column::before{content:counter(step,decimal-leading-zero);display:block;font-size:2.4rem;font-weight:800;color:var(--rd-accent);line-height:1;margin-bottom:.5rem}
+
+/* faq */
+.wp-block-details{border-bottom:1px solid var(--rd-muted);padding:1rem 0}
+.wp-block-details summary{font-weight:600;cursor:pointer}
+
+/* placeholder for missing photos */
+.rd-placeholder{background:repeating-linear-gradient(45deg,var(--rd-blush),var(--rd-blush) 12px,#f7efeb 12px,#f7efeb 24px);min-height:260px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--rd-ink);border-radius:4px}
+
+/* notice */
+.rd-note{border-left:3px solid var(--rd-accent);padding:.8rem 1rem!important;background:#fff;font-size:.92rem}
+
+/* footer */
+.rd-footer{background:#151B17;color:#CFC8BA;padding:3.5rem clamp(1rem,4vw,3rem) 2rem!important;font-size:.9rem}
+.rd-footer h4{color:#fff;font-family:var(--rd-sans);text-transform:uppercase;letter-spacing:.14em;font-size:.78rem}
+.rd-footer a{text-decoration:none;color:#E9E3D6}
+.rd-footer a:hover{text-decoration:underline}
+.rd-footer .rd-logo img{height:48px;width:auto;filter:invert(1)}
+.rd-footer ul{list-style:none;padding:0;line-height:2}
+.rd-footer .rd-legal{border-top:1px solid #2c352f;margin-top:2rem;padding-top:1.2rem;font-size:.78rem;opacity:.75}
+
+/* woo */
+.woocommerce ul.products li.product .price,.wc-block-components-product-price{font-weight:700}
