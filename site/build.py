@@ -28,6 +28,7 @@ else:
 
 S = requests.Session()
 S.auth = (USER, PW)
+S.headers["User-Agent"] = "Mozilla/5.0 (rd-build; +https://ruidodat.com)"  # host ModSecurity rejects python-requests
 if os.path.exists(CA):
     S.verify = CA
 

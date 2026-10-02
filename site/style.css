@@ -103,7 +103,7 @@ h1,h2,h3,h4{font-family:var(--rd-head);color:var(--rd-fg)}
 .wp-block-table table{border-collapse:collapse;width:100%;background:#fff}
 .wp-block-table th{text-align:left;background:var(--rd-muted);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em}
 .wp-block-table td,.wp-block-table th{border:1px solid var(--rd-muted)!important;padding:.75rem .9rem}
-.wp-block-table td:last-child{white-space:nowrap}
+.wp-block-table td{overflow-wrap:anywhere}
 
 /* steps */
 .rd-steps .wp-block-column{counter-increment:step}
@@ -131,3 +131,12 @@ h1,h2,h3,h4{font-family:var(--rd-head);color:var(--rd-fg)}
 
 /* woo */
 .woocommerce ul.products li.product .price,.wc-block-components-product-price{font-weight:700}
+
+/* layout fixes */
+.world-home .wp-block-post-content{padding-left:0!important;padding-right:0!important}
+.world-home .rd-split,.world-home .rd-splitbar{max-width:none!important;margin-left:0!important;margin-right:0!important;width:100%}
+.rd-section>.wp-block-columns,.rd-section>.wp-block-gallery,.rd-section>.wp-block-table,.rd-section>.wp-block-group>.wp-block-columns{max-width:1240px!important;width:100%}
+.rd-section>.wp-block-table{max-width:900px!important}
+.rd-hero::before{background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,.35) 40%,rgba(0,0,0,.7))}
+@media (max-width:781px){.rd-header .rd-world{display:none}.rd-hero{min-height:70vh}.wp-block-table td,.wp-block-table th{padding:.55rem .5rem;font-size:.88rem}}
+@media (max-width:781px){.rd-split>.wp-block-column{min-height:78vh}.rd-split .rd-brandmark img{height:40px}}
