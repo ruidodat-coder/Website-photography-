@@ -35,7 +35,7 @@ h1,h2,h3,h4{font-family:var(--rd-head);color:var(--rd-fg)}
 .rd-header .rd-world a{text-decoration:none}
 .rd-header-pferde{background:var(--rd-forest);color:var(--rd-sand)}
 .rd-header-pferde .rd-logo img{filter:invert(1)}
-.rd-header-hochzeit{background:rgba(251,248,244,.94);backdrop-filter:blur(6px);color:var(--rd-ink);border-bottom:1px solid var(--rd-blush)}
+.rd-header-hochzeit{background:var(--rd-ivory);color:var(--rd-ink);border-bottom:1px solid var(--rd-blush)}
 .rd-header-main{background:#fff;color:#22201E;border-bottom:1px solid #eee}
 .rd-header .wp-block-navigation{font-size:.9rem;font-weight:500}
 .rd-header .wp-block-navigation a{text-decoration:none}
@@ -140,3 +140,58 @@ h1,h2,h3,h4{font-family:var(--rd-head);color:var(--rd-fg)}
 .rd-hero::before{background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,.35) 40%,rgba(0,0,0,.7))}
 @media (max-width:781px){.rd-header .rd-world{display:none}.rd-hero{min-height:70vh}.wp-block-table td,.wp-block-table th{padding:.55rem .5rem;font-size:.88rem}}
 @media (max-width:781px){.rd-split>.wp-block-column{min-height:78vh}.rd-split .rd-brandmark img{height:40px}}
+
+/* mobile menu overlay: full screen, large tap targets, world colours */
+.rd-header .wp-block-navigation__responsive-container.is-menu-open{position:fixed;inset:0;z-index:100000;padding:4.5rem 1.6rem 2rem!important;background:var(--rd-ivory)!important;color:var(--rd-ink)!important;overflow-y:auto}
+.rd-header-pferde .wp-block-navigation__responsive-container.is-menu-open{background:var(--rd-forest)!important;color:var(--rd-sand)!important}
+.rd-header-main .wp-block-navigation__responsive-container.is-menu-open{background:#fff!important;color:#22201E!important}
+.rd-header .is-menu-open .wp-block-navigation__responsive-container-content,.rd-header .is-menu-open .wp-block-navigation__container{align-items:stretch!important;width:100%;gap:0!important}
+.rd-header .is-menu-open .wp-block-navigation-item{width:100%;border-bottom:1px solid rgba(128,128,128,.25)}
+.rd-header .is-menu-open .wp-block-navigation-item__content{display:block;width:100%;padding:1rem .2rem!important;font-size:1.45rem;line-height:1.2;text-align:left}
+.rd-header-pferde .is-menu-open .wp-block-navigation-item__content{text-transform:uppercase;font-weight:700;letter-spacing:.04em;font-size:1.2rem}
+.rd-header-hochzeit .is-menu-open .wp-block-navigation-item__content{font-family:var(--rd-serif);font-weight:300}
+.rd-header .wp-block-navigation__responsive-container-open svg,.rd-header .wp-block-navigation__responsive-container-close svg{width:34px;height:34px}
+.rd-header .wp-block-navigation__responsive-container-close{top:1.2rem!important;right:1.2rem!important}
+.rd-header .is-menu-open a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.rd-header .is-menu-open .wp-block-navigation-item__content:focus{outline:1px solid rgba(128,128,128,.35);outline-offset:-1px}
+
+/* ===== availability calendar (ICS Calendar plugin) ===== */
+.rd-cal .ics-calendar{font-family:var(--rd-sans);max-width:900px;margin:0 auto}
+.rd-cal .ics-calendar-title,.rd-cal .ics-calendar-month-heading{font-family:var(--rd-head);font-weight:400;text-transform:none!important;letter-spacing:0!important}
+.rd-cal .ics-calendar select{font:inherit;padding:.4rem .6rem;border:1px solid var(--rd-muted);background:#fff;border-radius:2px}
+.rd-cal .ics-calendar table.ics-calendar-month-grid{background:#fff;border-collapse:collapse;table-layout:fixed;width:100%}
+.rd-cal .ics-calendar th{background:var(--rd-muted)!important;color:var(--rd-fg)!important;font-size:.7rem;letter-spacing:.12em;padding:.6rem .2rem!important;text-align:center!important}
+.rd-cal .ics-calendar td{border:1px solid var(--rd-muted)!important;height:auto!important;vertical-align:top;background:#fff}
+.rd-cal .ics-calendar td .day{background:transparent!important;color:inherit!important;text-align:left!important;padding:.45rem .55rem!important;font-weight:600;font-size:.9rem}
+.rd-cal .ics-calendar td.past{opacity:.35}
+.rd-cal .ics-calendar td.today .day .no_phone{display:inline-block;min-width:1.7em;text-align:center;border-radius:50%;outline:1.5px solid var(--rd-fg)}
+/* hide every event detail: only "busy" is shown, never who/what */
+.rd-cal .ics-calendar ul.events .title,.rd-cal .ics-calendar ul.events .descloc,.rd-cal .ics-calendar ul.events .eventdesc,
+.rd-cal .ics-calendar ul.events .all-day-indicator,.rd-cal .ics-calendar ul.events .location,.rd-cal .ics-calendar ul.events .organizer{display:none!important}
+.rd-cal .ics-calendar ul.events{list-style:none;margin:0;padding:0 .4rem .5rem!important}
+.rd-cal .ics-calendar ul.events li.event{margin:0 0 .25rem!important;padding:.15rem .35rem!important;border-radius:2px;background:var(--rd-muted)!important;color:var(--rd-fg)!important;font-size:.72rem;line-height:1.3;border:0!important}
+.rd-cal .ics-calendar ul.events li.event:not(.all-day)::after{content:" belegt"}
+.rd-cal .ics-calendar ul.events li.event .time{font-weight:600}
+.rd-cal .ics-calendar ul.events li.event.all-day{display:none!important}
+.rd-cal .ics-calendar td.has_events:has(li.all-day){background:var(--rd-accent)!important;color:#fff}
+.rd-cal .ics-calendar td.has_events:has(li.all-day) .day::after{content:"Belegt";display:block;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:.35rem}
+.rd-cal-legend{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;font-size:.85rem;margin-top:1rem}
+.rd-cal-legend span::before{content:"";display:inline-block;width:.9em;height:.9em;border-radius:2px;margin-right:.4em;vertical-align:-1px;border:1px solid var(--rd-muted)}
+.rd-cal-legend .free::before{background:#fff}
+.rd-cal-legend .part::before{background:var(--rd-muted)}
+.rd-cal-legend .full::before{background:var(--rd-accent);border-color:var(--rd-accent)}
+@media (max-width:781px){
+ .rd-cal .ics-calendar th{font-size:0!important}
+ .rd-cal .ics-calendar th::first-letter{font-size:.72rem}
+ .rd-cal .ics-calendar td .day{padding:.3rem!important;font-size:.8rem;text-align:center!important}
+ .rd-cal .ics-calendar td.has_events:has(li.all-day) .day::after{content:"";}
+ .rd-cal .ics-calendar ul.events{padding:0 .15rem .3rem!important}
+ .rd-cal .ics-calendar ul.events li.event{font-size:.6rem;padding:.1rem!important;text-align:center}
+ .rd-cal .ics-calendar ul.events li.event:not(.all-day)::after{content:""}
+}
+.rd-cal .ics-calendar td.today .day .no_phone{width:1.9em;height:1.9em;line-height:1.9em;outline:0;border:1.5px solid var(--rd-fg);margin:-.25em 0 0 -.3em}
+.rd-cal .ics-calendar,.rd-cal .ics-calendar .ics-calendar-month-wrapper{overflow:visible!important;max-width:100%}
+.rd-cal .ics-calendar table.ics-calendar-month-grid{min-width:0!important;width:100%!important;display:table!important}
+.rd-cal .ics-calendar table.ics-calendar-month-grid th,.rd-cal .ics-calendar table.ics-calendar-month-grid td{width:14.2857%!important;min-width:0!important}
+@media (max-width:781px){.rd-cal{padding-left:.6rem!important;padding-right:.6rem!important}.rd-cal .ics-calendar td.today .day .no_phone{margin:0}}
+.rd-cal .ics-calendar td.today .day,.rd-cal .ics-calendar td.today .day *{color:var(--rd-fg)!important;background:transparent!important}

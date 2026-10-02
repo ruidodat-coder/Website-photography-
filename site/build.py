@@ -147,12 +147,12 @@ def nav_links(items):
 
 MENUS = {
     "Menü Pferde": [("Portfolio", "/pferde/portfolio/"), ("Shootings &amp; Preise", "/pferde/shootings-preise/"), ("Stalltag", "/pferde/stalltag/"),
-                    ("Turnierfotos", "/pferde/turnierfotografie/"), ("Gutscheine", "/gutscheine/"), ("FAQ", "/pferde/ablauf-faq/"),
+                    ("Turnierfotos", "/pferde/turnierfotografie/"), ("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("FAQ", "/pferde/ablauf-faq/"),
                     ("Kontakt", "/kontakt/"), ("→ Hochzeit", "/hochzeit/")],
     "Menü Hochzeit": [("Echte Hochzeiten", "/hochzeit/echte-hochzeiten/"), ("Pakete &amp; Preise", "/hochzeit/pakete-preise/"),
                       ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben", "/hochzeit/alben-wandbilder/"), ("Gästegalerie", "/hochzeit/gaestegalerie/"),
-                      ("FAQ", "/hochzeit/ablauf-faq-hochzeit/"), ("Kontakt", "/kontakt/"), ("→ Pferde", "/pferde/")],
-    "Menü Hauptseite": [("Pferde", "/pferde/"), ("Hochzeit", "/hochzeit/"), ("Gutscheine", "/gutscheine/"), ("Shop", "/shop/"),
+                      ("Freie Termine", "/verfuegbarkeit/"), ("FAQ", "/hochzeit/ablauf-faq-hochzeit/"), ("Kontakt", "/kontakt/"), ("→ Pferde", "/pferde/")],
+    "Menü Hauptseite": [("Pferde", "/pferde/"), ("Hochzeit", "/hochzeit/"), ("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("Shop", "/shop/"),
                         ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/")],
 }
 
@@ -205,7 +205,7 @@ def footer():
 
 {col("Hochzeit", [("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben &amp; Wandbilder", "/hochzeit/alben-wandbilder/"), ("Gästegalerie", "/hochzeit/gaestegalerie/")])}
 
-{col("Info", [("Gutscheine", "/gutscheine/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/")])}</div>
+{col("Info", [("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/")])}</div>
 <!-- /wp:columns -->
 
 <!-- wp:paragraph {{"className":"rd-legal"}} -->
@@ -261,7 +261,9 @@ OLD_TO_DRAFT = [611, 605, 600, 598, 593, 591, 589, 587, 581, 565, 561, 559, 555,
 def step_pages():
     data = json.loads((HERE / ".products.json").read_text())
     PR, CAT = data["PR"], data["CAT"]
-    pages = content.build(M, PR)
+    cal_file = HERE / "calendar_url.txt"
+    CAL = cal_file.read_text().strip() if cal_file.exists() else None
+    pages = content.build(M, PR, CAL)
     existing = {p["slug"]: p for p in get_all("/wp/v2/pages", status="publish,draft,private", context="edit")}
     ids = {}
     for pg in pages:

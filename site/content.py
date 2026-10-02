@@ -32,7 +32,27 @@ def travel_table(world):
     return table(["Zone (ab Germersheim)", "Beispiele", "Anfahrt"], rows)
 
 
-def build(M, PR):
+def cal_block(cal_url, world):
+    """Public availability calendar: only busy/free, never booking details."""
+    if not cal_url:
+        return group(h("Freie Termine", 2), p("Der Verfügbarkeitskalender wird gerade eingerichtet. Frag mich gern direkt per WhatsApp oder Kontaktformular.", "rd-note"),
+                     cls="rd-section", align="wide")
+    sc = (f'[ics_calendar url="{cal_url}" view="month" nomobile="true" eventdesc="false" location="false" '
+          f'organizer="false" pastdays="0" limitdays="548"]')
+    intro = ("Hier siehst du, welche Tage und Zeiten schon vergeben sind. Alles Weiße ist noch frei."
+             if world == "pferde" else
+             "Hier seht ihr auf einen Blick, ob euer Wunschtermin noch frei ist. Pro Tag begleite ich nur eine Hochzeit.")
+    return group(
+        p("Verfügbarkeit", "rd-eyebrow", align="center"), h("Freie Termine", 2, align="center"),
+        p(intro, align="center"),
+        raw(f"<!-- wp:shortcode -->\n{sc}\n<!-- /wp:shortcode -->"),
+        p('<span class="free">frei</span><span class="part">teilweise belegt</span><span class="full">ganztägig belegt</span>', "rd-cal-legend"),
+        p("Ein freier Tag ist noch nicht reserviert. Fest gebucht ist ein Termin erst nach Bezahlung bzw. Anzahlung. "
+          "Der Kalender wird etwa stündlich aktualisiert.", "rd-small", align="center"),
+        cls="rd-section rd-cal", align="wide")
+
+
+def build(M, PR, CAL=None):
     m = lambda i: M[i]
     pages = []
     add = lambda **kw: pages.append(kw)
@@ -130,6 +150,7 @@ def build(M, PR):
             ["Weiteres Pferd", "49 €"], ["Weitere Person", "25 €"], ["Drohnenaufnahmen", "59 €"], ["Express-Lieferung 48 h", "49 €"]]),
             p('Extras kannst du direkt mitbuchen oder nach dem Shooting <a href="/produkt-kategorie/pferde-extras/">im Shop nachkaufen</a>.', "rd-small"),
             cls="rd-section", align="wide"),
+        cal_block(CAL, "pferde"),
         group(h("Anfahrt", 2), travel_table("pferde"),
               p('Anfahrt Zone 2 und 3 kannst du <a href="' + PR["anfahrt-z2"]["url"] + '">hier</a> bzw. <a href="' + PR["anfahrt-z3"]["url"] + '">hier</a> mitbuchen. Beim Stalltag wird die Anfahrt auf alle Pferde aufgeteilt.', "rd-small"),
               cls="rd-section", align="wide"),
@@ -243,6 +264,7 @@ def build(M, PR):
             ["Hochzeitsalbum 30×30, 40 Seiten", "590 €"], ["Elternalbum 20×20", "149 €"],
             ['<a href="/hochzeit/paarshootings/">Verlobungs-/Paarshooting</a>', "290 € (190 € mit Hochzeit)"]]),
             cls="rd-section", align="wide"),
+        cal_block(CAL, "hochzeit"),
         group(h("Anfahrt", 2), travel_table("hochzeit"), cls="rd-section", align="wide"),
         group(h("So läuft's", 2), columns(
             column(h("Anfragen", 3), p("Datum &amp; Location schicken, ich prüfe sofort die Verfügbarkeit.")),
@@ -308,6 +330,14 @@ def build(M, PR):
 
     # ================================================================== SHARED
     T = "rd-main"
+    add(slug="verfuegbarkeit", title="Freie Termine", template=T, parent=None, content="\n\n".join([
+        group(p("Verfügbarkeit", "rd-eyebrow"), h("Freie Termine", 1),
+              p("Shootings und Hochzeiten auf einen Blick. Belegte Zeiten sind markiert, ohne Details zu den Buchungen.", "rd-lead"),
+              buttons(button("Pferde-Shooting buchen", "/pferde/shootings-preise/"), button("Hochzeit anfragen", "/hochzeit/pakete-preise/", outline=True)),
+              cls="rd-section", align="wide"),
+        cal_block(CAL, "pferde"),
+    ]))
+
     add(slug="gutscheine", title="Gutscheine", template=T, parent=None, content="\n\n".join([
         group(p("Gutscheine", "rd-eyebrow"), h("Verschenke Erinnerungen", 1),
               p("Für ein Pferde-Shooting, ein Paarshooting oder einen Wunschbetrag. Als PDF zum Ausdrucken innerhalb von 24 Stunden, 3 Jahre gültig.", "rd-lead"),
