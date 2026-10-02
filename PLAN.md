@@ -262,7 +262,7 @@ Expected margins: lab cost is about 25–35 % of the sale price for prints and a
 
 ## 7. Roadmap
 1. **Phase 0 – Decisions** (you): confirm prices and package names, and whether to use Pictrs. (Done: base Germersheim, Kleinunternehmer.)
-2. **Phase 1 – Foundation**: give me an Application Password for ruidodat.com. I make a backup and a staging copy, install the theme and plugins, and build the split home page plus both worlds.
+2. **Phase 1 – Foundation**: give me an Application Password for ruidodat.com. The site is not live, so I build directly on it (after a quick content export), install the theme and plugins, and build the split home page plus both worlds.
 3. **Phase 2 – Booking and shop**: booking calendar with pre-payment and deposit, vouchers, print/album products, and connection to the print lab.
 4. **Phase 3 – Events**: Pictrs account, show calendar, presale flat rate, organiser page.
 5. **Phase 4 – Content and SEO**: portfolio uploads, 3 "what does it cost" blog posts per world, Google Business profiles, reviews.
