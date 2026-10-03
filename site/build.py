@@ -93,6 +93,10 @@ def step_shop():
         "woocommerce_ship_to_countries": "specific", "woocommerce_specific_ship_to_countries": ["DE"],
     }
     api("POST", "/wc/v3/settings/general/batch", {"update": [{"id": k, "value": v} for k, v in general.items()]})
+    general["woocommerce_default_customer_address"] = "base"
+    api("POST", "/wc/v3/settings/general/batch", {"update": [{"id": "woocommerce_default_customer_address", "value": "base"}]})
+    api("POST", "/wc/v3/settings/products/batch", {"update": [{"id": "woocommerce_enable_reviews", "value": "no"}]})
+    api("POST", "/wp/v2/settings", {"date_format": "j. F Y", "time_format": "H:i", "start_of_week": 1})
     log("woo general settings")
     zones = api("GET", "/wc/v3/shipping/zones")
     z = next((z for z in zones if z["name"] == "Deutschland"), None)
@@ -121,7 +125,9 @@ def step_products():
         body = {"name": name, "slug": slug, "type": "simple", "status": "publish", "regular_price": f"{price:.2f}",
                 "virtual": virtual, "short_description": f"<p>{short}</p>", "description": catalog.description(key, cat, long),
                 "categories": [{"id": cats[cat]["id"]}], "catalog_visibility": "hidden" if cat in ("anfahrt",) else "visible",
-                "sold_individually": cat in ("hochzeit",)}
+                "sold_individually": cat in catalog.SINGLE}
+        if key in catalog.IMAGES:
+            body["images"] = [{"id": catalog.IMAGES[key]}]
         if slug in existing:
             pr = api("PUT", f"/wc/v3/products/{existing[slug]['id']}", body)
         else:

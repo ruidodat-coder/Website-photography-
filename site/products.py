@@ -127,3 +127,9 @@ def description(key, cat, long):
     if cat == "gutscheine":
         return long + VOUCHER_NOTE + KU
     return long + KU
+
+# product photos (existing media library images) and single-booking categories
+IMAGES = {"pony": 481, "warmblut": 475, "kaltblut": 483, "black-background": 482, "verkaufsfotos": 480,
+          "stalltag": 327, "turnier-flat-vvk": 489, "turnier-flat": 489, "turnier-zweitpferd": 487,
+          "gutschein-pony": 481, "gutschein-warmblut": 475}
+SINGLE = {"pferde-shootings", "hochzeit", "paarshootings", "turnierfotos"}
