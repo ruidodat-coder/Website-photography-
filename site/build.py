@@ -87,7 +87,7 @@ def step_plugins():
 def step_shop():
     general = {
         "woocommerce_store_address": "", "woocommerce_store_city": "Germersheim", "woocommerce_store_postcode": "76726",
-        "woocommerce_default_country": "DE:RP", "woocommerce_currency": "EUR", "woocommerce_currency_pos": "right_space",
+        "woocommerce_default_country": "DE", "woocommerce_currency": "EUR", "woocommerce_currency_pos": "right_space",
         "woocommerce_price_thousand_sep": ".", "woocommerce_price_decimal_sep": ",", "woocommerce_price_num_decimals": "2",
         "woocommerce_calc_taxes": "no", "woocommerce_allowed_countries": "specific", "woocommerce_specific_allowed_countries": ["DE", "AT", "CH", "LU", "FR", "NL"],
         "woocommerce_ship_to_countries": "specific", "woocommerce_specific_ship_to_countries": ["DE"],
@@ -97,6 +97,14 @@ def step_shop():
     api("POST", "/wc/v3/settings/general/batch", {"update": [{"id": "woocommerce_default_customer_address", "value": "base"}]})
     api("POST", "/wc/v3/settings/products/batch", {"update": [{"id": "woocommerce_enable_reviews", "value": "no"}]})
     api("POST", "/wp/v2/settings", {"date_format": "j. F Y", "time_format": "H:i", "start_of_week": 1})
+    # Gmail drops mail "from" @gmail.com sent by other servers -> send from the own domain.
+    api("POST", "/wc/v3/settings/email/batch", {"update": [
+        {"id": "woocommerce_email_from_name", "value": "Rui Dodat Fotografie"},
+        {"id": "woocommerce_email_from_address", "value": "buchung@ruidodat.com"}]})
+    contact = "Vielen Dank! Bei Fragen erreichst du mich jederzeit unter ruidodat@gmail.com oder per WhatsApp: 0173 8505311."
+    for e in ["customer_on_hold_order", "customer_processing_order", "customer_completed_order",
+              "customer_refunded_order", "customer_invoice", "customer_note"]:
+        api("PUT", f"/wc/v3/settings/email_{e}/additional_content", {"value": contact})
     log("woo general settings")
     zones = api("GET", "/wc/v3/shipping/zones")
     z = next((z for z in zones if z["name"] == "Deutschland"), None)
