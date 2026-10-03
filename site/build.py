@@ -95,6 +95,15 @@ def step_shop():
     api("POST", "/wc/v3/settings/general/batch", {"update": [{"id": k, "value": v} for k, v in general.items()]})
     general["woocommerce_default_customer_address"] = "base"
     api("POST", "/wc/v3/settings/general/batch", {"update": [{"id": "woocommerce_default_customer_address", "value": "base"}]})
+    # Germanized: legal pages used in checkout links, price notices and emails
+    pid = {p["slug"]: p["id"] for p in get_all("/wp/v2/pages", status="publish,draft")}
+    api("POST", "/wc/v3/settings/germanized/batch", {"update": [
+        {"id": "woocommerce_terms_page_id", "value": str(pid["agb"])},
+        {"id": "woocommerce_revocation_page_id", "value": str(pid["widerruf"])},
+        {"id": "woocommerce_imprint_page_id", "value": str(pid["impressum"])},
+        {"id": "woocommerce_data_security_page_id", "value": str(pid["datenschutz"])},
+        {"id": "woocommerce_payment_methods_page_id", "value": str(pid["versand-zahlung"])},
+        {"id": "woocommerce_shipping_costs_page_id", "value": str(pid["versand-zahlung"])}]})
     api("POST", "/wc/v3/settings/products/batch", {"update": [{"id": "woocommerce_enable_reviews", "value": "no"}]})
     api("POST", "/wp/v2/settings", {"date_format": "j. F Y", "time_format": "H:i", "start_of_week": 1})
     # Gmail drops mail "from" @gmail.com sent by other servers -> send from the own domain.
@@ -219,7 +228,7 @@ def footer():
 
 {col("Hochzeit", [("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben &amp; Wandbilder", "/hochzeit/alben-wandbilder/"), ("Gästegalerie", "/hochzeit/gaestegalerie/")])}
 
-{col("Info", [("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/")])}</div>
+{col("Info", [("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/"), ("Vertrag widerrufen", "/vertrag-widerrufen/")])}</div>
 <!-- /wp:columns -->
 
 <!-- wp:paragraph {{"className":"rd-legal"}} -->
