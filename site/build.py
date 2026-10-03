@@ -293,7 +293,26 @@ def step_pages():
     log("front page + site title")
 
 
-steps = {"plugins": step_plugins, "shop": step_shop, "products": step_products, "design": step_design, "pages": step_pages}
+def step_snippets():
+    """PHP snippets via the Code Snippets plugin (upsert by name)."""
+    have = {s["name"]: s for s in api("GET", "/code-snippets/v1/snippets")}
+    for f in sorted((HERE / "snippets").glob("*.php")):
+        name = "rd: " + f.stem
+        code = f.read_text()
+        if "RD_TERMIN_IDS" in code:
+            PR = json.loads((HERE / ".products.json").read_text())["PR"]
+            ids = sorted(PR[k]["id"] for k, _, _, cat, *_ in catalog.P if cat in ("pferde-shootings", "hochzeit", "paarshootings"))
+            code = code.replace("RD_TERMIN_IDS", "array( " + ", ".join(map(str, ids)) + " )")
+        body = {"name": name, "code": code, "scope": "global", "active": True,
+                "desc": "Managed by site/build.py (Website-photography- repo)."}
+        if name in have:
+            api("POST", f"/code-snippets/v1/snippets/{have[name]['id']}", body)
+        else:
+            api("POST", "/code-snippets/v1/snippets", body)
+        log("snippet", name)
+
+
+steps = {"plugins": step_plugins, "snippets": step_snippets, "shop": step_shop, "products": step_products, "design": step_design, "pages": step_pages}
 for name in (steps if args.step == "all" else [args.step]):
     print(f"\n== {name}")
     steps[name]()

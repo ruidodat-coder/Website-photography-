@@ -5,7 +5,7 @@ KU = "<p><small>Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</small></p
 BOOKING_HOW = (
     "<h4>So läuft die Buchung</h4><ol>"
     "<li>Paket in den Warenkorb legen und bezahlen.</li>"
-    "<li>Im Feld <strong>„Anmerkungen zur Bestellung“</strong> 2–3 Wunschtermine und den Ort (Stall/PLZ) angeben.</li>"
+    "<li>An der Kasse im Feld <strong>„Wunschtermine &amp; Ort“</strong> 2–3 Termine und den Stall/PLZ angeben.</li>"
     "<li>Du bekommst innerhalb von 48 Stunden die Terminbestätigung und eine Checkliste zur Vorbereitung.</li></ol>"
     "<p><strong>Wetter:</strong> Bei schlechtem Wetter verschieben wir kostenlos. "
     "<strong>Anfahrt:</strong> bis 30 km ab Germersheim inklusive, darüber nach Zonen (siehe Preisseite).</p>"
@@ -16,7 +16,7 @@ WEDDING_HOW = (
     "<li>Vorher kurz den Termin per Kontaktformular oder WhatsApp prüfen lassen (nur eine Hochzeit pro Tag).</li>"
     "<li>Anzahlung (30 %) hier bezahlen. Damit ist euer Datum fest reserviert.</li>"
     "<li>Ihr erhaltet den Vertrag per E-Mail. Die restlichen 70 % sind 4 Wochen vor der Hochzeit fällig.</li></ol>"
-    "<p>Bitte gebt im Feld <strong>„Anmerkungen zur Bestellung“</strong> euer Hochzeitsdatum und die Location an.</p>"
+    "<p>Bitte gebt an der Kasse im Feld <strong>„Wunschtermine &amp; Ort“</strong> euer Hochzeitsdatum und die Location an.</p>"
 )
 
 CATS = {
@@ -123,7 +123,7 @@ def description(key, cat, long):
     if cat == "hochzeit":
         return long + WEDDING_HOW + KU
     if cat == "paarshootings":
-        return long + BOOKING_HOW.replace("Paket", "Shooting").replace("den Ort (Stall/PLZ)", "euren Wunschort") + KU
+        return long + BOOKING_HOW.replace("Paket", "Shooting").replace("den Stall/PLZ", "euren Wunschort") + KU
     if cat == "gutscheine":
         return long + VOUCHER_NOTE + KU
     return long + KU
