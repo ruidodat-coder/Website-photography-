@@ -38,7 +38,7 @@ def cal_block(cal_url, world):
         return group(h("Freie Termine", 2), p("Der Verfügbarkeitskalender wird gerade eingerichtet. Frag mich gern direkt per WhatsApp oder Kontaktformular.", "rd-note"),
                      cls="rd-section", align="wide")
     sc = (f'[ics_calendar url="{cal_url}" view="month" nomobile="true" eventdesc="false" location="false" '
-          f'organizer="false" pastdays="0" limitdays="548"]')
+          f'organizer="false" pastdays="0" limitdays="548" timeformat="H:i"]')
     intro = ("Hier siehst du, welche Tage und Zeiten schon vergeben sind. Alles Weiße ist noch frei."
              if world == "pferde" else
              "Hier seht ihr auf einen Blick, ob euer Wunschtermin noch frei ist. Pro Tag begleite ich nur eine Hochzeit.")
@@ -331,11 +331,10 @@ def build(M, PR, CAL=None):
     # ================================================================== SHARED
     T = "rd-main"
     add(slug="verfuegbarkeit", title="Freie Termine", template=T, parent=None, content="\n\n".join([
-        group(p("Verfügbarkeit", "rd-eyebrow"), h("Freie Termine", 1),
-              p("Shootings und Hochzeiten auf einen Blick. Belegte Zeiten sind markiert, ohne Details zu den Buchungen.", "rd-lead"),
-              buttons(button("Pferde-Shooting buchen", "/pferde/shootings-preise/"), button("Hochzeit anfragen", "/hochzeit/pakete-preise/", outline=True)),
-              cls="rd-section", align="wide"),
         cal_block(CAL, "pferde"),
+        group(buttons(button("Pferde-Shooting buchen", "/pferde/shootings-preise/"), button("Hochzeit anfragen", "/hochzeit/pakete-preise/", outline=True),
+                      cls="is-content-justification-center"),
+              cls="rd-section", align="wide"),
     ]))
 
     add(slug="gutscheine", title="Gutscheine", template=T, parent=None, content="\n\n".join([
