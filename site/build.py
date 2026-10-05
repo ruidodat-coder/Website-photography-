@@ -228,7 +228,7 @@ def footer():
 
 {col("Hochzeit", [("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben &amp; Wandbilder", "/hochzeit/alben-wandbilder/"), ("Gästegalerie", "/hochzeit/gaestegalerie/")])}
 
-{col("Info", [("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/"), ("Vertrag widerrufen", "/vertrag-widerrufen/")])}</div>
+{col("Info", [("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("Cookie-Richtlinie", "/cookie-richtlinie-eu/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/"), ("Vertrag widerrufen", "/vertrag-widerrufen/")])}</div>
 <!-- /wp:columns -->
 
 <!-- wp:paragraph {{"className":"rd-legal"}} -->

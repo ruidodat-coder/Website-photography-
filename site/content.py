@@ -389,6 +389,10 @@ def build(M, PR, CAL=None):
         p("Wichtige Punkte für die AGB: Wetter-Verschiebung, Stornoregeln (14 Tage), Anzahlung Hochzeit nicht erstattbar, Nutzungsrechte (privat), Gutscheine 3 Jahre gültig.", "rd-small"),
         cls="rd-section", align="wide"))
     add(slug="widerruf", title="Widerrufsbelehrung", template=T, parent=None, content=group(h("Widerrufsbelehrung", 1), legal_note("Widerrufsbelehrung"), cls="rd-section", align="wide"))
+    add(slug="cookie-richtlinie-eu", title="Cookie-Richtlinie (EU)", template=T, parent=None, content=group(
+        h("Cookie-Richtlinie (EU)", 1),
+        raw('<!-- wp:shortcode -->\n[cmplz-document type="cookie-statement" region="eu"]\n<!-- /wp:shortcode -->'),
+        cls="rd-section", align="wide"))
     add(slug="versand-zahlung", title="Versand & Zahlung", template=T, parent=None, content=group(
         h("Versand &amp; Zahlung", 1),
         ul(["Shootings, Gutscheine und Downloads: kein Versand, digital per E-Mail",
