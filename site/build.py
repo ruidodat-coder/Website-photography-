@@ -86,7 +86,7 @@ def step_plugins():
 # ------------------------------------------------------------------ 2. shop settings
 def step_shop():
     general = {
-        "woocommerce_store_address": "", "woocommerce_store_city": "Germersheim", "woocommerce_store_postcode": "76726",
+        "woocommerce_store_address": "Kaltenbacher Hof 0", "woocommerce_store_city": "Freimersheim", "woocommerce_store_postcode": "67482",
         "woocommerce_default_country": "DE", "woocommerce_currency": "EUR", "woocommerce_currency_pos": "right_space",
         "woocommerce_price_thousand_sep": ".", "woocommerce_price_decimal_sep": ",", "woocommerce_price_num_decimals": "2",
         "woocommerce_calc_taxes": "no", "woocommerce_allowed_countries": "specific", "woocommerce_specific_allowed_countries": ["DE", "AT", "CH", "LU", "FR", "NL"],

@@ -379,8 +379,8 @@ def build(M, PR, CAL=None):
     legal_note = lambda what: p(f"⚠️ <strong>{what} folgt.</strong> Bitte rechtssicheren Text einfügen, z. B. über den AGB-Service der IT-Recht Kanzlei oder des Händlerbunds (automatische Updates).", "rd-note")
     add(slug="impressum", title="Impressum", template=T, parent=None, content=group(
         h("Impressum", 1), p("Angaben gemäß § 5 DDG"),
-        p("Rui Dodat · Rui Dodat Fotografie<br>[Straße und Hausnummer]<br>76726 Germersheim<br>Deutschland"),
-        p("Telefon: 0173 8505311<br>E-Mail: [E-Mail-Adresse]"),
+        p("Rui Dodat · Rui Dodat Fotografie<br>Kaltenbacher Hof 0<br>67482 Freimersheim<br>Deutschland"),
+        p('Telefon: 0173 8505311<br>E-Mail: <a href="mailto:ruidodat@gmail.com">ruidodat@gmail.com</a>'),
         p("Umsatzsteuer: Kleinunternehmer gemäß § 19 UStG, daher keine USt-IdNr."),
         p("Verbraucherstreitbeilegung: Ich bin nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."),
         cls="rd-section", align="wide"))
