@@ -195,3 +195,16 @@ h1,h2,h3,h4{font-family:var(--rd-head);color:var(--rd-fg)}
 .rd-cal .ics-calendar table.ics-calendar-month-grid th,.rd-cal .ics-calendar table.ics-calendar-month-grid td{width:14.2857%!important;min-width:0!important}
 @media (max-width:781px){.rd-cal{padding-left:.6rem!important;padding-right:.6rem!important}.rd-cal .ics-calendar td.today .day .no_phone{margin:0}}
 .rd-cal .ics-calendar td.today .day,.rd-cal .ics-calendar td.today .day *{color:var(--rd-fg)!important;background:transparent!important}
+
+/* wedding pages with (stock) photos: warm overlay, light text */
+.rd-hero-boho::before{background:linear-gradient(180deg,rgba(40,28,22,.10) 0%,rgba(40,28,22,.35) 45%,rgba(40,28,22,.72))}
+.rd-hero-boho,.rd-hero-boho h1,.rd-hero-boho p,.rd-hero-boho .rd-eyebrow{color:#fff}
+.world-hochzeit .rd-hero-boho h1 em{color:#F1D9CE}
+.rd-hero-boho .is-style-outline .wp-block-button__link{color:#fff;border-color:#fff}
+.rd-split .rd-half-hochzeit.rd-half-photo{color:#fff}
+.rd-split .rd-half-hochzeit.rd-half-photo::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(40,28,22,0) 35%,rgba(40,28,22,.72));z-index:-1}
+.rd-split .rd-half-hochzeit.rd-half-photo h2,.rd-split .rd-half-hochzeit.rd-half-photo p{color:#fff}
+.rd-split .rd-half-hochzeit.rd-half-photo .is-style-outline .wp-block-button__link{color:#fff;border-color:#fff}
+/* keep the 9-item world menus on one line on desktop */
+@media (min-width:782px){.rd-header .wp-block-navigation{font-size:.84rem}.rd-header .wp-block-navigation .wp-block-navigation__container{gap:.95rem;flex-wrap:nowrap}}
+@media (min-width:782px) and (max-width:1320px){.rd-header .rd-world{display:none}}

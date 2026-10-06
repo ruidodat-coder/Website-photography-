@@ -72,7 +72,7 @@ M = {int(k): {"id": int(k), "url": v["full"]} for k, v in MEDIA.items()}
 # ------------------------------------------------------------------ 1. plugins
 def step_plugins():
     have = {p["plugin"].split("/")[0]: p for p in api("GET", "/wp/v2/plugins")}
-    for slug in ["woocommerce", "woocommerce-germanized", "ics-calendar", "code-snippets", "woocommerce-paypal-payments", "complianz-gdpr"]:
+    for slug in ["woocommerce", "woocommerce-germanized", "ics-calendar", "code-snippets", "woocommerce-paypal-payments", "complianz-gdpr", "password-protected"]:
         if slug not in have:
             log("install", slug)
             api("POST", "/wp/v2/plugins", {"slug": slug, "status": "active"})

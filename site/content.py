@@ -1,6 +1,22 @@
 """Page content (German). build(M, PR) -> list of page dicts.
 M: media id -> {"id","url"} ; PR: product key -> {"url","price"}"""
 from blocks import *
+import json as _json
+from pathlib import Path as _Path
+
+# Boho stock photos (Unsplash licence) used as placeholders until own wedding photos exist
+_sf = _Path(__file__).with_name("stock.json")
+STOCK = _json.loads(_sf.read_text()) if _sf.exists() else {}
+
+
+def stock(name, pos="50% 50%"):
+    st = STOCK[name]
+    return {"url": st["url"], "id": st["id"], "pos": pos}
+
+
+def stock_img(name, alt):
+    st = STOCK[name]
+    return ({"id": st["id"], "url": st["url"]}, alt + " (Symbolbild)")
 
 WA = "https://wa.me/491738505311"
 
@@ -71,7 +87,7 @@ def build(M, PR, CAL=None):
             h("Hochzeit", 2),
             p("Ungestellte Reportagen voller Gefühl, vom ersten Blick bis zum letzten Tanz."),
             buttons(button("Zur Hochzeitsfotografie", "/hochzeit/", outline=True)),
-            cls="rd-half rd-half-hochzeit")),
+            cls="rd-half rd-half-hochzeit rd-half-photo", bg=stock("boho-braut-sand", "50% 40%"))),
         cls="rd-split", align="full")
     bar = group(p('<a href="/gutscheine/">Gutscheine</a> <a href="/ueber-mich/">Über mich</a> '
                   '<a href="/kontakt/">Kontakt</a> <a href="/impressum/">Impressum</a> <a href="/datenschutz/">Datenschutz</a>',
@@ -226,13 +242,17 @@ def build(M, PR, CAL=None):
               h("Euer Tag.<br><em>Für immer.</em>", 1),
               p("Natürliche, ungestellte Hochzeitsreportagen: die Tränen beim Ja-Wort, das Lachen der Gäste, der letzte Tanz.", "rd-lead"),
               buttons(button("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), button("Termin anfragen", "/kontakt/", outline=True)),
-              cls="rd-hero rd-hero-soft", align="full"),
+              cls="rd-hero rd-hero-boho", align="full", bg=stock("boho-vw-bus", "50% 45%")),
         group(columns(
             column(h("Ungestellt &amp; ehrlich", 3), p("Ich begleite euch zurückhaltend und fange echte Momente ein, statt alles zu inszenieren.")),
             column(h("Sneak Peek in 72 h", 3), p("Die ersten Lieblingsbilder habt ihr schon wenige Tage nach der Hochzeit.")),
             column(h("Gästegalerie", 3), p("Eure Gäste sehen die Bilder in einer privaten Galerie und können sich Abzüge bestellen.")),
             cls="rd-usps"), cls="rd-section", align="wide"),
-        group(columns(column(ph()), column(ph()), column(ph())), cls="rd-section", align="wide"),
+        group(gallery([stock_img("boho-paar-felsen", "Brautpaar auf Felsen"), stock_img("boho-brautstrauss", "Boho-Brautstrauß"),
+                       stock_img("boho-paar-sonnenuntergang", "Brautpaar im Abendlicht"), stock_img("boho-tischdeko", "Boho-Tischdeko"),
+                       stock_img("boho-paar-feld", "Hände des Brautpaars"), stock_img("boho-trockenblumen", "Trockenblumen")]),
+              p("Symbolbilder von Unsplash. Eigene Hochzeitsreportagen folgen.", "rd-small", align="center"),
+              cls="rd-section", align="wide"),
         group(p("Pakete", "rd-eyebrow", align="center"), h("Für jede Hochzeit das <em>passende</em> Paket", 2, align="center"),
               columns(
                   card("Herzstück", "1.890 €", ["7 Stunden", "ca. 450 Bilder", "Sneak Peek &amp; Gästegalerie"], "/hochzeit/pakete-preise/", "Details"),
@@ -250,7 +270,7 @@ def build(M, PR, CAL=None):
         group(p("Pakete &amp; Preise", "rd-eyebrow"), h("Transparent. <em>Ohne versteckte Kosten.</em>", 1),
               p("Erst lernen wir uns persönlich kennen, dann bekommt ihr euren Vertrag. Mit der Anzahlung von 30 % ist euer Tag fest reserviert, der Rest ist 4 Wochen vor der Hochzeit fällig.", "rd-lead"),
               buttons(button("Termin anfragen", "/kontakt/"), button("WhatsApp", WA, outline=True)),
-              cls="rd-section", align="wide"),
+              cls="rd-hero rd-hero-short rd-hero-boho", align="full", bg=stock("boho-paar-feld", "50% 50%")),
         group(columns(
             card("Ja-Wort", "890 €", ["Standesamt, 2,5 Stunden", "ca. 150 Bilder", "Online-Galerie"], "/kontakt/", "Termin anfragen"),
             card("Herzstück", "1.890 €", ["7 Stunden (Trauung bis Eröffnungstanz)", "ca. 450 Bilder", "Sneak Peek in 72 h", "Gästegalerie"], "/kontakt/", "Termin anfragen"),
@@ -284,7 +304,8 @@ def build(M, PR, CAL=None):
 
     add(slug="paarshootings", title="Verlobungs- & Paarshootings", template=T, parent="hochzeit", content="\n\n".join([
         group(p("Paarshootings", "rd-eyebrow"), h("Nur ihr zwei. <em>Und das Licht.</em>", 1),
-              p("Im Weinberg, am Rhein oder im Pfälzerwald, vor oder nach der Hochzeit.", "rd-lead"), cls="rd-section", align="wide"),
+              p("Im Weinberg, am Rhein oder im Pfälzerwald, vor oder nach der Hochzeit.", "rd-lead"),
+              cls="rd-hero rd-hero-short rd-hero-boho", align="full", bg=stock("boho-paar-sonnenuntergang", "50% 30%")),
         group(columns(
             card("Verlobung / Paar", "290 €", ["ca. 1 Stunde", "ca. 50 bearbeitete Bilder", "perfekt für Save-the-Date", "mit Hochzeitsbuchung nur 190 €"], PR["paar"]["url"]),
             card("After-Wedding", "390 €", ["ca. 2 Stunden", "ca. 80 bearbeitete Bilder", "im Hochzeitsoutfit, ohne Zeitdruck"], PR["afterwedding"]["url"]),
@@ -385,6 +406,9 @@ def build(M, PR, CAL=None):
         p('Telefon: 0173 8505311<br>E-Mail: <a href="mailto:ruidodat@gmail.com">ruidodat@gmail.com</a>'),
         p("Umsatzsteuer: Kleinunternehmer gemäß § 19 UStG, daher keine USt-IdNr."),
         p("Verbraucherstreitbeilegung: Ich bin nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."),
+        h("Bildnachweise", 2),
+        p("Alle Pferdefotos: Rui Dodat. Symbolbilder Hochzeit (Unsplash-Lizenz): " + ", ".join(
+            f'<a href="https://unsplash.com/photos/{v["unsplash"]}">{v["credit"]}</a>' for v in STOCK.values()) + "."),
         cls="rd-section", align="wide"))
     add(slug="datenschutz", title="Datenschutzerklärung", template=T, parent=None, content=group(h("Datenschutzerklärung", 1), legal_note("Datenschutzerklärung"), cls="rd-section", align="wide"))
     add(slug="agb", title="AGB", template=T, parent=None, content=group(h("Allgemeine Geschäftsbedingungen", 1), legal_note("AGB-Text"),
