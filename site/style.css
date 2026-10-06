@@ -454,3 +454,6 @@ html.rd-lb-open{overflow:hidden}
 .rd-gal-parts{display:flex;flex-direction:column;gap:.6rem}
 header.wp-block-template-part:not(:has(.rd-header)){background:var(--rd-bg,#fff)}
 .rd-lb{background:#0c0c0c}
+/* shared pages opened from a world keep that world's colours */
+body.rd-in-pferde{--rd-bg:var(--rd-sand);--rd-fg:var(--rd-forest);--rd-accent:var(--rd-saddle);--rd-muted:var(--rd-stone)}
+body.rd-in-hochzeit{--rd-bg:var(--rd-ivory);--rd-fg:var(--rd-ink);--rd-accent:var(--rd-rose);--rd-muted:var(--rd-blush);--rd-head:var(--rd-serif)}
