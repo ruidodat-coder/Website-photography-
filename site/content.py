@@ -20,6 +20,35 @@ def stock_img(name, alt):
 
 WA = "https://wa.me/491738505311"
 
+# Hero videos (Mixkit free licence, uploaded to the media library)
+_vf = _Path(__file__).with_name("videos.json")
+VIDEOS = _json.loads(_vf.read_text()) if _vf.exists() else {}
+
+
+def hero_video(world):
+    """Muted looping background video for a hero group; the poster doubles as the group's background image."""
+    vid, poster = VIDEOS[f"hero-{world}.mp4"], VIDEOS[f"hero-{world}-poster.jpg"]
+    return raw(f'<!-- wp:html -->\n<div class="rd-video" aria-hidden="true"><video autoplay muted loop playsinline preload="auto" '
+               f'poster="{poster["url"]}"><source src="{vid["url"]}" type="video/mp4"></video></div>'
+               f'<button class="rd-cue" type="button" aria-label="Nach unten scrollen"><span></span></button>\n<!-- /wp:html -->')
+
+
+def poster_bg(world, pos="50% 50%"):
+    pst = VIDEOS[f"hero-{world}-poster.jpg"]
+    return {"url": pst["url"], "id": pst["id"], "pos": pos}
+
+
+def stats(items):
+    """Count-up numbers: (number, unit, title, text). The final number is in the HTML, JS animates from 0."""
+    cells = "".join(f'<div class="rd-stat"><div class="rd-stat-n"><span class="rd-num" data-to="{n}">{n}</span>'
+                    f'<small>{u}</small></div><p><strong>{t}</strong>{x}</p></div>' for n, u, t, x in items)
+    return raw(f'<!-- wp:html -->\n<div class="rd-stats">{cells}</div>\n<!-- /wp:html -->')
+
+
+def marquee(words):
+    run = "".join(f"<span>{w}</span>" for w in words)
+    return raw(f'<!-- wp:html -->\n<div class="rd-marquee" aria-hidden="true"><div class="rd-marquee-track">{run}{run}</div></div>\n<!-- /wp:html -->')
+
 
 def eur(v):
     s = f"{v:,.0f}".replace(",", ".")
@@ -97,21 +126,24 @@ def build(M, PR, CAL=None):
     # ================================================================== HORSE WORLD
     T = "rd-pferde"
     pferde = "\n\n".join([
-        group(p("Pferdefotografie · Südpfalz &amp; Umgebung", "rd-eyebrow"),
+        group(hero_video("pferde"),
+              p("Pferdefotografie · Südpfalz &amp; Umgebung", "rd-eyebrow"),
               h("Dein Pferd.<br>Eure Geschichte.", 1),
               p("Ruhige, pferdeerfahrene Shootings: Portraits, Pferd &amp; Reiter, Black Background und Turnierfotografie, "
                 "rund um Germersheim, Speyer, Landau und Karlsruhe.", "rd-lead"),
               buttons(button("Shooting buchen", "/pferde/shootings-preise/"),
                       button("Turnierfotos", "/pferde/turnierfotografie/", outline=True)),
-              cls="rd-hero", align="full", bg={"url": M[478]["url"], "id": 478, "pos": "50% 45%"}),
-        group(columns(
-            column(h("Ruhig &amp; pferdeerfahren", 3), p("Ich arbeite mit Geduld und im Tempo deines Pferdes, ohne Stress.")),
-            column(h("Fertig in 10 Tagen", 3), p("Deine Online-Auswahlgalerie ist innerhalb von 10 Tagen da. Express in 48 h möglich.")),
-            column(h("Faire Festpreise", 3), p("Alles vorab online bezahlt. Anfahrt bis 30 km inklusive, Wetter-Verschiebung kostenlos.")),
-            cls="rd-usps"), cls="rd-section", align="wide"),
-        group(h("Portfolio", 2, align="center"),
+              cls="rd-hero rd-hero-video", align="full", bg=poster_bg("pferde")),
+        group(stats([(10, "Tage", "Fertig in 10 Tagen", "Deine Online-Galerie kommt schnell. Express in 48 h möglich."),
+                     (149, "€", "Faire Festpreise", "Ab 149 €, alles vorab online bezahlt. Keine versteckten Kosten."),
+                     (30, "km", "Anfahrt inklusive", "Rund um Germersheim komme ich ohne Aufpreis zu dir an den Stall."),
+                     (100, "%", "Im Tempo deines Pferdes", "Ruhig, geduldig, ohne Stress. Wetter-Verschiebung kostenlos.")]),
+              cls="rd-section rd-stats-section", align="full"),
+        group(marquee(["Portraits", "Pferd &amp; Reiter", "Black Background", "Golden Hour", "Turniere", "Stalltage", "Fohlen"]), cls="rd-marquee-wrap", align="full", layout="default"),
+        group(p("Portfolio", "rd-eyebrow", align="center"), h("Momente, die bleiben", 2, align="center"),
               gallery([(m(479), "Grauer Wallach im Blütenhain"), (m(481), "Haflinger Portrait"), (m(483), "Pferd vor schwarzem Hintergrund"),
-                       (m(480), "Portrait im Frühling"), (m(322), "Reiterin mit Schimmel"), (m(477), "Reiterin kniet bei ihrem Pferd")]),
+                       (m(480), "Portrait im Frühling"), (m(322), "Reiterin mit Schimmel"), (m(477), "Reiterin kniet bei ihrem Pferd")],
+                      cls="rd-gallery rd-mosaic"),
               buttons(button("Ganzes Portfolio", "/pferde/portfolio/", outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="full"),
         group(p("Shootings", "rd-eyebrow", align="center"), h("Finde dein Paket", 2, align="center"),
@@ -128,10 +160,10 @@ def build(M, PR, CAL=None):
                    buttons(button("Turnierfotos &amp; Kalender", "/pferde/turnierfotografie/"))),
             column(gallery([(m(489), "Dressurprüfung"), (m(485), "Siegerehrung"), (m(487), "Pony-Prüfung"), (m(484), "Glückwunsch nach dem Ritt")])),
         ), cls="rd-section rd-dark", align="full"),
-        group(h("Das perfekte Geschenk", 2, align="center"),
+        group(p("Gutscheine", "rd-eyebrow", align="center"), h("Das perfekte Geschenk", 2, align="center"),
               p("Gutscheine für Shootings oder Wunschbetrag, sofort als PDF zum Ausdrucken.", align="center"),
               buttons(button("Gutschein verschenken", "/gutscheine/"), cls="is-content-justification-center"),
-              cls="rd-section", align="wide"),
+              cls="rd-band rd-parallax", align="full", bg={"url": M[475]["url"], "id": 475, "pos": "50% 50%"}),
     ])
     add(slug="pferde", title="Pferdefotografie", template=T, parent=None, content=pferde)
 
@@ -238,26 +270,30 @@ def build(M, PR, CAL=None):
     T = "rd-hochzeit"
     ph = lambda txt="Hochzeitsbild folgt": group(p(txt, align="center"), cls="rd-placeholder")
     add(slug="hochzeit", title="Hochzeitsfotografie", template=T, parent=None, content="\n\n".join([
-        group(p("Hochzeitsfotografie · Südpfalz · Speyer · Karlsruhe", "rd-eyebrow"),
+        group(hero_video("hochzeit"),
+              p("Hochzeitsfotografie · Südpfalz · Speyer · Karlsruhe", "rd-eyebrow"),
               h("Euer Tag.<br><em>Für immer.</em>", 1),
               p("Natürliche, ungestellte Hochzeitsreportagen: die Tränen beim Ja-Wort, das Lachen der Gäste, der letzte Tanz.", "rd-lead"),
               buttons(button("Verfügbarkeit &amp; Preis", "#verfuegbarkeit"), button("Pakete &amp; Preise", "/hochzeit/pakete-preise/", outline=True)),
-              cls="rd-hero rd-hero-boho", align="full", bg=stock("boho-vw-bus", "50% 45%")),
+              cls="rd-hero rd-hero-boho rd-hero-video", align="full", bg=poster_bg("hochzeit")),
         group(p("Verfügbarkeit &amp; Preis", "rd-eyebrow", align="center"),
               h("Bin ich an <em>eurem Tag</em> frei?", 2, align="center"),
               p("Datum eingeben und sofort sehen, ob ich frei bin, mit allen Paketen und Preisen.", align="center"),
               raw("<!-- wp:shortcode -->\n[rd_wedding_check]\n<!-- /wp:shortcode -->"),
               cls="rd-section rd-tint rd-wcheck-section", align="full", anchor="verfuegbarkeit"),
-        group(columns(
-            column(h("Ungestellt &amp; ehrlich", 3), p("Ich begleite euch zurückhaltend und fange echte Momente ein, statt alles zu inszenieren.")),
-            column(h("Sneak Peek in 72 h", 3), p("Die ersten Lieblingsbilder habt ihr schon wenige Tage nach der Hochzeit.")),
-            column(h("Gästegalerie", 3), p("Eure Gäste sehen die Bilder in einer privaten Galerie und können sich Abzüge bestellen.")),
-            cls="rd-usps"), cls="rd-section", align="wide"),
-        group(gallery([stock_img("boho-paar-felsen", "Brautpaar auf Felsen"), stock_img("boho-brautstrauss", "Boho-Brautstrauß"),
+        group(stats([(72, "h", "Sneak Peek", "Die ersten Lieblingsbilder habt ihr schon wenige Tage nach der Hochzeit."),
+                     (700, "Bilder", "Ungestellt &amp; ehrlich", "Ich begleite euch zurückhaltend und fange echte Momente ein."),
+                     (24, "h", "Schnelle Antwort", "Auf jede Anfrage melde ich mich innerhalb eines Tages."),
+                     (1, "Paar", "Pro Tag", "Ich fotografiere nur eine Hochzeit am Tag. Eure.")]),
+              cls="rd-section rd-stats-section", align="full"),
+        group(marquee(["Standesamt", "Freie Trauung", "Boho", "Scheunenhochzeit", "Getting Ready", "Erster Tanz", "Paarshooting"]), cls="rd-marquee-wrap", align="full", layout="default"),
+        group(p("Einblicke", "rd-eyebrow", align="center"), h("Echte <em>Gefühle</em>, kein Gestell", 2, align="center"),
+              gallery([stock_img("boho-paar-felsen", "Brautpaar auf Felsen"), stock_img("boho-brautstrauss", "Boho-Brautstrauß"),
                        stock_img("boho-paar-sonnenuntergang", "Brautpaar im Abendlicht"), stock_img("boho-tischdeko", "Boho-Tischdeko"),
-                       stock_img("boho-paar-feld", "Hände des Brautpaars"), stock_img("boho-trockenblumen", "Trockenblumen")]),
+                       stock_img("boho-paar-feld", "Hände des Brautpaars"), stock_img("boho-trockenblumen", "Trockenblumen")],
+                      cls="rd-gallery rd-mosaic"),
               p("Symbolbilder von Unsplash. Eigene Hochzeitsreportagen folgen.", "rd-small", align="center"),
-              cls="rd-section", align="wide"),
+              cls="rd-section", align="full"),
         group(p("Pakete", "rd-eyebrow", align="center"), h("Für jede Hochzeit das <em>passende</em> Paket", 2, align="center"),
               columns(
                   card("Herzstück", "1.890 €", ["7 Stunden", "ca. 450 Bilder", "Sneak Peek &amp; Gästegalerie"], "/hochzeit/pakete-preise/", "Details"),
@@ -265,10 +301,10 @@ def build(M, PR, CAL=None):
                   card("Grenzenlos", "3.790 €", ["12 Stunden, 2 Fotografen", "Album + 2 Elternalben", "Paarshooting inklusive"], "/hochzeit/pakete-preise/", "Details"),
                   cls="rd-cards"),
               cls="rd-section rd-tint", align="full"),
-        group(h("Erzählt mir von euch", 2, align="center"),
+        group(p("Lasst uns reden", "rd-eyebrow", align="center"), h("Erzählt mir <em>von euch</em>", 2, align="center"),
               p("Euer Datum ist noch frei? Schreibt mir, ich melde mich innerhalb von 24 Stunden.", align="center"),
               buttons(button("Verfügbarkeit prüfen", "#verfuegbarkeit"), button("WhatsApp", WA, outline=True), cls="is-content-justification-center"),
-              cls="rd-section", align="wide"),
+              cls="rd-band rd-parallax rd-band-boho", align="full", bg=stock("boho-paar-sonnenuntergang", "50% 40%")),
     ]))
 
     add(slug="pakete-preise", title="Hochzeit – Pakete & Preise", template=T, parent="hochzeit", content="\n\n".join([
