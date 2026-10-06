@@ -248,13 +248,14 @@ def build(M, PR, CAL=None):
 
     add(slug="pakete-preise", title="Hochzeit – Pakete & Preise", template=T, parent="hochzeit", content="\n\n".join([
         group(p("Pakete &amp; Preise", "rd-eyebrow"), h("Transparent. <em>Ohne versteckte Kosten.</em>", 1),
-              p("Datum prüfen lassen, 30 % anzahlen und euer Tag ist fest reserviert. Der Rest ist 4 Wochen vor der Hochzeit fällig.", "rd-lead"),
+              p("Erst lernen wir uns persönlich kennen, dann bekommt ihr euren Vertrag. Mit der Anzahlung von 30 % ist euer Tag fest reserviert, der Rest ist 4 Wochen vor der Hochzeit fällig.", "rd-lead"),
+              buttons(button("Termin anfragen", "/kontakt/"), button("WhatsApp", WA, outline=True)),
               cls="rd-section", align="wide"),
         group(columns(
-            card("Ja-Wort", "890 €", ["Standesamt, 2,5 Stunden", "ca. 150 Bilder", "Online-Galerie"], PR["hz-jawort"]["url"], "Anzahlung 267 €"),
-            card("Herzstück", "1.890 €", ["7 Stunden (Trauung bis Eröffnungstanz)", "ca. 450 Bilder", "Sneak Peek in 72 h", "Gästegalerie"], PR["hz-herzstueck"]["url"], "Anzahlung 567 €"),
-            card("Für Immer", "2.690 €", ["10 Stunden", "ca. 700 Bilder", "Paarshooting inklusive", "Sneak Peek &amp; Gästegalerie"], PR["hz-fuerimmer"]["url"], "Anzahlung 807 €", popular=True),
-            card("Grenzenlos", "3.790 €", ["12 Stunden, 2 Fotografen", "Paarshooting inklusive", "Album 30×30, 40 Seiten", "2 Elternalben"], PR["hz-grenzenlos"]["url"], "Anzahlung 1.137 €"),
+            card("Ja-Wort", "890 €", ["Standesamt, 2,5 Stunden", "ca. 150 Bilder", "Online-Galerie"], "/kontakt/", "Termin anfragen"),
+            card("Herzstück", "1.890 €", ["7 Stunden (Trauung bis Eröffnungstanz)", "ca. 450 Bilder", "Sneak Peek in 72 h", "Gästegalerie"], "/kontakt/", "Termin anfragen"),
+            card("Für Immer", "2.690 €", ["10 Stunden", "ca. 700 Bilder", "Paarshooting inklusive", "Sneak Peek &amp; Gästegalerie"], "/kontakt/", "Termin anfragen", popular=True),
+            card("Grenzenlos", "3.790 €", ["12 Stunden, 2 Fotografen", "Paarshooting inklusive", "Album 30×30, 40 Seiten", "2 Elternalben"], "/kontakt/", "Termin anfragen"),
             cls="rd-cards"),
             p("Nebensaison (November–März) und Montag–Donnerstag: <strong>10 % Rabatt</strong> auf alle Pakete.", "rd-note"),
             cls="rd-section rd-tint", align="full"),
@@ -267,13 +268,14 @@ def build(M, PR, CAL=None):
         cal_block(CAL, "hochzeit"),
         group(h("Anfahrt", 2), travel_table("hochzeit"), cls="rd-section", align="wide"),
         group(h("So läuft's", 2), columns(
-            column(h("Anfragen", 3), p("Datum &amp; Location schicken, ich prüfe sofort die Verfügbarkeit.")),
-            column(h("Reservieren", 3), p("30 % Anzahlung online, Vertrag per E-Mail. Euer Datum ist fest.")),
-            column(h("Kennenlernen", 3), p("Videocall oder Kaffee: Ablauf, Wünsche, Familienfotos-Liste.")),
+            column(h("Anfragen", 3), p("Datum &amp; Location schicken. Ich prüfe sofort, ob ich an eurem Tag frei bin.")),
+            column(h("Kennenlernen", 3), p("Wir treffen uns persönlich, bei einem Kaffee oder an eurer Location: Ablauf, Wünsche, Paket.")),
+            column(h("Vertrag", 3), p("Nach dem Treffen bekommt ihr euren Vertrag per E-Mail. In Ruhe lesen, unterschreiben, 30 % anzahlen. Euer Datum ist fest.")),
             column(h("Genießen", 3), p("Sneak Peek in 72 h, komplette Galerie in 4–6 Wochen.")),
             cls="rd-steps"), cls="rd-section rd-tint", align="full"),
         group(h("Häufige Fragen", 2),
-              details("Was passiert, wenn ihr absagen müsst?", p("Die Anzahlung reserviert den Tag exklusiv für euch und ist daher nicht erstattbar. Alle weiteren Regelungen stehen transparent im Vertrag.")),
+              details("Warum erst ein persönliches Treffen?", p("Bei einer Hochzeit müsst ihr euch bei eurem Fotografen wohlfühlen. Deshalb buche ich Hochzeiten nur nach einem persönlichen Kennenlernen, nicht online. So könnt ihr alle Fragen stellen, bevor ihr unterschreibt.")),
+              details("Was passiert, wenn ihr absagen müsst?", p("Bis 6 Monate vor der Hochzeit behalte ich die Anzahlung (30 %), bis 8 Wochen vorher 50 %, danach 80 % des Paketpreises. Weist ihr nach, dass mir ein geringerer Schaden entstanden ist, zahlt ihr nur diesen. Alles steht transparent im Vertrag.")),
               details("Und wenn du krank wirst?", p("Für den Notfall organisiere ich eine/n erfahrene/n Kollegin/Kollegen als Ersatz. Das ist im Vertrag geregelt.")),
               details("Wie viele Bilder bekommen wir?", p("Je nach Paket 150 bis 700+ sorgfältig ausgewählte und bearbeitete Bilder, in Farbe und ausgewählte in Schwarzweiß.")),
               details("Warum keine Mehrwertsteuer?", p("Als Kleinunternehmer gemäß § 19 UStG wird keine Umsatzsteuer berechnet. Alle Preise sind Endpreise.")),
@@ -386,7 +388,7 @@ def build(M, PR, CAL=None):
         cls="rd-section", align="wide"))
     add(slug="datenschutz", title="Datenschutzerklärung", template=T, parent=None, content=group(h("Datenschutzerklärung", 1), legal_note("Datenschutzerklärung"), cls="rd-section", align="wide"))
     add(slug="agb", title="AGB", template=T, parent=None, content=group(h("Allgemeine Geschäftsbedingungen", 1), legal_note("AGB-Text"),
-        p("Wichtige Punkte für die AGB: Wetter-Verschiebung, Stornoregeln (14 Tage), Anzahlung Hochzeit nicht erstattbar, Nutzungsrechte (privat), Gutscheine 3 Jahre gültig.", "rd-small"),
+        p("Wichtige Punkte für die AGB: Wetter-Verschiebung, Stornoregeln (14 Tage), Hochzeit nur nach persönlichem Vorgespräch mit Storno-Staffel 30/50/80 %, Nutzungsrechte (privat), Gutscheine 3 Jahre gültig.", "rd-small"),
         cls="rd-section", align="wide"))
     add(slug="widerruf", title="Widerrufsbelehrung", template=T, parent=None, content=group(h("Widerrufsbelehrung", 1), legal_note("Widerrufsbelehrung"), cls="rd-section", align="wide"))
     add(slug="cookie-richtlinie-eu", title="Cookie-Richtlinie (EU)", template=T, parent=None, content=group(

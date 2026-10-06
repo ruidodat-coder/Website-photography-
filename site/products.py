@@ -11,19 +11,10 @@ BOOKING_HOW = (
     "<strong>Anfahrt:</strong> bis 30 km ab Germersheim inklusive, darüber nach Zonen (siehe Preisseite).</p>"
 )
 
-WEDDING_HOW = (
-    "<h4>So läuft die Buchung</h4><ol>"
-    "<li>Vorher kurz den Termin per Kontaktformular oder WhatsApp prüfen lassen (nur eine Hochzeit pro Tag).</li>"
-    "<li>Anzahlung (30 %) hier bezahlen. Damit ist euer Datum fest reserviert.</li>"
-    "<li>Ihr erhaltet den Vertrag per E-Mail. Die restlichen 70 % sind 4 Wochen vor der Hochzeit fällig.</li></ol>"
-    "<p>Bitte gebt an der Kasse im Feld <strong>„Wunschtermine &amp; Ort“</strong> euer Hochzeitsdatum und die Location an.</p>"
-)
-
 CATS = {
     "pferde-shootings": "Pferde-Shootings",
     "pferde-extras": "Extras Pferde-Shootings",
     "turnierfotos": "Turnierfotos",
-    "hochzeit": "Hochzeit",
     "paarshootings": "Paarshootings",
     "alben-wandbilder": "Alben & Wandbilder",
     "gutscheine": "Gutscheine",
@@ -75,19 +66,6 @@ P = [
     ("turnier-flat", "Turnier-Flatrate (nach dem Turnier)", 119, "turnierfotos", True,
      "Alle Fotos deines Pferdes auf dem Turnier", "<p>Wie der Vorverkauf, nur nach dem Turnier gebucht.</p>"),
     ("turnier-zweitpferd", "Turnier-Flatrate: zweites Pferd", 49, "turnierfotos", True, "Für ein weiteres Pferd auf demselben Turnier", ""),
-    # --- Wedding deposits ---
-    ("hz-jawort", "Anzahlung Hochzeit „Ja-Wort“ (30 % von 890 €)", 267, "hochzeit", True,
-     "Standesamt · 2,5 Stunden · ca. 150 Bilder · Restbetrag 623 €",
-     "<ul><li>2,5 Stunden Begleitung</li><li>ca. 150 bearbeitete Bilder</li><li>Online-Galerie</li></ul>"),
-    ("hz-herzstueck", "Anzahlung Hochzeit „Herzstück“ (30 % von 1.890 €)", 567, "hochzeit", True,
-     "7 Stunden · ca. 450 Bilder · Sneak Peek in 72 h · Gästegalerie · Restbetrag 1.323 €",
-     "<ul><li>7 Stunden Begleitung (Trauung bis Eröffnungstanz)</li><li>ca. 450 bearbeitete Bilder</li><li>Sneak Peek innerhalb von 72 Stunden</li><li>Gästegalerie mit Bestellfunktion</li></ul>"),
-    ("hz-fuerimmer", "Anzahlung Hochzeit „Für Immer“ (30 % von 2.690 €)", 807, "hochzeit", True,
-     "10 Stunden · ca. 700 Bilder · Paarshooting inklusive · Restbetrag 1.883 €",
-     "<ul><li>10 Stunden Begleitung</li><li>ca. 700 bearbeitete Bilder</li><li>Verlobungs-/Paarshooting inklusive</li><li>Sneak Peek in 72 h</li><li>Gästegalerie</li></ul>"),
-    ("hz-grenzenlos", "Anzahlung Hochzeit „Grenzenlos“ (30 % von 3.790 €)", 1137, "hochzeit", True,
-     "12 Stunden · 2 Fotografen · Album 30×30 · 2 Elternalben · Restbetrag 2.653 €",
-     "<ul><li>12 Stunden Begleitung</li><li>Zweitfotograf/in</li><li>Verlobungs-/Paarshooting inklusive</li><li>Hochzeitsalbum 30×30 cm, 40 Seiten</li><li>2 Elternalben 20×20 cm</li><li>Sneak Peek in 72 h, Gästegalerie</li></ul>"),
     # --- Couple shoots ---
     ("paar", "Verlobungs- / Paarshooting", 290, "paarshootings", True,
      "1 Stunde · ca. 50 bearbeitete Bilder", "<p>Perfekt für Save-the-Date-Karten, oder einfach, um sich vor der Kamera wohlzufühlen. Mit einer Hochzeitsbuchung nur 190 € (Gutscheincode erhaltet ihr mit dem Vertrag).</p>"),
@@ -120,8 +98,6 @@ VOUCHER_NOTE = ("<p>Du erhältst den Gutschein als schön gestaltetes PDF zum Au
 def description(key, cat, long):
     if cat == "pferde-shootings":
         return long + BOOKING_HOW + KU
-    if cat == "hochzeit":
-        return long + WEDDING_HOW + KU
     if cat == "paarshootings":
         return long + BOOKING_HOW.replace("Paket", "Shooting").replace("den Stall/PLZ", "euren Wunschort") + KU
     if cat == "gutscheine":
@@ -132,4 +108,4 @@ def description(key, cat, long):
 IMAGES = {"pony": 481, "warmblut": 475, "kaltblut": 483, "black-background": 482, "verkaufsfotos": 480,
           "stalltag": 327, "turnier-flat-vvk": 489, "turnier-flat": 489, "turnier-zweitpferd": 487,
           "gutschein-pony": 481, "gutschein-warmblut": 475}
-SINGLE = {"pferde-shootings", "hochzeit", "paarshootings", "turnierfotos"}
+SINGLE = {"pferde-shootings", "paarshootings", "turnierfotos"}
