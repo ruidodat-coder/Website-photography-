@@ -245,7 +245,7 @@ def build(M, PR, CAL=None):
               cls="rd-hero rd-hero-boho", align="full", bg=stock("boho-vw-bus", "50% 45%")),
         group(p("Verfügbarkeit &amp; Preis", "rd-eyebrow", align="center"),
               h("Bin ich an <em>eurem Tag</em> frei?", 2, align="center"),
-              p("Datum eingeben, Paket wählen: Ihr seht sofort, ob ich frei bin, und bekommt ein unverbindliches Angebot.", align="center"),
+              p("Datum eingeben und sofort sehen, ob ich frei bin, mit allen Paketen und Preisen.", align="center"),
               raw("<!-- wp:shortcode -->\n[rd_wedding_check]\n<!-- /wp:shortcode -->"),
               cls="rd-section rd-tint rd-wcheck-section", align="full", anchor="verfuegbarkeit"),
         group(columns(
