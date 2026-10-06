@@ -1,2 +1,6 @@
 site/.products.json
 __pycache__/
+photo-sorter/config.local.json
+photo-sorter/events.json
+photo-sorter/upload_state.json
+photo-sorter/upload_state.tmp

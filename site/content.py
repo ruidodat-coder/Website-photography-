@@ -38,24 +38,13 @@ def poster_bg(world, pos="50% 50%"):
     return {"url": pst["url"], "id": pst["id"], "pos": pos}
 
 
-# Online galleries live on Pictrs (storage, watermarks, payment, delivery). pictrs.txt holds the shop name once the account exists.
-_pf = _Path(__file__).with_name("pictrs.txt")
-PICTRS_SHOP = _pf.read_text().strip() if _pf.exists() else ""
-
-
+# Client galleries are served by the site itself (snippets/gallery-*.php); PhotoSorter uploads the exports.
 def code_form(label, placeholder):
-    """Access-code field that opens the matching Pictrs gallery (Pictrs' own find_by_qrcode endpoint)."""
-    if PICTRS_SHOP:
-        action = f"https://www.pictrs.com/{PICTRS_SHOP}/find_by_qrcode?l=de"
-        note = ""
-        dis = ""
-    else:
-        action = "#"
-        note = '<p class="rd-code-note">Die Online-Galerien werden gerade eingerichtet. Bis dahin schicke ich euch eure Bilder direkt per Link.</p>'
-        dis = " disabled"
-    return raw(f'<!-- wp:html -->\n<form class="rd-code" method="post" action="{action}"><label for="rd-code-in">{label}</label>'
+    """Access-code field; the footer script posts it to /rd/v1/gallery/open and opens the gallery."""
+    return raw(f'<!-- wp:html -->\n<form class="rd-code" data-rd-open="/wp-json/rd/v1/gallery/open" method="post" action="#"><label for="rd-code-in">{label}</label>'
                f'<div class="rd-code-row"><input id="rd-code-in" name="qr" type="text" required minlength="4" autocomplete="off" autocapitalize="characters" '
-               f'spellcheck="false" placeholder="{placeholder}"{dis}><button type="submit"{dis}>Bilder öffnen</button></div>{note}</form>\n<!-- /wp:html -->')
+               f'spellcheck="false" placeholder="{placeholder}"><button type="submit">Bilder öffnen</button></div>'
+               f'<p class="rd-code-note" aria-live="polite"></p></form>\n<!-- /wp:html -->')
 
 
 def event_types(items):
@@ -284,7 +273,7 @@ def build(M, PR, CAL=None):
     add(slug="dein-event", title="Dein Event", template=T, parent="pferde", content="\n\n".join([
         group(p("Dein Event", "rd-eyebrow", align="center"), h("Hier sind deine Bilder.", 1, align="center"),
               p("Gib den Code ein, den du von mir per E-Mail oder am Turnier bekommen hast.", "rd-lead", align="center"),
-              code_form("Dein Code", "z. B. SCHMIDT-0526"),
+              code_form("Dein Code", "z. B. SCHMIDT-7K3PX"),
               cls="rd-section rd-event-hero", align="full"),
         group(p("So funktioniert's", "rd-eyebrow", align="center"), h("Zwei Arten von Galerien", 2, align="center"),
               event_types([
@@ -302,6 +291,9 @@ def build(M, PR, CAL=None):
               buttons(button("WhatsApp", WA), button("Kontakt", "/kontakt/", outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="wide"),
     ]))
+
+    add(slug="deine-bilder", title="Deine Bilder", template=T, parent="pferde",
+        content=group(raw("<!-- wp:shortcode -->\n[rd_gallery]\n<!-- /wp:shortcode -->"), cls="rd-section rd-gal-page", align="full"))
 
     add(slug="ablauf-faq", title="Ablauf & FAQ Pferde", template=T, parent="pferde", content="\n\n".join([
         group(p("Ablauf &amp; FAQ", "rd-eyebrow"), h("Gut vorbereitet zum Shooting", 1), cls="rd-section", align="wide"),
@@ -419,7 +411,7 @@ def build(M, PR, CAL=None):
     wedding_event = lambda: "\n\n".join([
         group(p("Euer Event", "rd-eyebrow", align="center"), h("Hier sind <em>eure Bilder.</em>", 1, align="center"),
               p("Gebt den Code ein, den ihr von mir oder vom Brautpaar bekommen habt.", "rd-lead", align="center"),
-              code_form("Euer Code", "z. B. LISA-TOM-2027"),
+              code_form("Euer Code", "z. B. LUISA-7K3PX"),
               cls="rd-section rd-event-hero", align="full"),
         group(p("So funktioniert's", "rd-eyebrow", align="center"), h("Für Brautpaare <em>und</em> Gäste", 2, align="center"),
               event_types([
@@ -427,8 +419,8 @@ def build(M, PR, CAL=None):
                    ["Euren persönlichen Code eingeben", "Alle Bilder ohne Wasserzeichen ansehen und Favoriten markieren",
                     "Alles einzeln oder als ZIP kostenlos herunterladen"]),
                   ("✦", "Gäste", "Ihr wart auf der Hochzeit dabei.",
-                   ["Den Gäste-Code vom Brautpaar eingeben", "Die Bilder ansehen, die das Paar freigegeben hat",
-                    "Abzüge, Leinwände oder Downloads direkt bestellen"]),
+                   ["Den Code vom Brautpaar eingeben", "Durch alle Kapitel des Tages blättern und Favoriten markieren",
+                    "Bilder herunterladen oder, wenn so vereinbart, als Download kaufen"]),
               ]),
               cls="rd-section rd-tint", align="full"),
         group(h("Code verloren?", 2, align="center"),
@@ -436,6 +428,8 @@ def build(M, PR, CAL=None):
               buttons(button("WhatsApp", WA), button("Kontakt", "/kontakt/", outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="wide"),
     ])
+    add(slug="eure-bilder", title="Eure Bilder", template=T, parent="hochzeit",
+        content=group(raw("<!-- wp:shortcode -->\n[rd_gallery]\n<!-- /wp:shortcode -->"), cls="rd-section rd-gal-page", align="full"))
     add(slug="euer-event", title="Euer Event", template=T, parent="hochzeit", content=wedding_event())
     add(slug="gaestegalerie", title="Gästegalerie", template=T, parent="hochzeit", content=wedding_event())
 

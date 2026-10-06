@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PhotoSorter</title>
+<style>
+:root{
+  --paper:#EDEFF1; --sheet:#FFFFFF; --ink:#1E2932; --muted:#66727C;
+  --line:#CBD1D6; --safelight:#B3261E; --blue:#2F5D7C;
+  --s1:#4E7A93; --s2:#8A6F4E; --s3:#5E8A62; --s4:#7A5E8A; --s5:#8A4E5E; --s6:#4E8A86;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:15px/1.5 "Avenir Next","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+aside{background:var(--ink);color:#E6EAED;padding:20px 16px}
+aside h1{font-size:20px;margin:0 0 18px;font-weight:600;letter-spacing:.2px}
+.ev{display:block;width:100%;text-align:left;background:none;border:0;color:inherit;
+  padding:10px 10px;border-radius:6px;cursor:pointer;font:inherit}
+.ev:hover,.ev.sel{background:rgba(255,255,255,.09)}
+.ev small{display:block;color:#9FAAB2}
+.ev .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#7FC48A;margin-left:6px}
+main{padding:28px 36px;max-width:1000px}
+h2{font-size:26px;margin:0 0 4px;font-weight:600}
+.sub{color:var(--muted);margin:0 0 24px}
+.card{background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:18px}
+.card h3{margin:0 0 12px;font-size:16px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+input,textarea,select{font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:#fff;color:var(--ink)}
+input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+textarea{width:100%;min-height:110px;font-family:inherit}
+button.btn{font:inherit;padding:8px 14px;border-radius:5px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+button.ghost{background:#fff;color:var(--ink)}
+button.danger{background:#fff;color:var(--safelight);border-color:var(--safelight)}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:13px;color:var(--muted);font-weight:500;padding:6px 6px;border-bottom:1px solid var(--line)}
+td{padding:5px 6px;border-bottom:1px solid #EEF0F2}
+td input{width:100%}
+td.num input{width:90px}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+.x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:18px}
+/* the contact strip: shows how the ranges cover the shot sequence */
+.strip{position:relative;height:46px;background:repeating-linear-gradient(135deg,#F3F4F5 0 6px,#E4E7EA 6px 12px);
+  border-radius:4px;overflow:hidden;margin:6px 0 4px}
+.seg{position:absolute;top:0;bottom:0;color:#fff;font-size:12px;padding:4px 6px;overflow:hidden;white-space:nowrap;
+  border-right:1px solid rgba(255,255,255,.6)}
+.ovl{position:absolute;top:0;bottom:0;background:var(--safelight);opacity:.85}
+.scale{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.problems{color:var(--safelight);font-size:14px;margin:8px 0 0;padding-left:18px}
+.ok{color:#3C7A48;font-size:14px;margin-top:8px}
+pre.log{background:var(--ink);color:#D6DDE2;padding:12px;border-radius:6px;max-height:240px;overflow:auto;font-size:13px;margin:0}
+.empty{color:var(--muted);padding:40px 0}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;background:#E4E7EA;color:var(--ink)}
+.pill.on{background:#DCEFE0;color:#2E6B3A}.pill.off{background:#F6E2E0;color:var(--safelight)}
+.web td{font-size:14px}.web .bar{height:6px;background:#E4E7EA;border-radius:3px;overflow:hidden;min-width:80px}
+.web .bar i{display:block;height:100%;background:var(--blue)}
+code.big{font-size:18px;letter-spacing:1px;background:#F3F4F5;padding:3px 8px;border-radius:4px}
+@media (max-width:760px){.app{grid-template-columns:1fr} main{padding:20px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <h1>PhotoSorter</h1>
+    <button class="btn ghost" style="width:100%;margin-bottom:14px" onclick="newEvent()">New event</button>
+    <div id="list"></div>
+  </aside>
+
+  <main id="main"><p class="empty">Create an event to start entering photo numbers.</p></main>
+</div>
+
+<script>
+const COLORS=["--s1","--s2","--s3","--s4","--s5","--s6"];
+let events=[], cur=null;
+
+async function api(url,opt={}){
+  const r=await fetch(url,{headers:{"Content-Type":"application/json"},...opt});
+  return r.json();
+}
+async function load(){ events=await api("/api/events"); renderList(); }
+
+function renderList(){
+  const el=document.getElementById("list");
+  el.innerHTML=events.sort((a,b)=>(b.date||"").localeCompare(a.date||"")).map(e=>
+    `<button class="ev ${cur&&cur.id===e.id?"sel":""}" onclick="openEvent('${e.id}')">
+      ${esc(e.name)}${e.active?'<span class="dot" title="Active: new SD cards go here"></span>':""}
+      <small>${esc(e.date||"No date")} · ${e.sections.length} sections</small></button>`).join("");
+}
+function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function newEvent(){
+  cur={name:"",date:new Date().toISOString().slice(0,10),client:"",active:false,world:"hochzeit",mode:"free",sections:[]};
+  renderEditor();
+}
+function openEvent(id){ cur=structuredClone(events.find(e=>e.id===id)); renderEditor(); renderList(); }
+
+function renderEditor(){
+  const m=document.getElementById("main");
+  m.innerHTML=`
+  <h2>${esc(cur.name)||"New event"}</h2>
+  <p class="sub">Enter the photo number ranges from your camera. Files are sorted by the number in the filename (DSC_0254 → 254).</p>
+
+  <div class="card"><h3>Event</h3>
+    <div class="row">
+      <label style="flex:2">Name<input id="f-name" value="${esc(cur.name)}" placeholder="Wedding Tobi & Luisa"></label>
+      <label>Date<input id="f-date" type="date" value="${esc(cur.date)}"></label>
+      <label style="flex:1">Client email<input id="f-client" value="${esc(cur.client)}" placeholder="for the gallery invite"></label>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <label>Website area<select id="f-world">
+        <option value="hochzeit" ${cur.world!=="pferde"?"selected":""}>Hochzeit</option>
+        <option value="pferde" ${cur.world==="pferde"?"selected":""}>Pferde</option></select></label>
+      <label style="flex:1">Gallery type<select id="f-mode">
+        <option value="free" ${cur.mode!=="sale"?"selected":""}>Paid client: free download of everything, no watermark</option>
+        <option value="sale" ${cur.mode==="sale"?"selected":""}>Sale: watermarked previews, people buy photos (tournaments, guests)</option></select></label>
+    </div>
+    <label style="flex-direction:row;align-items:center;gap:8px;margin-top:12px;color:var(--ink)">
+      <input type="checkbox" id="f-active" ${cur.active?"checked":""}> Active event: the next SD card inserted is imported into this event
+    </label>
+  </div>
+
+  <div class="card"><h3>Photo ranges</h3>
+    <div id="strip"></div>
+    <table><thead><tr><th></th><th>Section</th><th>From</th><th>To</th><th>Photos</th><th></th></tr></thead>
+    <tbody id="rows"></tbody></table>
+    <div class="row" style="margin-top:10px">
+      <button class="btn ghost" onclick="addRow()">Add section</button>
+    </div>
+    <details style="margin-top:14px"><summary>Paste a list</summary>
+      <p class="sub" style="margin:8px 0">One section per line, like <em>preparation groom 1 - 254</em></p>
+      <textarea id="paste"></textarea>
+      <button class="btn ghost" style="margin-top:8px" onclick="parsePaste()">Add from list</button>
+    </details>
+    <div id="check"></div>
+  </div>
+
+  <div class="card"><h3>Import from SD card</h3>
+    <div class="row">
+      <label style="flex:1">Card<select id="card"></select></label>
+      <button class="btn ghost" onclick="loadCards()">Refresh cards</button>
+      <button class="btn" onclick="runImport()">Import into this event</button>
+    </div>
+  </div>
+
+  <div class="card web" id="web"><h3>Website gallery</h3><p class="sub" style="margin:0">Save the event to see its online status.</p></div>
+
+  <div class="row" style="margin-bottom:18px">
+    <button class="btn" onclick="saveEvent()">Save event</button>
+    ${cur.id?`<button class="btn danger" onclick="delEvent()">Delete event</button>`:""}
+    <span id="saved" class="ok"></span>
+  </div>
+
+  <div class="card"><h3>Activity</h3><pre class="log" id="log">Waiting…</pre></div>`;
+  renderRows(); loadCards(); loadWeb();
+}
+
+// ---------- website gallery ----------
+async function loadWeb(){
+  const el=document.getElementById("web"); if(!el||!cur||!cur.id) return;
+  const cfg=await api("/api/config");
+  if(!cfg.upload_enabled){ el.innerHTML=`<h3>Website gallery</h3><p class="sub" style="margin:0">Not connected. Put <code>website_url</code> and <code>api_key</code> (wp-admin → Galerien) into config.json and restart.</p>`; return; }
+  const r=await api(`/api/events/${cur.id}/online`);
+  const on=r.online, pr=r.progress;
+  const names=new Set([...Object.keys(r.local||{}), ...((on&&on.sections)||[]).map(s=>s.name)]);
+  const online=Object.fromEntries(((on&&on.sections)||[]).map(s=>[s.name,s.uploaded]));
+  const localByName={}; for(const [k,v] of Object.entries(r.local||{})) localByName[k.replace(/^\d+\s+/,"")]=v;
+  const rows=[...new Set([...names].map(n=>n.replace(/^\d+\s+/,"")))].map(n=>{
+    const loc=(localByName[n]||{}).local||0, up=online[n]||0, pct=loc?Math.min(100,Math.round(up/loc*100)):(up?100:0);
+    return `<tr><td>${esc(n)}</td><td>${loc}</td><td>${up}</td><td><div class="bar"><i style="width:${pct}%"></i></div></td></tr>`;}).join("");
+  el.innerHTML=`<h3>Website gallery ${on?`<span class="pill ${on.status==="published"?"on":""}">${on.status==="published"?"online":"draft"}</span>`:""}</h3>
+    ${r.error?`<p class="problems">${esc(r.error)}</p>`:""}
+    <p class="sub" style="margin:0 0 10px">Lightroom export folder: <code>${esc(r.export_dir)}</code><br>Export finished JPGs into one sub-folder per section (e.g. <em>01 preparation groom</em>). New or re-edited exports go online automatically.</p>
+    ${on?`<p style="margin:0 0 12px">Access code: <code class="big">${esc(on.code)}</code> &nbsp; <a href="${esc(on.url)}" target="_blank">Open gallery</a> &nbsp; <button class="btn ghost" onclick="navigator.clipboard.writeText('${esc(on.url)}\nCode: ${esc(on.code)}')">Copy link + code</button></p>`:""}
+    ${rows?`<table><thead><tr><th>Section</th><th>Exported</th><th>Online</th><th></th></tr></thead><tbody>${rows}</tbody></table>`:'<p class="sub">No exports yet.</p>'}
+    ${pr&&pr.total?`<p class="sub" style="margin:8px 0 0">${r.busy?"Uploading":"Last upload"}: ${pr.done} / ${pr.total}${pr.error?" — "+esc(pr.error):""}</p>`:""}
+    <div class="row" style="margin-top:12px">
+      <button class="btn ghost" onclick="uploadNow()">Upload now</button>
+      ${on?`<button class="btn ${on.status==="published"?"ghost":""}" onclick="publishWeb(${on.status!=="published"})">${on.status==="published"?"Take gallery offline":"Publish gallery"}</button>`:""}
+    </div>`;
+}
+async function uploadNow(){ await api(`/api/events/${cur.id}/upload`,{method:"POST",body:"{}"}); setTimeout(loadWeb,1500); }
+async function publishWeb(on){ const r=await api(`/api/events/${cur.id}/publish`,{method:"POST",body:JSON.stringify({published:on})}); if(r.error) alert(r.error); loadWeb(); }
+setInterval(()=>{ if(cur&&cur.id&&document.getElementById("web")) loadWeb(); },10000);
+
+function renderRows(){
+  document.getElementById("rows").innerHTML=cur.sections.map((s,i)=>`
+   <tr><td><span class="sw" style="background:var(${COLORS[i%6]})"></span></td>
+   <td><input value="${esc(s.name)}" oninput="upd(${i},'name',this.value)"></td>
+   <td class="num"><input type="number" min="0" value="${s.start}" oninput="upd(${i},'start',this.value)"></td>
+   <td class="num"><input type="number" min="0" value="${s.end}" oninput="upd(${i},'end',this.value)"></td>
+   <td>${Math.max(0,(+s.end)-(+s.start)+1)||""}</td>
+   <td><button class="x" aria-label="Remove" onclick="rm(${i})">×</button></td></tr>`).join("");
+  check();
+}
+function upd(i,k,v){ cur.sections[i][k]=k==="name"?v:(v===""?"":+v); check(); }
+function rm(i){ cur.sections.splice(i,1); renderRows(); }
+function addRow(){
+  const last=cur.sections.at(-1); const start=last?(+last.end+1):1;
+  cur.sections.push({name:"",start,end:start}); renderRows();
+}
+function parsePaste(){
+  const lines=document.getElementById("paste").value.split(/\n/);
+  let bad=[];
+  for(const l of lines){
+    if(!l.trim()) continue;
+    const m=l.match(/^(.*?)\s*(\d+)\s*[-–—to]+\s*(\d+)\s*$/i);
+    if(m) cur.sections.push({name:m[1].trim(),start:+m[2],end:+m[3]}); else bad.push(l);
+  }
+  renderRows();
+  if(bad.length) alert("Could not read these lines:\n"+bad.join("\n"));
+}
+
+function check(){
+  const s=cur.sections.map((x,i)=>({...x,i,start:+x.start,end:+x.end}));
+  const probs=[]; const ovl=[];
+  s.forEach(x=>{ if(!x.name) probs.push("A section has no name"); if(x.start>x.end) probs.push(`'${x.name}' starts after it ends`); });
+  const sorted=[...s].sort((a,b)=>a.start-b.start);
+  for(let k=1;k<sorted.length;k++){
+    const a=sorted[k-1], b=sorted[k];
+    if(b.start<=a.end){ probs.push(`'${a.name}' and '${b.name}' overlap at ${b.start}–${Math.min(a.end,b.end)}`); ovl.push([b.start,Math.min(a.end,b.end)]); }
+  }
+  // strip
+  const st=document.getElementById("strip");
+  if(s.length){
+    const lo=Math.min(...s.map(x=>x.start)), hi=Math.max(...s.map(x=>x.end)); const span=Math.max(1,hi-lo+1);
+    const pos=(a,b)=>`left:${(a-lo)/span*100}%;width:${(b-a+1)/span*100}%`;
+    st.innerHTML=`<div class="strip">${s.map(x=>`<div class="seg" style="${pos(x.start,x.end)};background:var(${COLORS[x.i%6]})" title="${esc(x.name)} ${x.start}–${x.end}">${esc(x.name)}</div>`).join("")}
+      ${ovl.map(([a,b])=>`<div class="ovl" style="${pos(a,b)}" title="Overlap ${a}–${b}"></div>`).join("")}</div>
+      <div class="scale"><span>${lo}</span><span>Striped areas are photos not in any section. Red is an overlap.</span><span>${hi}</span></div>`;
+  } else st.innerHTML="";
+  document.getElementById("check").innerHTML=probs.length
+    ? `<ul class="problems">${[...new Set(probs)].map(p=>`<li>${esc(p)}</li>`).join("")}</ul>`
+    : (s.length?`<p class="ok">Ranges are clean. ${s.reduce((n,x)=>n+x.end-x.start+1,0)} photos covered.</p>`:"");
+}
+
+async function saveEvent(){
+  cur.name=document.getElementById("f-name").value.trim();
+  cur.date=document.getElementById("f-date").value;
+  cur.client=document.getElementById("f-client").value.trim();
+  cur.active=document.getElementById("f-active").checked;
+  cur.world=document.getElementById("f-world").value;
+  cur.mode=document.getElementById("f-mode").value;
+  if(!cur.name){ alert("Give the event a name."); return; }
+  const r=await api("/api/events",{method:"POST",body:JSON.stringify(cur)});
+  cur=r.event; await load();
+  document.getElementById("saved").textContent=r.problems.length?"Saved, but fix the range problems before importing.":"Saved.";
+  document.querySelector("h2").textContent=cur.name;
+  setTimeout(loadWeb,1500);
+}
+async function delEvent(){
+  if(!confirm(`Delete "${cur.name}"? Photos already copied stay on disk.`)) return;
+  await api("/api/events/"+cur.id,{method:"DELETE"}); cur=null; await load();
+  document.getElementById("main").innerHTML='<p class="empty">Event deleted.</p>';
+}
+async function loadCards(){
+  const c=await api("/api/cards"); const sel=document.getElementById("card"); if(!sel) return;
+  sel.innerHTML=c.length?c.map(x=>`<option>${esc(x)}</option>`).join(""):"<option value=''>No SD card found</option>";
+}
+async function runImport(){
+  if(!cur.id){ alert("Save the event first."); return; }
+  const card=document.getElementById("card").value; if(!card){ alert("Insert an SD card, then press Refresh cards."); return; }
+  await api("/api/import",{method:"POST",body:JSON.stringify({event_id:cur.id,card})});
+}
+async function pollLog(){
+  const el=document.getElementById("log");
+  if(el){ const r=await api("/api/log"); el.textContent=r.lines.join("\n")||"No activity yet."; el.scrollTop=el.scrollHeight; }
+}
+setInterval(pollLog,2000);
+load();
+</script>
+</body>
+</html>

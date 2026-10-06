@@ -1,0 +1,14 @@
+{
+  "library_root": "~/Pictures/PhotoSorter",
+  "card_mount_roots": ["/Volumes"],
+  "auto_import_on_card_insert": true,
+  "poll_seconds": 5,
+  "photo_extensions": [".jpg", ".jpeg", ".cr2", ".cr3", ".nef", ".arw", ".raf", ".orf", ".rw2", ".dng", ".heic"],
+  "raw_extensions": [".cr2", ".cr3", ".nef", ".arw", ".raf", ".orf", ".rw2", ".dng"],
+  "port": 5055,
+  "website_url": "https://ruidodat.com",
+  "api_key": "",
+  "export_folder_name": "_Export",
+  "auto_upload": true,
+  "upload_poll_seconds": 30
+}

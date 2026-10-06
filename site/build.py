@@ -325,9 +325,15 @@ def step_snippets():
         body = {"name": name, "code": code, "scope": "global", "active": True,
                 "desc": "Managed by site/build.py (Website-photography- repo)."}
         if name in have:
-            api("POST", f"/code-snippets/v1/snippets/{have[name]['id']}", body)
+            res = api("POST", f"/code-snippets/v1/snippets/{have[name]['id']}", body)
         else:
-            api("POST", "/code-snippets/v1/snippets", body)
+            res = api("POST", "/code-snippets/v1/snippets", body)
+        # Code Snippets sometimes deactivates a snippet while re-saving it (old version still loaded); switch it back on
+        if not api("GET", f"/code-snippets/v1/snippets/{res['id']}").get("active"):
+            api("POST", f"/code-snippets/v1/snippets/{res['id']}/activate")
+            if not api("GET", f"/code-snippets/v1/snippets/{res['id']}").get("active"):
+                sys.exit(f"Snippet {name} could not be activated - check it in wp-admin → Snippets")
+            log("snippet", name, "(re-activated)")
         log("snippet", name)
 
 
