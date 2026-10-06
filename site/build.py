@@ -171,10 +171,10 @@ def nav_links(items):
 MENUS = {
     "Menü Pferde": [("Portfolio", "/pferde/portfolio/"), ("Shootings &amp; Preise", "/pferde/shootings-preise/"), ("Stalltag", "/pferde/stalltag/"),
                     ("Turnierfotos", "/pferde/turnierfotografie/"), ("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("FAQ", "/pferde/ablauf-faq/"),
-                    ("Kontakt", "/kontakt/"), ("→ Hochzeit", "/hochzeit/")],
+                    ("Kontakt", "/kontakt/"), ("Dein Event", "/pferde/dein-event/"), ("→ Hochzeit", "/hochzeit/")],
     "Menü Hochzeit": [("Echte Hochzeiten", "/hochzeit/echte-hochzeiten/"), ("Pakete &amp; Preise", "/hochzeit/pakete-preise/"),
-                      ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben", "/hochzeit/alben-wandbilder/"), ("Gästegalerie", "/hochzeit/gaestegalerie/"),
-                      ("Freie Termine", "/verfuegbarkeit/"), ("FAQ", "/hochzeit/ablauf-faq-hochzeit/"), ("Kontakt", "/kontakt/"), ("→ Pferde", "/pferde/")],
+                      ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben", "/hochzeit/alben-wandbilder/"), 
+                      ("Freie Termine", "/verfuegbarkeit/"), ("FAQ", "/hochzeit/ablauf-faq-hochzeit/"), ("Kontakt", "/kontakt/"), ("Euer Event", "/hochzeit/euer-event/"), ("→ Pferde", "/pferde/")],
     "Menü Hauptseite": [("Pferde", "/pferde/"), ("Hochzeit", "/hochzeit/"), ("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("Shop", "/shop/"),
                         ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/")],
 }
@@ -224,9 +224,9 @@ def footer():
 <!-- /wp:paragraph --></div>
 <!-- /wp:column -->
 
-{col("Pferde", [("Shootings &amp; Preise", "/pferde/shootings-preise/"), ("Stalltag", "/pferde/stalltag/"), ("Turnierfotos", "/pferde/turnierfotografie/"), ("Portfolio", "/pferde/portfolio/")])}
+{col("Pferde", [("Shootings &amp; Preise", "/pferde/shootings-preise/"), ("Stalltag", "/pferde/stalltag/"), ("Turnierfotos", "/pferde/turnierfotografie/"), ("Portfolio", "/pferde/portfolio/"), ("Dein Event", "/pferde/dein-event/")])}
 
-{col("Hochzeit", [("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben &amp; Wandbilder", "/hochzeit/alben-wandbilder/"), ("Gästegalerie", "/hochzeit/gaestegalerie/")])}
+{col("Hochzeit", [("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben &amp; Wandbilder", "/hochzeit/alben-wandbilder/"), ("Euer Event", "/hochzeit/euer-event/")])}
 
 {col("Info", [("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("Cookie-Richtlinie", "/cookie-richtlinie-eu/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/"), ("Vertrag widerrufen", "/vertrag-widerrufen/")])}</div>
 <!-- /wp:columns -->

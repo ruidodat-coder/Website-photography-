@@ -38,6 +38,33 @@ def poster_bg(world, pos="50% 50%"):
     return {"url": pst["url"], "id": pst["id"], "pos": pos}
 
 
+# Online galleries live on Pictrs (storage, watermarks, payment, delivery). pictrs.txt holds the shop name once the account exists.
+_pf = _Path(__file__).with_name("pictrs.txt")
+PICTRS_SHOP = _pf.read_text().strip() if _pf.exists() else ""
+
+
+def code_form(label, placeholder):
+    """Access-code field that opens the matching Pictrs gallery (Pictrs' own find_by_qrcode endpoint)."""
+    if PICTRS_SHOP:
+        action = f"https://www.pictrs.com/{PICTRS_SHOP}/find_by_qrcode?l=de"
+        note = ""
+        dis = ""
+    else:
+        action = "#"
+        note = '<p class="rd-code-note">Die Online-Galerien werden gerade eingerichtet. Bis dahin schicke ich euch eure Bilder direkt per Link.</p>'
+        dis = " disabled"
+    return raw(f'<!-- wp:html -->\n<form class="rd-code" method="post" action="{action}"><label for="rd-code-in">{label}</label>'
+               f'<div class="rd-code-row"><input id="rd-code-in" name="qr" type="text" required minlength="4" autocomplete="off" autocapitalize="characters" '
+               f'spellcheck="false" placeholder="{placeholder}"{dis}><button type="submit"{dis}>Bilder öffnen</button></div>{note}</form>\n<!-- /wp:html -->')
+
+
+def event_types(items):
+    """Cards explaining what a code unlocks: (icon, title, who, steps)."""
+    cells = "".join(f'<div class="rd-etype"><span class="rd-etype-icon">{ic}</span><h3>{t}</h3><p class="rd-etype-who">{who}</p>'
+                    f'<ol>{"".join(f"<li>{x}</li>" for x in steps)}</ol></div>' for ic, t, who, steps in items)
+    return raw(f'<!-- wp:html -->\n<div class="rd-etypes">{cells}</div>\n<!-- /wp:html -->')
+
+
 def stats(items):
     """Count-up numbers: (number, unit, title, text). The final number is in the HTML, JS animates from 0."""
     cells = "".join(f'<div class="rd-stat"><div class="rd-stat-n"><span class="rd-num" data-to="{n}">{n}</span>'
@@ -231,7 +258,7 @@ def build(M, PR, CAL=None):
     add(slug="turnierfotografie", title="Turnierfotografie", template=T, parent="pferde", content="\n\n".join([
         group(p("Turnierfotografie", "rd-eyebrow"), h("Jeder Ritt. Jede Schleife.", 1),
               p("Alle Starter werden fotografiert, die Bilder sind meist noch am selben Abend online. Suche nach Startnummer, Prüfung oder Uhrzeit.", "rd-lead"),
-              buttons(button("Turnierfotos finden", "#galerien"), button("Flatrate vorbestellen", PR["turnier-flat-vvk"]["url"], outline=True)),
+              buttons(button("Turnierfotos finden", "/pferde/dein-event/"), button("Flatrate vorbestellen", PR["turnier-flat-vvk"]["url"], outline=True)),
               cls="rd-hero", align="full", bg={"url": M[489]["url"], "id": 489}),
         group(h("Preise für Reiter/innen", 2), table(["Produkt", "Preis"], [
             ["Einzelbild digital (volle Auflösung)", "12,90 €"], ["3 Bilder", "29,90 €"], ["6 Bilder (beliebt)", "49,90 €"],
@@ -241,7 +268,8 @@ def build(M, PR, CAL=None):
             ["Print 13×18 / 20×30 / 30×45", "9,90 € / 19,90 € / 34,90 €"], ["Leinwand 40×60", "89 €"]]),
             buttons(button("Flatrate vorbestellen (89 €)", PR["turnier-flat-vvk"]["url"])),
             cls="rd-section", align="wide"),
-        group(h("Turnierkalender &amp; Galerien", 2), p("Hier erscheinen die nächsten Turniere und die Galerien zum Bestellen.", ""),
+        group(h("Turnierkalender &amp; Galerien", 2), p("Hier erscheinen die nächsten Turniere. Deine Bilder findest du mit dem Turnier-Code unter <a href=\"/pferde/dein-event/\">Dein Event</a>.", ""),
+              buttons(button("Zu deinen Turnierbildern", "/pferde/dein-event/")),
               p("Noch keine Termine veröffentlicht. Folge mir auf Instagram oder frag per WhatsApp, welche Turniere ich als Nächstes fotografiere.", "rd-note"),
               cls="rd-section rd-tint", align="full"),
         group(p("Für Veranstalter", "rd-eyebrow"), h("Professionelle Fotos für euer Turnier, ohne Kosten", 2),
@@ -250,6 +278,28 @@ def build(M, PR, CAL=None):
                   "Ein 15-€-Fotogutschein für jede/n Prüfungssieger/in",
                   "Bilder am selben Abend online, Verkauf komplett über mich"]),
               buttons(button("Turnier anfragen", "/kontakt/")),
+              cls="rd-section", align="wide"),
+    ]))
+
+    add(slug="dein-event", title="Dein Event", template=T, parent="pferde", content="\n\n".join([
+        group(p("Dein Event", "rd-eyebrow", align="center"), h("Hier sind deine Bilder.", 1, align="center"),
+              p("Gib den Code ein, den du von mir per E-Mail oder am Turnier bekommen hast.", "rd-lead", align="center"),
+              code_form("Dein Code", "z. B. SCHMIDT-0526"),
+              cls="rd-section rd-event-hero", align="full"),
+        group(p("So funktioniert's", "rd-eyebrow", align="center"), h("Zwei Arten von Galerien", 2, align="center"),
+              event_types([
+                  ("✓", "Shooting-Galerie", "Du hast ein Shooting gebucht und bezahlt.",
+                   ["Code eingeben", "Alle Bilder ohne Wasserzeichen ansehen", "Einzeln oder als ZIP kostenlos herunterladen"]),
+                  ("€", "Turnier-Galerie", "Ich war als Fotograf auf deinem Turnier.",
+                   ["Turnier-Code vom Aushang eingeben", "Nach deinem Namen, Pferd oder deiner Startnummer suchen",
+                    "Lieblingsbilder (mit Wasserzeichen) auswählen und bezahlen", "Sofort in voller Auflösung ohne Wasserzeichen herunterladen"]),
+              ]),
+              p('Preise für Turnierbilder findest du auf der Seite <a href="/pferde/turnierfotografie/">Turnierfotografie</a>. '
+                'Mit der Turnier-Flatrate bekommst du alle Bilder deines Pferdes.', "rd-small", align="center"),
+              cls="rd-section rd-tint", align="full"),
+        group(h("Code verloren?", 2, align="center"),
+              p("Kein Problem. Schreib mir kurz mit Datum und Name, ich schicke ihn dir erneut.", align="center"),
+              buttons(button("WhatsApp", WA), button("Kontakt", "/kontakt/", outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="wide"),
     ]))
 
@@ -366,13 +416,28 @@ def build(M, PR, CAL=None):
             cls="rd-section", align="wide"),
     ]))
 
-    add(slug="gaestegalerie", title="Gästegalerie", template=T, parent="hochzeit", content="\n\n".join([
-        group(p("Gästegalerie", "rd-eyebrow"), h("Ihr wart dabei? <em>Hier sind die Bilder.</em>", 1),
-              p("Das Brautpaar hat euch einen Link und ein Passwort gegeben. Damit kommt ihr in die private Galerie und könnt Abzüge und Downloads bestellen.", "rd-lead"),
-              p("Kein Link bekommen? Fragt das Brautpaar oder schreibt mir.", "rd-note"),
-              buttons(button("Kontakt", "/kontakt/", outline=True)),
+    wedding_event = lambda: "\n\n".join([
+        group(p("Euer Event", "rd-eyebrow", align="center"), h("Hier sind <em>eure Bilder.</em>", 1, align="center"),
+              p("Gebt den Code ein, den ihr von mir oder vom Brautpaar bekommen habt.", "rd-lead", align="center"),
+              code_form("Euer Code", "z. B. LISA-TOM-2027"),
+              cls="rd-section rd-event-hero", align="full"),
+        group(p("So funktioniert's", "rd-eyebrow", align="center"), h("Für Brautpaare <em>und</em> Gäste", 2, align="center"),
+              event_types([
+                  ("♥", "Brautpaar &amp; Paarshooting", "Eure Hochzeit oder euer Shooting ist bezahlt.",
+                   ["Euren persönlichen Code eingeben", "Alle Bilder ohne Wasserzeichen ansehen und Favoriten markieren",
+                    "Alles einzeln oder als ZIP kostenlos herunterladen"]),
+                  ("✦", "Gäste", "Ihr wart auf der Hochzeit dabei.",
+                   ["Den Gäste-Code vom Brautpaar eingeben", "Die Bilder ansehen, die das Paar freigegeben hat",
+                    "Abzüge, Leinwände oder Downloads direkt bestellen"]),
+              ]),
+              cls="rd-section rd-tint", align="full"),
+        group(h("Code verloren?", 2, align="center"),
+              p("Fragt das Brautpaar oder schreibt mir kurz mit Hochzeitsdatum und Namen.", align="center"),
+              buttons(button("WhatsApp", WA), button("Kontakt", "/kontakt/", outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="wide"),
-    ]))
+    ])
+    add(slug="euer-event", title="Euer Event", template=T, parent="hochzeit", content=wedding_event())
+    add(slug="gaestegalerie", title="Gästegalerie", template=T, parent="hochzeit", content=wedding_event())
 
     add(slug="echte-hochzeiten", title="Echte Hochzeiten", template=T, parent="hochzeit", content="\n\n".join([
         group(p("Echte Hochzeiten", "rd-eyebrow"), h("Geschichten, <em>die bleiben</em>", 1),
