@@ -20,15 +20,16 @@ def h(text, level=2, cls=None, align=None):
     return f'<!-- wp:heading{_attrs(a)} -->\n<h{level} class="{c}">{text}</h{level}>\n<!-- /wp:heading -->'
 
 
-def group(*inner, cls=None, align=None, tag="div", bg=None, layout="constrained"):
-    a = {"tagName": tag if tag != "div" else None, "align": align, "className": cls}
+def group(*inner, cls=None, align=None, tag="div", bg=None, layout="constrained", anchor=None):
+    a = {"tagName": tag if tag != "div" else None, "align": align, "className": cls, "anchor": anchor}
     if bg:
         a["style"] = {"background": {"backgroundImage": {"url": bg["url"], "id": bg["id"], "source": "file", "title": ""},
                                      "backgroundSize": "cover", "backgroundPosition": bg.get("pos", "50% 50%")}}
     a["layout"] = {"type": layout}
     c = " ".join(x for x in ["wp-block-group", f"align{align}" if align else None, cls] if x)
     body = "\n\n".join(inner)
-    return f'<!-- wp:group{_attrs(a)} -->\n<{tag} class="{c}">{body}</{tag}>\n<!-- /wp:group -->'
+    idattr = f' id="{anchor}"' if anchor else ""
+    return f'<!-- wp:group{_attrs(a)} -->\n<{tag}{idattr} class="{c}">{body}</{tag}>\n<!-- /wp:group -->'
 
 
 def columns(*cols, cls=None, align=None):

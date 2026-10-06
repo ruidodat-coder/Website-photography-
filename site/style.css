@@ -208,3 +208,4 @@ h1,h2,h3,h4{font-family:var(--rd-head);color:var(--rd-fg)}
 /* keep the 9-item world menus on one line on desktop */
 @media (min-width:782px){.rd-header .wp-block-navigation{font-size:.84rem}.rd-header .wp-block-navigation .wp-block-navigation__container{gap:.95rem;flex-wrap:nowrap}}
 @media (min-width:782px) and (max-width:1320px){.rd-header .rd-world{display:none}}
+html{scroll-behavior:smooth}#verfuegbarkeit{scroll-margin-top:80px}

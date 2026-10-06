@@ -320,6 +320,8 @@ def step_snippets():
             PR = json.loads((HERE / ".products.json").read_text())["PR"]
             ids = sorted(PR[k]["id"] for k, _, _, cat, *_ in catalog.P if cat in ("pferde-shootings", "hochzeit", "paarshootings"))
             code = code.replace("RD_TERMIN_IDS", "array( " + ", ".join(map(str, ids)) + " )")
+        if "RD_ICS_URL" in code:
+            code = code.replace("RD_ICS_URL", (HERE / "calendar_url.txt").read_text().strip())
         body = {"name": name, "code": code, "scope": "global", "active": True,
                 "desc": "Managed by site/build.py (Website-photography- repo)."}
         if name in have:

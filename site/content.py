@@ -241,8 +241,13 @@ def build(M, PR, CAL=None):
         group(p("Hochzeitsfotografie · Südpfalz · Speyer · Karlsruhe", "rd-eyebrow"),
               h("Euer Tag.<br><em>Für immer.</em>", 1),
               p("Natürliche, ungestellte Hochzeitsreportagen: die Tränen beim Ja-Wort, das Lachen der Gäste, der letzte Tanz.", "rd-lead"),
-              buttons(button("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), button("Termin anfragen", "/kontakt/", outline=True)),
+              buttons(button("Verfügbarkeit &amp; Preis", "#verfuegbarkeit"), button("Pakete &amp; Preise", "/hochzeit/pakete-preise/", outline=True)),
               cls="rd-hero rd-hero-boho", align="full", bg=stock("boho-vw-bus", "50% 45%")),
+        group(p("Verfügbarkeit &amp; Preis", "rd-eyebrow", align="center"),
+              h("Bin ich an <em>eurem Tag</em> frei?", 2, align="center"),
+              p("Datum eingeben, Paket wählen: Ihr seht sofort, ob ich frei bin, und bekommt ein unverbindliches Angebot.", align="center"),
+              raw("<!-- wp:shortcode -->\n[rd_wedding_check]\n<!-- /wp:shortcode -->"),
+              cls="rd-section rd-tint rd-wcheck-section", align="full", anchor="verfuegbarkeit"),
         group(columns(
             column(h("Ungestellt &amp; ehrlich", 3), p("Ich begleite euch zurückhaltend und fange echte Momente ein, statt alles zu inszenieren.")),
             column(h("Sneak Peek in 72 h", 3), p("Die ersten Lieblingsbilder habt ihr schon wenige Tage nach der Hochzeit.")),
@@ -262,7 +267,7 @@ def build(M, PR, CAL=None):
               cls="rd-section rd-tint", align="full"),
         group(h("Erzählt mir von euch", 2, align="center"),
               p("Euer Datum ist noch frei? Schreibt mir, ich melde mich innerhalb von 24 Stunden.", align="center"),
-              buttons(button("Verfügbarkeit prüfen", "/kontakt/"), button("WhatsApp", WA, outline=True), cls="is-content-justification-center"),
+              buttons(button("Verfügbarkeit prüfen", "#verfuegbarkeit"), button("WhatsApp", WA, outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="wide"),
     ]))
 
