@@ -201,8 +201,8 @@ def build(M, PR, CAL=None):
               p("Hufschmiede, Trainer, Sattler, Tierärzte, Ställe und Züchter: Bilder für Website, Social Media und Verkauf.", align="center"),
               buttons(button("Angebote für Betriebe", "/pferde/shootings-preise/#betriebe", outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="wide"),
-        group(p("Unser Hof", "rd-eyebrow", align="center"), h("Shooting auf dem Hof", 2, align="center"),
-              p("Kein passender Ort? Unser eigener Hof in der Südpfalz ist eine ruhige, pferdegerechte Kulisse, im Winter auch in der Halle.", align="center"),
+        group(p("Mobil", "rd-eyebrow", align="center"), h("Ich komme zu euch", 2, align="center"),
+              p("An euren Stall, auf eine Reitanlage eurer Wahl oder an einen schönen Ort in der Natur. Bei der Wahl der Location berate ich dich gern.", align="center"),
               buttons(button("Termin anfragen", "/kontakt/?w=pferde"), cls="is-content-justification-center"),
               cls="rd-band rd-parallax", align="full", bg={"url": M[475]["url"], "id": 475, "pos": "50% 50%"}),
     ])
@@ -246,7 +246,7 @@ def build(M, PR, CAL=None):
                   ["Tierärzte, Osteopathen, Physios", "Team- und Behandlungsfotos für die Website", "ab 300 €"],
                   ["Ställe &amp; Züchter", "Anlagenfotos, Verkaufspferde, Hengstfotos", "ab 400 €"],
                   ["Futtermittel- &amp; Pferdehandel", "Werbe- und Social-Media-Content", "nach Projekt"]]),
-              p("Regelmäßiger Content, z. B. 4 Shootings im Jahr, zu Sonderkonditionen. Produktshootings auch auf unserem Hof.", "rd-small"),
+              p("Regelmäßiger Content, z. B. 4 Shootings im Jahr, zu Sonderkonditionen. Produktshootings auch bei euch vor Ort.", "rd-small"),
               cls="rd-section", align="wide", anchor="betriebe"),
         group(h("Extras &amp; Wandbilder", 2), table(["Extra", "Preis"], [
             ["Zusätzliches bearbeitetes Bild", "25 €"], ["Bilderpaket 5 / 10", "99 € / 179 €"], ["Alle Bilder (basis-bearbeitet)", "249 €"],
@@ -502,8 +502,8 @@ def build(M, PR, CAL=None):
                    p("Pferde sind mein Alltag: Mit unserem eigenen Hof, Reitbetrieb und unserer Reitschule in der Südpfalz verbringe ich jeden Tag mit ihnen. "
                      "Genau das bringe ich in meine Fotografie mit. Ich weiß, wie Pferde ticken, bleibe ruhig, wenn es mal unruhig wird, und arbeite in ihrem Tempo."),
                    p("Ich fotografiere Pferde mit ihren Menschen und Familien, Turniere und Stalltage, und Hochzeiten, am liebsten auf dem Land und gern auch mit Pferd."),
-                   p("Meine Basis ist Germersheim. Ich bin in der Südpfalz, in der Rhein-Neckar-Region, rund um Karlsruhe und bis ins Rhein-Main-Gebiet unterwegs, "
-                     "und unser Hof ist selbst eine schöne Kulisse."),
+                   p("Meine Basis ist Germersheim. Ich bin in der Südpfalz, in der Rhein-Neckar-Region, rund um Karlsruhe und bis ins Rhein-Main-Gebiet unterwegs "
+                     "und komme mit meiner Kamera zu euch."),
                    buttons(button("Pferdefotografie", "/pferde/"), button("Hochzeitsfotografie", "/hochzeit/", outline=True))),
         ), cls="rd-section", align="wide"),
         group(p("Was mir wichtig ist", "rd-eyebrow", align="center"), h("Ehrliche Bilder, entspannte Shootings", 2, align="center"),
