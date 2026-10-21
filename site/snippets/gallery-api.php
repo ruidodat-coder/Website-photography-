@@ -133,7 +133,7 @@ add_action( 'rest_api_init', function () {
 			$sha = hash_file( 'sha256', $f['tmp_name'] );
 			$num = $r->get_param( 'photo_number' );
 			$num = is_numeric( $num ) ? (int) $num : ( preg_match_all( '/\d+/', pathinfo( $fn, PATHINFO_FILENAME ), $m ) ? (int) end( $m[0] ) : null );
-			$sid = RD_Gal::section_for( $e->id, (string) $r->get_param( 'section_name' ), $num );
+			$sid = RD_Gal::section_for( $e->id, (string) $r->get_param( 'section_name' ), $num, (bool) $r->get_param( 'new_section' ) );
 			$cur = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . RD_Gal::t( 'photos' ) . ' WHERE event_id=%s AND filename=%s', $e->id, $fn ) );
 			if ( $cur && $cur->sha === $sha ) {
 				if ( (int) $cur->section_id !== $sid ) {

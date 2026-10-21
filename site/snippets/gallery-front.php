@@ -14,7 +14,7 @@ add_action( 'rest_api_init', function () {
 	$ev  = function ( $r ) {
 		$e = RD_Gal::event_by_slug( (string) $r['slug'] );
 		if ( ! $e || ! RD_Gal::has_access( $e ) ) {
-			return new WP_Error( 'rd_locked', 'Bitte zuerst den Zugangscode eingeben.', array( 'status' => 403 ) );
+			return new WP_Error( 'rd_locked', 'Bitte zuerst das Passwort eingeben.', array( 'status' => 403 ) );
 		}
 		return $e;
 	};
@@ -31,7 +31,7 @@ add_action( 'rest_api_init', function () {
 		if ( ! $e || ! RD_Gal::is_open( $e ) ) {
 			set_transient( $rl, $cnt + 1, 15 * MINUTE_IN_SECONDS );
 			$msg = $e && 'published' === $e->status ? 'Diese Galerie ist abgelaufen. Schreib mir, ich schalte sie gern wieder frei.'
-				: 'Diesen Code kenne ich nicht. Bitte prüfe die Schreibweise.';
+				: 'Dieses Passwort kenne ich nicht. Bitte prüfe die Schreibweise.';
 			return new WP_Error( 'rd_code', $msg, array( 'status' => 404 ) );
 		}
 		RD_Gal::grant( $e );
@@ -109,7 +109,7 @@ add_shortcode( 'rd_gallery', function () {
 	$slug = isset( $_GET['e'] ) ? sanitize_title( wp_unslash( $_GET['e'] ) ) : '';
 	$e    = $slug ? RD_Gal::event_by_slug( $slug ) : null;
 	if ( ! $e || ! RD_Gal::has_access( $e ) ) {
-		return '<div class="rd-gal-gate">' . rd_gal_code_form( $e ? 'Bitte gib den Zugangscode für diese Galerie ein.' : '' ) . '</div>';
+		return '<div class="rd-gal-gate">' . rd_gal_code_form( $e ? 'Bitte gib das Passwort für diese Galerie ein.' : '' ) . '</div>';
 	}
 	global $wpdb;
 	$counts = $wpdb->get_results( $wpdb->prepare( 'SELECT section_id, COUNT(*) n, SUM(bytes) b FROM ' . RD_Gal::t( 'photos' ) . ' WHERE event_id=%s GROUP BY section_id', $e->id ), OBJECT_K );
@@ -120,7 +120,7 @@ add_shortcode( 'rd_gallery', function () {
 		}
 	}
 	if ( isset( $counts[0] ) ) {
-		$secs[] = array( 'id' => 0, 'name' => 'Weitere Bilder', 'n' => (int) $counts[0]->n, 'parts' => count( RD_Gal::parts( RD_Gal::photos( $e->id, 0 ) ) ) );
+		$secs[] = array( 'id' => 0, 'name' => $secs ? 'Weitere Bilder' : ( 'pferde' === $e->world ? 'Deine Bilder' : 'Eure Bilder' ), 'n' => (int) $counts[0]->n, 'parts' => count( RD_Gal::parts( RD_Gal::photos( $e->id, 0 ) ) ) );
 	}
 	$total = array_sum( wp_list_pluck( $secs, 'n' ) );
 	$cfg   = array(
@@ -140,7 +140,7 @@ add_shortcode( 'rd_gallery', function () {
 	?>
 	<div class="rd-gal" data-cfg="<?php echo esc_attr( wp_json_encode( $cfg ) ); ?>">
 		<header class="rd-gal-head">
-			<p class="rd-eyebrow"><?php echo esc_html( trim( $date . ( 'sale' === $e->mode ? ' · Bilder zum Kaufen' : ' · Eure Galerie' ), ' ·' ) ); ?></p>
+			<p class="rd-eyebrow"><?php echo esc_html( trim( $date . ( 'sale' === $e->mode ? ' · Bilder zum Kaufen' : ( 'pferde' === $e->world ? ' · Deine Galerie' : ' · Eure Galerie' ) ), ' ·' ) ); ?></p>
 			<h1><?php echo esc_html( $e->name ); ?></h1>
 			<p class="rd-gal-meta"><?php echo esc_html( number_format_i18n( $total ) . ' Bilder' . ( count( $secs ) > 1 ? ' · ' . count( $secs ) . ' Kapitel' : '' ) ); ?></p>
 			<?php if ( 'sale' === $e->mode ) : ?>
@@ -164,8 +164,8 @@ add_shortcode( 'rd_gallery', function () {
 if ( ! function_exists( 'rd_gal_code_form' ) ) {
 	function rd_gal_code_form( $hint = '' ) {
 		$api = esc_url( rest_url( 'rd/v1/gallery/open' ) );
-		return '<form class="rd-code" data-rd-open="' . $api . '" method="post" action="#"><label for="rd-code-in">Dein Code</label>'
-			. '<div class="rd-code-row"><input id="rd-code-in" name="qr" type="text" required minlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z. B. TOBI-7K3PX">'
+		return '<form class="rd-code" data-rd-open="' . $api . '" method="post" action="#"><label for="rd-code-in">Passwort</label>'
+			. '<div class="rd-code-row"><input id="rd-code-in" name="qr" type="text" required minlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Passwort eingeben">'
 			. '<button type="submit">Bilder öffnen</button></div><p class="rd-code-note" aria-live="polite">' . esc_html( $hint ) . '</p></form>';
 	}
 }

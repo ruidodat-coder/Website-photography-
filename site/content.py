@@ -130,8 +130,9 @@ def cal_block(cal_url, world):
         cls="rd-section rd-cal", align="wide")
 
 
-# Parked: client galleries and vouchers. No shop: everything is booked by request and paid in person.
-DRAFT = {"dein-event", "deine-bilder", "eure-bilder", "euer-event", "gaestegalerie", "gutscheine"}
+# Parked: vouchers and the old guest page. No shop: everything is booked by request and paid in person.
+# Client photo downloads are on: "Deine Bilder" / "Eure Bilder" (password per gallery, wp-admin → Galerien).
+DRAFT = {"gaestegalerie", "gutscheine"}
 
 
 def build(M, PR, CAL=None):
@@ -307,28 +308,21 @@ def build(M, PR, CAL=None):
               cls="rd-section", align="wide"),
     ]))
 
-    add(slug="dein-event", title="Dein Event", template=T, parent="pferde", content="\n\n".join([
-        group(p("Dein Event", "rd-eyebrow", align="center"), h("Hier sind deine Bilder.", 1, align="center"),
-              p("Gib den Code ein, den du von mir per E-Mail oder am Turnier bekommen hast.", "rd-lead", align="center"),
-              code_form("Dein Code", "z. B. SCHMIDT-7K3PX"),
+    add(slug="dein-event", title="Deine Bilder", template=T, parent="pferde", content="\n\n".join([
+        group(p("Deine Bilder", "rd-eyebrow", align="center"), h("Hier sind deine Bilder.", 1, align="center"),
+              p("Gib das Passwort ein, das du von mir bekommen hast. Dann kannst du alle Bilder ansehen und in voller Auflösung herunterladen.", "rd-lead", align="center"),
+              code_form("Passwort", "Passwort eingeben"),
               cls="rd-section rd-event-hero", align="full"),
-        group(p("So funktioniert's", "rd-eyebrow", align="center"), h("Zwei Arten von Galerien", 2, align="center"),
-              event_types([
-                  ("✓", "Shooting-Galerie", "Du hast ein Shooting gebucht und bezahlt.",
-                   ["Code eingeben", "Alle Bilder ohne Wasserzeichen ansehen", "Einzeln oder als ZIP kostenlos herunterladen"]),
-                  ("€", "Turnier-Galerie", "Ich war als Fotograf auf deinem Turnier.",
-                   ["Turnier-Code vom Aushang eingeben", "Nach deinem Namen, Pferd oder deiner Startnummer suchen",
-                    "Lieblingsbilder (mit Wasserzeichen) auswählen und bezahlen", "Sofort in voller Auflösung ohne Wasserzeichen herunterladen"]),
-              ]),
-              p('Preise für Turnierbilder findest du auf der Seite <a href="/pferde/turnierfotografie/">Turnierfotografie</a>. '
-                'Mit der Turnier-Flatrate bekommst du alle Bilder deines Pferdes.', "rd-small", align="center"),
+        group(h("So geht's", 2, align="center"),
+              event_types([("1", "Passwort eingeben", "Du bekommst es von mir per WhatsApp oder E-Mail.", ["Groß- und Kleinschreibung ist egal"]),
+                           ("2", "Bilder ansehen", "Alle Bilder deines Shootings, nach Kapiteln sortiert.", ["Favoriten mit dem Herz markieren"]),
+                           ("3", "Herunterladen", "Einzeln oder alle auf einmal als ZIP.", ["Volle Auflösung, ohne Wasserzeichen"])]),
               cls="rd-section rd-tint", align="full"),
-        group(h("Code verloren?", 2, align="center"),
-              p("Kein Problem. Schreib mir kurz mit Datum und Name, ich schicke ihn dir erneut.", align="center"),
-              buttons(button("WhatsApp", WA), button("Kontakt", "/kontakt/", outline=True), cls="is-content-justification-center"),
+        group(h("Passwort verloren?", 2, align="center"),
+              p("Kein Problem. Schreib mir kurz mit Datum und Name, ich schicke es dir erneut.", align="center"),
+              buttons(button("WhatsApp", WA), button("Kontakt", "/kontakt/?w=pferde", outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="wide"),
     ]))
-
     add(slug="deine-bilder", title="Deine Bilder", template=T, parent="pferde",
         content=group(raw("<!-- wp:shortcode -->\n[rd_gallery]\n<!-- /wp:shortcode -->"), cls="rd-section rd-gal-page", align="full"))
 
@@ -439,28 +433,23 @@ def build(M, PR, CAL=None):
     ]))
 
     wedding_event = lambda: "\n\n".join([
-        group(p("Euer Event", "rd-eyebrow", align="center"), h("Hier sind <em>eure Bilder.</em>", 1, align="center"),
-              p("Gebt den Code ein, den ihr von mir oder vom Brautpaar bekommen habt.", "rd-lead", align="center"),
-              code_form("Euer Code", "z. B. LUISA-7K3PX"),
+        group(p("Eure Bilder", "rd-eyebrow", align="center"), h("Hier sind <em>eure Bilder.</em>", 1, align="center"),
+              p("Gebt das Passwort ein, das ihr von mir bekommen habt. Dann könnt ihr alle Bilder ansehen und in voller Auflösung herunterladen.", "rd-lead", align="center"),
+              code_form("Passwort", "Passwort eingeben"),
               cls="rd-section rd-event-hero", align="full"),
-        group(p("So funktioniert's", "rd-eyebrow", align="center"), h("Für Brautpaare <em>und</em> Gäste", 2, align="center"),
-              event_types([
-                  ("♥", "Brautpaar &amp; Paarshooting", "Eure Hochzeit oder euer Shooting ist bezahlt.",
-                   ["Euren persönlichen Code eingeben", "Alle Bilder ohne Wasserzeichen ansehen und Favoriten markieren",
-                    "Alles einzeln oder als ZIP kostenlos herunterladen"]),
-                  ("✦", "Gäste", "Ihr wart auf der Hochzeit dabei.",
-                   ["Den Code vom Brautpaar eingeben", "Durch alle Kapitel des Tages blättern und Favoriten markieren",
-                    "Bilder herunterladen oder, wenn so vereinbart, als Download kaufen"]),
-              ]),
+        group(h("So geht's", 2, align="center"),
+              event_types([("1", "Passwort eingeben", "Ihr bekommt es von mir per WhatsApp oder E-Mail.", ["Groß- und Kleinschreibung ist egal"]),
+                           ("2", "Bilder ansehen", "Euer ganzer Tag, nach Kapiteln sortiert.", ["Favoriten mit dem Herz markieren"]),
+                           ("3", "Herunterladen", "Einzeln oder alle auf einmal als ZIP.", ["Volle Auflösung, ohne Wasserzeichen"])]),
               cls="rd-section rd-tint", align="full"),
-        group(h("Code verloren?", 2, align="center"),
-              p("Fragt das Brautpaar oder schreibt mir kurz mit Hochzeitsdatum und Namen.", align="center"),
-              buttons(button("WhatsApp", WA), button("Kontakt", "/kontakt/", outline=True), cls="is-content-justification-center"),
+        group(h("Passwort verloren?", 2, align="center"),
+              p("Schreibt mir kurz mit Hochzeitsdatum und Namen, ich schicke es euch erneut.", align="center"),
+              buttons(button("WhatsApp", WA), button("Kontakt", "/kontakt/?w=hochzeit", outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="wide"),
     ])
     add(slug="eure-bilder", title="Eure Bilder", template=T, parent="hochzeit",
         content=group(raw("<!-- wp:shortcode -->\n[rd_gallery]\n<!-- /wp:shortcode -->"), cls="rd-section rd-gal-page", align="full"))
-    add(slug="euer-event", title="Euer Event", template=T, parent="hochzeit", content=wedding_event())
+    add(slug="euer-event", title="Eure Bilder", template=T, parent="hochzeit", content=wedding_event())
     add(slug="gaestegalerie", title="Gästegalerie", template=T, parent="hochzeit", content=wedding_event())
 
     add(slug="echte-hochzeiten", title="Echte Hochzeiten", template=T, parent="hochzeit", content="\n\n".join([

@@ -178,10 +178,19 @@ if ( ! class_exists( 'RD_Gal' ) ) {
 			return (string) openssl_decrypt( substr( $raw, 16 ), 'aes-256-cbc', $key, OPENSSL_RAW_DATA, substr( $raw, 0, 16 ) );
 		}
 
-		/** Sets a fresh access code; returns it in plain text (shown to the owner, emailed to the client). */
-		static function set_code( $event ) {
+		/** Sets a fresh (or the owner's own) access password; returns it in plain text or a WP_Error. */
+		static function set_code( $event, $custom = '' ) {
 			global $wpdb;
-			$code = self::new_code( $event->name );
+			$code = $custom ? trim( (string) $custom ) : self::new_code( $event->name );
+			if ( $custom ) {
+				if ( strlen( self::norm_code( $code ) ) < 6 ) {
+					return new WP_Error( 'rd_short', 'Das Passwort braucht mindestens 6 Buchstaben oder Ziffern.' );
+				}
+				$other = self::event_by_code( $code );
+				if ( $other && $other->id !== $event->id ) {
+					return new WP_Error( 'rd_taken', 'Dieses Passwort gehört schon zu einer anderen Galerie.' );
+				}
+			}
 			$wpdb->update( self::t( 'events' ), array( 'code_hmac' => self::code_hmac( $code ), 'code_enc' => self::enc( $code ), 'updated_at' => current_time( 'mysql', true ) ), array( 'id' => $event->id ) );
 			return $code;
 		}
@@ -387,7 +396,7 @@ if ( ! class_exists( 'RD_Gal' ) ) {
 			return $problems;
 		}
 
-		static function section_for( $event_id, $name, $number ) {
+		static function section_for( $event_id, $name, $number, $create = false ) {
 			$name = trim( preg_replace( '/^\d+\s+/', '', (string) $name ) ); // "03 Church ceremony" -> "Church ceremony"
 			$secs = self::sections( $event_id );
 			foreach ( $secs as $s ) {
@@ -402,7 +411,33 @@ if ( ! class_exists( 'RD_Gal' ) ) {
 					}
 				}
 			}
+			if ( $create && '' !== $name ) { // uploads from wp-admin may name a new chapter
+				global $wpdb;
+				$pos = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COALESCE(MAX(position),-1)+1 FROM ' . self::t( 'sections' ) . ' WHERE event_id=%s', $event_id ) );
+				$wpdb->insert( self::t( 'sections' ), array( 'event_id' => $event_id, 'name' => sanitize_text_field( $name ), 'position' => $pos ) );
+				return (int) $wpdb->insert_id;
+			}
 			return 0; // "Weitere Bilder"
+		}
+
+		/** New gallery created in wp-admin (PhotoSorter creates its own through the API). Returns the event row. */
+		static function create_event( $name, $date, $world, $client, $code = '' ) {
+			global $wpdb;
+			$id   = 'g' . strtolower( wp_generate_password( 9, false, false ) );
+			$slug = sanitize_title( trim( ( $date ?: '' ) . ' ' . $name ) );
+			$base = $slug;
+			for ( $i = 2; self::event_by_slug( $slug ); $i++ ) {
+				$slug = $base . '-' . $i;
+			}
+			$now = current_time( 'mysql', true );
+			$wpdb->insert( self::t( 'events' ), array( 'id' => $id, 'slug' => $slug, 'name' => $name, 'ev_date' => $date ?: null,
+				'world' => 'pferde' === $world ? 'pferde' : 'hochzeit', 'mode' => 'free', 'client_email' => $client, 'status' => 'draft',
+				'pub_key' => strtolower( wp_generate_password( 16, false, false ) ), 'created_at' => $now, 'updated_at' => $now ) );
+			$e = self::event( $id );
+			if ( ! $code || is_wp_error( self::set_code( $e, $code ) ) ) {
+				self::set_code( $e );
+			}
+			return self::event( $id );
 		}
 
 		static function delete_event( $event ) {

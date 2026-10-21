@@ -22,11 +22,21 @@ add_action( 'admin_menu', function () {
 		if ( ! empty( $_GET['msg'] ) ) {
 			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( wp_unslash( $_GET['msg'] ) ) . '</p></div>';
 		}
-		echo '<p>Events werden in <strong>PhotoSorter</strong> angelegt; fertige Lightroom-Exporte landen automatisch hier. <em>Kostenlos</em> = bezahlte Kunden laden alles ohne Wasserzeichen. <em>Verkauf</em> = Vorschau mit Wasserzeichen, Kauf pro Bild/Kapitel/Event.</p>';
+		echo '<p>Hier lädst du die fertigen Bilder eines Shootings hoch. Kunden öffnen sie auf <a href="' . esc_url( home_url( '/pferde/dein-event/' ) ) . '" target="_blank">Deine Bilder</a> (Pferde) bzw. <a href="' . esc_url( home_url( '/hochzeit/euer-event/' ) ) . '" target="_blank">Eure Bilder</a> (Hochzeit) mit dem Passwort und laden sie in voller Auflösung herunter.</p>';
+		// new gallery
+		echo '<div style="background:#fff;border:1px solid #dcdcde;padding:1rem 1.2rem;max-width:960px;margin:1rem 0"><h2 style="margin-top:0">Neue Galerie</h2><form method="post" action="' . esc_url( $post ) . '">'
+			. wp_nonce_field( 'rd_gal_create', '_wpnonce', true, false ) . '<input type="hidden" name="action" value="rd_gal"><input type="hidden" name="do" value="create">'
+			. '<p style="display:flex;flex-wrap:wrap;gap:.8rem;align-items:flex-end;margin:0">'
+			. '<label>Name<br><input name="name" required placeholder="z. B. Shooting Lisa &amp; Mo" style="width:240px"></label>'
+			. '<label>Datum<br><input type="date" name="date"></label>'
+			. '<label>Bereich<br><select name="world"><option value="pferde">Pferde / Tiere</option><option value="hochzeit">Hochzeit</option></select></label>'
+			. '<label>Kunden-E-Mail (optional)<br><input type="email" name="client" style="width:220px"></label>'
+			. '<label>Passwort (leer = automatisch)<br><input name="code" minlength="6" placeholder="mind. 6 Zeichen"></label>'
+			. '<button class="button button-primary">Galerie anlegen</button></p></form></div>';
 
-		echo '<table class="widefat striped" style="margin-top:1rem"><thead><tr><th>Event</th><th>Datum</th><th>Modus</th><th>Status</th><th>Bilder</th><th>Code</th><th>Läuft ab</th><th>Aktionen</th></tr></thead><tbody>';
+		echo '<table class="widefat striped" style="margin-top:1rem"><thead><tr><th>Event</th><th>Datum</th><th>Art</th><th>Status</th><th>Bilder</th><th>Passwort</th><th>Läuft ab</th><th>Aktionen</th></tr></thead><tbody>';
 		if ( ! $events ) {
-			echo '<tr><td colspan="8">Noch keine Events. Lege eines in PhotoSorter an und speichere es.</td></tr>';
+			echo '<tr><td colspan="8">Noch keine Galerien. Lege oben eine an.</td></tr>';
 		}
 		foreach ( $events as $e ) {
 			$n    = isset( $counts[ $e->id ] ) ? (int) $counts[ $e->id ]->n : 0;
@@ -39,15 +49,20 @@ add_action( 'admin_menu', function () {
 			echo '<tr><td><strong><a href="' . esc_url( RD_Gal::gallery_url( $e ) ) . '" target="_blank">' . esc_html( $e->name ) . '</a></strong><br><small>' . esc_html( ucfirst( $e->world ) ) . ' · ' . esc_html( $e->client_email ?: 'keine Kunden-E-Mail' ) . '</small>'
 				. ( $secs ? '<br><small style="opacity:.7">' . implode( ' · ', $secs ) . '</small>' : '' ) . '</td>'
 				. '<td>' . esc_html( $e->ev_date ? date_i18n( 'j.n.Y', strtotime( $e->ev_date ) ) : '–' ) . '</td>'
-				. '<td>' . ( 'sale' === $e->mode ? 'Verkauf' : 'Kostenlos' ) . '</td>'
+				. '<td>' . ( 'sale' === $e->mode ? 'Verkauf' : 'Download' ) . '</td>'
 				. '<td>' . ( 'published' === $e->status ? ( $open ? '<span style="color:#1a7f37">● online</span>' : '<span style="color:#b32d2e">● abgelaufen</span>' ) : 'Entwurf' ) . '</td>'
 				. '<td>' . $n . '<br><small>' . esc_html( $gb ) . '</small></td>'
-				. '<td><code>' . esc_html( RD_Gal::dec( $e->code_enc ) ) . '</code></td>'
+				. '<td><code style="font-size:14px">' . esc_html( RD_Gal::dec( $e->code_enc ) ) . '</code>'
+				. '<form method="post" action="' . esc_url( $post ) . '" style="margin-top:.4rem">' . wp_nonce_field( 'rd_gal_setcode', '_wpnonce', true, false )
+				. '<input type="hidden" name="action" value="rd_gal"><input type="hidden" name="do" value="setcode"><input type="hidden" name="id" value="' . esc_attr( $e->id ) . '">'
+				. '<input name="code" minlength="6" placeholder="eigenes Passwort" style="width:130px"> <button class="button button-small">Setzen</button></form></td>'
 				. '<td>' . esc_html( $e->expires_at ? date_i18n( 'j.n.Y', strtotime( $e->expires_at . ' UTC' ) ) : '–' ) . '</td><td>';
 			echo 'published' === $e->status ? $act( 'unpublish', $e->id, 'Offline nehmen' ) : $act( 'publish', $e->id, 'Veröffentlichen', 'button button-primary' );
-			echo $act( 'send', $e->id, 'An Kunde senden', 'button', $e->client_email ? 'Link + Code an ' . $e->client_email . ' senden?' : 'Keine Kunden-E-Mail hinterlegt (in PhotoSorter eintragen).' );
+			echo '<span class="rd-up" data-id="' . esc_attr( $e->id ) . '"><input type="file" accept=".jpg,.jpeg,image/jpeg" multiple style="display:none">'
+				. '<input class="rd-up-sec" placeholder="Kapitel (optional)" style="width:130px"> <button type="button" class="button button-primary rd-up-btn">Bilder hochladen</button> <span class="rd-up-status"></span></span><br>';
+			echo $act( 'send', $e->id, 'An Kunde senden', 'button', $e->client_email ? 'Link + Passwort an ' . $e->client_email . ' senden?' : 'Keine Kunden-E-Mail hinterlegt.' );
 			echo $act( 'extend', $e->id, '+12 Monate' );
-			echo $act( 'newcode', $e->id, 'Neuer Code', 'button', 'Neuen Code erzeugen? Der alte funktioniert dann nicht mehr.' );
+			echo $act( 'newcode', $e->id, 'Neues Passwort', 'button', 'Neues Passwort erzeugen? Das alte funktioniert dann nicht mehr.' );
 			if ( get_option( 'rd_gal_rebuild_' . $e->id ) ) {
 				echo '<button class="button rd-rebuild" data-id="' . esc_attr( $e->id ) . '">Vorschaubilder neu erzeugen</button> ';
 			}
@@ -100,10 +115,10 @@ add_action( 'admin_menu', function () {
 			echo '<table class="widefat striped"><thead><tr><th>Bestellung</th><th>Datum</th><th>Kunde</th><th>Inhalt</th><th>Summe</th><th>Status</th><th></th></tr></thead><tbody>' . ( $rows ?: '<tr><td colspan="7">Noch keine Bildverkäufe.</td></tr>' ) . '</tbody></table>';
 		}
 
-		// prices + settings
-		echo '<h2 style="margin-top:2rem">Preise für Verkaufs-Galerien</h2><form method="post" action="' . esc_url( $post ) . '">' . wp_nonce_field( 'rd_gal_prices', '_wpnonce', true, false )
+		// prices (only while a shop exists) + settings
+		echo '<h2 style="margin-top:2rem">' . ( function_exists( 'WC' ) ? 'Preise für Verkaufs-Galerien' : 'Einstellungen' ) . '</h2><form method="post" action="' . esc_url( $post ) . '">' . wp_nonce_field( 'rd_gal_prices', '_wpnonce', true, false )
 			. '<input type="hidden" name="action" value="rd_gal"><input type="hidden" name="do" value="prices"><table class="form-table">';
-		foreach ( array( 'photo' => 'Einzelbild', 'bundle3' => '3 Bilder', 'bundle6' => '6 Bilder', 'section' => 'Ganzes Kapitel (z. B. alle Bilder eines Ritts)', 'event' => 'Ganzes Event' ) as $k => $label ) {
+		foreach ( ( function_exists( 'WC' ) ? array( 'photo' => 'Einzelbild', 'bundle3' => '3 Bilder', 'bundle6' => '6 Bilder', 'section' => 'Ganzes Kapitel (z. B. alle Bilder eines Ritts)', 'event' => 'Ganzes Event' ) : array() ) as $k => $label ) {
 			echo '<tr><th>' . esc_html( $label ) . '</th><td><input name="p[' . esc_attr( $k ) . ']" type="number" step="0.01" min="0" value="' . esc_attr( number_format( (float) $prices[ $k ], 2, '.', '' ) ) . '"> €</td></tr>';
 		}
 		echo '<tr><th>Galerien laufen ab nach</th><td><input name="expiry" type="number" min="1" max="60" value="' . (int) get_option( 'rd_gal_expiry_months', 12 ) . '"> Monaten</td></tr>';
@@ -119,6 +134,22 @@ add_action( 'admin_menu', function () {
 		echo '</div>';
 		?>
 		<script>
+		var rdApi='<?php echo esc_url_raw( rest_url( 'rd/v1/admin/events/' ) ); ?>', rdNonce='<?php echo esc_js( wp_create_nonce( 'wp_rest' ) ); ?>';
+		document.querySelectorAll('.rd-up').forEach(function(box){
+		  var input=box.querySelector('input[type=file]'), btn=box.querySelector('.rd-up-btn'), st=box.querySelector('.rd-up-status'), sec=box.querySelector('.rd-up-sec');
+		  btn.addEventListener('click',function(){ input.click(); });
+		  input.addEventListener('change',function(){
+		    var files=[].slice.call(input.files), done=0, failed=0, i=0; if(!files.length) return; btn.disabled=true;
+		    var next=function(){
+		      if(i>=files.length){ st.textContent='✓ '+done+' hochgeladen'+(failed?', '+failed+' Fehler':'')+'. Seite wird neu geladen …'; setTimeout(function(){ location.reload(); },1500); return; }
+		      var f=files[i++], fd=new FormData(); fd.append('file',f,f.name); fd.append('section_name',sec.value.trim()); if(sec.value.trim()) fd.append('new_section','1');
+		      st.textContent='Lade '+i+' / '+files.length+' …';
+		      fetch(rdApi+box.dataset.id+'/photos',{method:'POST',credentials:'same-origin',headers:{'X-WP-Nonce':rdNonce},body:fd})
+		        .then(function(r){ if(r.ok) done++; else failed++; }).catch(function(){ failed++; }).then(next);
+		    };
+		    next();
+		  });
+		});
 		document.querySelectorAll('.rd-rebuild').forEach(function(b){ b.addEventListener('click',function(){
 		  var id=b.dataset.id, run=function(off){ b.disabled=true;
 		    fetch('<?php echo esc_url_raw( rest_url( 'rd/v1/admin/events/' ) ); ?>'+id+'/rebuild?offset='+off,{method:'POST',credentials:'same-origin',headers:{'X-WP-Nonce':'<?php echo esc_js( wp_create_nonce( 'wp_rest' ) ); ?>'}})
@@ -159,8 +190,22 @@ add_action( 'admin_post_rd_gal', function () {
 			$wpdb->update( $t, array( 'expires_at' => gmdate( 'Y-m-d H:i:s', strtotime( '+12 months', $base ) ) ), array( 'id' => $e->id ) );
 			$msg = 'Ablaufdatum verlängert.';
 			break;
+		case 'create':
+			$name = sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) );
+			if ( '' === $name ) {
+				$msg = 'Bitte einen Namen angeben.';
+				break;
+			}
+			$date = preg_match( '/^\d{4}-\d{2}-\d{2}$/', $_POST['date'] ?? '' ) ? $_POST['date'] : '';
+			$new  = RD_Gal::create_event( $name, $date, sanitize_key( $_POST['world'] ?? '' ), sanitize_email( wp_unslash( $_POST['client'] ?? '' ) ), sanitize_text_field( wp_unslash( $_POST['code'] ?? '' ) ) );
+			$msg  = 'Galerie angelegt. Passwort: ' . RD_Gal::dec( $new->code_enc ) . '. Jetzt Bilder hochladen und veröffentlichen.';
+			break;
+		case 'setcode':
+			$res = RD_Gal::set_code( $e, sanitize_text_field( wp_unslash( $_POST['code'] ?? '' ) ) );
+			$msg = is_wp_error( $res ) ? $res->get_error_message() : 'Neues Passwort: ' . $res;
+			break;
 		case 'newcode':
-			$msg = 'Neuer Code: ' . RD_Gal::set_code( $e );
+			$msg = 'Neues Passwort: ' . RD_Gal::set_code( $e );
 			break;
 		case 'send':
 			if ( ! $e->client_email ) {
@@ -172,7 +217,7 @@ add_action( 'admin_post_rd_gal', function () {
 			$html = '<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#222;max-width:560px"><p>Hallo,</p>'
 				. '<p>eure Bilder von <strong>' . esc_html( $e->name ) . '</strong> sind online!</p>'
 				. '<p style="margin:26px 0"><a href="' . esc_url( $url ) . '" style="background:#B4877A;color:#fff;padding:14px 26px;border-radius:999px;text-decoration:none;font-weight:bold">Zur Galerie</a></p>'
-				. '<p>Euer Zugangscode: <strong style="font-size:18px;letter-spacing:1px">' . esc_html( $code ) . '</strong></p>'
+				. '<p>Euer Passwort: <strong style="font-size:18px;letter-spacing:1px">' . esc_html( $code ) . '</strong></p>'
 				. ( 'free' === $e->mode ? '<p>Ihr könnt alle Bilder einzeln oder als ZIP in voller Auflösung herunterladen. Mit dem Herz markiert ihr eure Favoriten.</p>' : '' )
 				. '<p>Die Galerie ist bis ' . esc_html( $e->expires_at ? date_i18n( 'j. F Y', strtotime( $e->expires_at . ' UTC' ) ) : 'auf Weiteres' ) . ' online. Bitte ladet eure Bilder bis dahin herunter.</p>'
 				. '<p>Viel Freude beim Anschauen!<br>Rui Dodat Fotografie</p></div>';

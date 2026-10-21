@@ -180,10 +180,10 @@ def nav_links(items):
 MENUS = {
     "Menü Pferde": [("Portfolio", "/pferde/portfolio/"), ("Preise", "/pferde/shootings-preise/"), ("Stalltag", "/pferde/stalltag/"),
                     ("Turniere", "/pferde/turnierfotografie/"), ("FAQ", "/pferde/ablauf-faq/"), ("Freie Termine", "/verfuegbarkeit/?w=pferde"),
-                    ("Über mich", "/ueber-mich/?w=pferde"), ("Kontakt", "/kontakt/?w=pferde"), ("→ Hochzeit", "/hochzeit/")],
+                    ("Über mich", "/ueber-mich/?w=pferde"), ("Kontakt", "/kontakt/?w=pferde"), ("Deine Bilder", "/pferde/dein-event/"), ("→ Hochzeit", "/hochzeit/")],
     "Menü Hochzeit": [("Echte Hochzeiten", "/hochzeit/echte-hochzeiten/"), ("Pakete &amp; Preise", "/hochzeit/pakete-preise/"),
                       ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben", "/hochzeit/alben-wandbilder/"), ("FAQ", "/hochzeit/ablauf-faq-hochzeit/"),
-                      ("Freie Termine", "/verfuegbarkeit/?w=hochzeit"), ("Über mich", "/ueber-mich/?w=hochzeit"), ("Kontakt", "/kontakt/?w=hochzeit"), ("→ Pferde", "/pferde/")],
+                      ("Freie Termine", "/verfuegbarkeit/?w=hochzeit"), ("Über mich", "/ueber-mich/?w=hochzeit"), ("Kontakt", "/kontakt/?w=hochzeit"), ("Eure Bilder", "/hochzeit/euer-event/"), ("→ Pferde", "/pferde/")],
     "Menü Hauptseite": [("Pferde", "/pferde/"), ("Hochzeit", "/hochzeit/"), ("Freie Termine", "/verfuegbarkeit/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/")],
 }
 
@@ -230,9 +230,9 @@ def footer():
 <!-- /wp:paragraph --></div>
 <!-- /wp:column -->
 
-{col("Pferde", [("Portfolio", "/pferde/portfolio/"), ("Preise", "/pferde/shootings-preise/"), ("Stalltag", "/pferde/stalltag/"), ("Turniere", "/pferde/turnierfotografie/"), ("Für Betriebe", "/pferde/shootings-preise/#betriebe")])}
+{col("Pferde", [("Portfolio", "/pferde/portfolio/"), ("Preise", "/pferde/shootings-preise/"), ("Stalltag", "/pferde/stalltag/"), ("Turniere", "/pferde/turnierfotografie/"), ("Für Betriebe", "/pferde/shootings-preise/#betriebe"), ("Deine Bilder", "/pferde/dein-event/")])}
 
-{col("Hochzeit", [("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben &amp; Wandbilder", "/hochzeit/alben-wandbilder/"), ("Echte Hochzeiten", "/hochzeit/echte-hochzeiten/")])}
+{col("Hochzeit", [("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben &amp; Wandbilder", "/hochzeit/alben-wandbilder/"), ("Echte Hochzeiten", "/hochzeit/echte-hochzeiten/"), ("Eure Bilder", "/hochzeit/euer-event/")])}
 
 {col("Info", [("Freie Termine", "/verfuegbarkeit/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("Cookie-Richtlinie", "/cookie-richtlinie-eu/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/")])}</div>
 <!-- /wp:columns -->
@@ -321,8 +321,8 @@ def step_pages():
     log("front page + site title")
 
 
-# Client galleries (PhotoSorter upload, event codes, photo sales) are parked for now: kept in the repo, switched off on the site.
-INACTIVE_SNIPPETS = {"gallery-core", "gallery-api", "gallery-front", "gallery-shop", "gallery-admin",
+# Switched off on the site but kept in the repo.
+INACTIVE_SNIPPETS = {"gallery-shop",  # selling photos needs the shop; downloads for clients stay on
                      "wunschtermin", "checkout-defaults", "email-reply-to"}  # the last three only served the WooCommerce shop
 
 
