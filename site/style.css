@@ -223,7 +223,6 @@ body:has(.rd-hero-video) main{margin-block-start:0!important}
 body:has(.rd-hero-video):not(.rd-scrolled) .rd-header{background:transparent!important;color:#fff!important;border-color:transparent!important}
 body:has(.rd-hero-video):not(.rd-scrolled) .rd-header-hochzeit .rd-logo img{filter:invert(1)}
 body:has(.rd-hero-video):not(.rd-scrolled) .rd-header .wp-block-navigation__responsive-container:not(.is-menu-open){color:#fff}
-body:has(.rd-hero-video):not(.rd-scrolled) .rd-header .wc-block-mini-cart__button{color:#fff}
 body:has(.rd-hero-video).rd-scrolled .rd-header-pferde{background:rgba(30,42,34,.94)}
 body:has(.rd-hero-video).rd-scrolled .rd-header-hochzeit{background:rgba(251,248,244,.96)}
 body:has(.rd-hero-video) .rd-header{padding-top:1.3rem;padding-bottom:1.3rem}

@@ -72,7 +72,12 @@ M = {int(k): {"id": int(k), "url": v["full"]} for k, v in MEDIA.items()}
 # ------------------------------------------------------------------ 1. plugins
 def step_plugins():
     have = {p["plugin"].split("/")[0]: p for p in api("GET", "/wp/v2/plugins")}
-    for slug in ["woocommerce", "woocommerce-germanized", "ics-calendar", "code-snippets", "woocommerce-paypal-payments", "complianz-gdpr", "password-protected"]:
+    # no shop for now: WooCommerce, Germanized and PayPal stay installed but switched off (step "shop"/"products" only for later)
+    for slug in ["woocommerce-paypal-payments", "woocommerce-germanized", "woocommerce"]:
+        if slug in have and have[slug]["status"] == "active":
+            log("deactivate", slug)
+            api("POST", f"/wp/v2/plugins/{have[slug]['plugin']}", {"status": "inactive"})
+    for slug in ["ics-calendar", "code-snippets", "complianz-gdpr", "password-protected"]:
         if slug not in have:
             log("install", slug)
             api("POST", "/wp/v2/plugins", {"slug": slug, "status": "active"})
@@ -173,11 +178,13 @@ def nav_links(items):
 
 
 MENUS = {
-    "Menü Pferde": [("Portfolio", "/pferde/portfolio/"), ("Preise", "/pferde/shootings-preise/"), ("Über mich", "/ueber-mich/?w=pferde"),
-                    ("Kontakt", "/kontakt/?w=pferde"), ("→ Hochzeit", "/hochzeit/")],
-    "Menü Hochzeit": [("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), ("Über mich", "/ueber-mich/?w=hochzeit"),
-                      ("Kontakt", "/kontakt/?w=hochzeit"), ("→ Pferde", "/pferde/")],
-    "Menü Hauptseite": [("Pferde", "/pferde/"), ("Hochzeit", "/hochzeit/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/")],
+    "Menü Pferde": [("Portfolio", "/pferde/portfolio/"), ("Preise", "/pferde/shootings-preise/"), ("Stalltag", "/pferde/stalltag/"),
+                    ("Turniere", "/pferde/turnierfotografie/"), ("FAQ", "/pferde/ablauf-faq/"), ("Freie Termine", "/verfuegbarkeit/?w=pferde"),
+                    ("Über mich", "/ueber-mich/?w=pferde"), ("Kontakt", "/kontakt/?w=pferde"), ("→ Hochzeit", "/hochzeit/")],
+    "Menü Hochzeit": [("Echte Hochzeiten", "/hochzeit/echte-hochzeiten/"), ("Pakete &amp; Preise", "/hochzeit/pakete-preise/"),
+                      ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben", "/hochzeit/alben-wandbilder/"), ("FAQ", "/hochzeit/ablauf-faq-hochzeit/"),
+                      ("Freie Termine", "/verfuegbarkeit/?w=hochzeit"), ("Über mich", "/ueber-mich/?w=hochzeit"), ("Kontakt", "/kontakt/?w=hochzeit"), ("→ Pferde", "/pferde/")],
+    "Menü Hauptseite": [("Pferde", "/pferde/"), ("Hochzeit", "/hochzeit/"), ("Freie Termine", "/verfuegbarkeit/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/")],
 }
 
 
@@ -203,9 +210,7 @@ def header(cls, nav_id, world_label, world_url):
 <!-- /wp:group -->
 
 <!-- wp:group {{"layout":{{"type":"flex","flexWrap":"nowrap"}}}} -->
-<div class="wp-block-group"><!-- wp:navigation {{"ref":{nav_id},"overlayMenu":"mobile","layout":{{"type":"flex","justifyContent":"right"}}}} /-->
-
-<!-- wp:woocommerce/mini-cart /--></div>
+<div class="wp-block-group"><!-- wp:navigation {{"ref":{nav_id},"overlayMenu":"mobile","layout":{{"type":"flex","justifyContent":"right"}}}} /--></div>
 <!-- /wp:group --></div>
 <!-- /wp:group -->'''
 
@@ -225,11 +230,11 @@ def footer():
 <!-- /wp:paragraph --></div>
 <!-- /wp:column -->
 
-{col("Pferde", [("Portfolio", "/pferde/portfolio/"), ("Preise", "/pferde/shootings-preise/"), ("Für Betriebe", "/pferde/shootings-preise/#betriebe")])}
+{col("Pferde", [("Portfolio", "/pferde/portfolio/"), ("Preise", "/pferde/shootings-preise/"), ("Stalltag", "/pferde/stalltag/"), ("Turniere", "/pferde/turnierfotografie/"), ("Für Betriebe", "/pferde/shootings-preise/#betriebe")])}
 
-{col("Hochzeit", [("Pakete &amp; Preise", "/hochzeit/pakete-preise/")])}
+{col("Hochzeit", [("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben &amp; Wandbilder", "/hochzeit/alben-wandbilder/"), ("Echte Hochzeiten", "/hochzeit/echte-hochzeiten/")])}
 
-{col("Info", [("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("Cookie-Richtlinie", "/cookie-richtlinie-eu/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/"), ("Vertrag widerrufen", "/vertrag-widerrufen/")])}</div>
+{col("Info", [("Freie Termine", "/verfuegbarkeit/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("Cookie-Richtlinie", "/cookie-richtlinie-eu/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/")])}</div>
 <!-- /wp:columns -->
 
 <!-- wp:paragraph {{"className":"rd-legal"}} -->
@@ -279,6 +284,7 @@ def step_design():
 
 
 # ------------------------------------------------------------------ 5. pages
+NO_SHOP_PAGES = ["shop", "warenkorb", "kasse", "mein-konto", "vertrag-widerrufen"]
 OLD_TO_DRAFT = [611, 605, 600, 598, 593, 591, 589, 587, 581, 565, 561, 559, 555, 552, 549, 546, 526, 523, 520, 517, 10]
 
 
@@ -300,6 +306,10 @@ def step_pages():
         res = api("POST", f"/wp/v2/pages/{cur['id']}", body) if cur else api("POST", "/wp/v2/pages", body)
         ids[pg["slug"]] = res.get("id")
         log("page", pg["slug"], res.get("link", ""))
+    # no shop: WooCommerce/Germanized pages go to draft
+    for pg in get_all("/wp/v2/pages", status="publish", slug=",".join(NO_SHOP_PAGES)):
+        api("POST", f"/wp/v2/pages/{pg['id']}", {"status": "draft"})
+        log("draft", pg["slug"])
     for pid in OLD_TO_DRAFT:
         try:
             api("POST", f"/wp/v2/pages/{pid}", {"status": "draft"})
@@ -312,7 +322,8 @@ def step_pages():
 
 
 # Client galleries (PhotoSorter upload, event codes, photo sales) are parked for now: kept in the repo, switched off on the site.
-INACTIVE_SNIPPETS = {"gallery-core", "gallery-api", "gallery-front", "gallery-shop", "gallery-admin"}
+INACTIVE_SNIPPETS = {"gallery-core", "gallery-api", "gallery-front", "gallery-shop", "gallery-admin",
+                     "wunschtermin", "checkout-defaults", "email-reply-to"}  # the last three only served the WooCommerce shop
 
 
 def step_snippets():
@@ -344,7 +355,8 @@ def step_snippets():
 
 
 steps = {"plugins": step_plugins, "snippets": step_snippets, "shop": step_shop, "products": step_products, "design": step_design, "pages": step_pages}
-for name in (steps if args.step == "all" else [args.step]):
+ALL = ["plugins", "snippets", "design", "pages"]  # shop + products are parked (no shop for now)
+for name in (ALL if args.step == "all" else [args.step]):
     print(f"\n== {name}")
     steps[name]()
 print("\nDone.")
