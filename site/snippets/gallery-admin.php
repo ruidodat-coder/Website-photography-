@@ -29,7 +29,7 @@ add_action( 'admin_menu', function () {
 			. '<p style="display:flex;flex-wrap:wrap;gap:.8rem;align-items:flex-end;margin:0">'
 			. '<label>Name<br><input name="name" required placeholder="z. B. Shooting Lisa &amp; Mo" style="width:240px"></label>'
 			. '<label>Datum<br><input type="date" name="date"></label>'
-			. '<label>Bereich<br><select name="world"><option value="pferde">Pferde / Tiere</option><option value="hochzeit">Hochzeit</option></select></label>'
+			. '<label>Bereich<br><select name="world"><option value="pferde">Pferde</option><option value="hochzeit">Hochzeit</option></select></label>'
 			. '<label>Kunden-E-Mail (optional)<br><input type="email" name="client" style="width:220px"></label>'
 			. '<label>Passwort (leer = automatisch)<br><input name="code" minlength="6" placeholder="mind. 6 Zeichen"></label>'
 			. '<button class="button button-primary">Galerie anlegen</button></p></form></div>';

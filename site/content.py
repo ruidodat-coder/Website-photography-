@@ -83,11 +83,11 @@ def card(title, price, items, url, label="Jetzt buchen", popular=False, sub=None
 
 
 def HORSE_CARDS(PR, long=False):
-    """Packages from the business plan (Tier-Mini / Tier-Classic / Tier & Familie Premium)."""
+    """Packages from the business plan, named after the gaits: Schritt / Trab / Galopp."""
     return [
-        card("Tier-Mini", "199 €", ["ca. 30 Minuten", "1 Tier", "5 bearbeitete Bilder"] + (["Pferd, Hund oder anderes Tier"] if long else []), "/kontakt/?w=pferde", "Termin anfragen"),
-        card("Tier-Classic", "349 €", ["ca. 60 Minuten", "Pferd &amp; Reiter oder Hund &amp; Halter", "12 bearbeitete Bilder"] + (["2 Outfits möglich"] if long else []), "/kontakt/?w=pferde", "Termin anfragen", popular=True),
-        card("Tier &amp; Familie Premium", "549 €", ["ca. 90 Minuten", "ganze Familie mit Tier(en)", "25 bearbeitete Bilder", "Wandbild inklusive"], "/kontakt/?w=pferde", "Termin anfragen"),
+        card("Schritt", "199 €", ["ca. 30 Minuten", "1 Pferd", "5 bearbeitete Bilder"] + (["der kurze Einstieg"] if long else []), "/kontakt/?w=pferde", "Termin anfragen"),
+        card("Trab", "349 €", ["ca. 60 Minuten", "Pferd &amp; Reiter", "12 bearbeitete Bilder"] + (["2 Outfits möglich"] if long else []), "/kontakt/?w=pferde", "Termin anfragen", popular=True),
+        card("Galopp", "549 €", ["ca. 90 Minuten", "Pferd &amp; ganze Familie", "25 bearbeitete Bilder", "Wandbild inklusive"], "/kontakt/?w=pferde", "Termin anfragen"),
     ]
 
 
@@ -165,19 +165,19 @@ def build(M, PR, CAL=None):
     T = "rd-pferde"
     pferde = "\n\n".join([
         group(hero_video("pferde"),
-              p("Pferdefotograf Südpfalz · Pferde, Tiere &amp; Familie", "rd-eyebrow"),
+              p("Pferdefotograf Südpfalz · Pferd, Reiter &amp; Familie", "rd-eyebrow"),
               h("Dein Pferd.<br>Eure Geschichte.", 1),
               p("Pferdeerfahrene Shootings vom eigenen Reitbetrieb aus: Portraits, Pferd &amp; Reiter, Fohlen, Verkaufsfotos, "
                 "Stalltage und Turniere, rund um Germersheim, Speyer, Landau und Karlsruhe.", "rd-lead"),
               buttons(button("Preise ansehen", "/pferde/shootings-preise/"),
                       button("Portfolio", "/pferde/portfolio/", outline=True)),
               cls="rd-hero rd-hero-video", align="full", bg=poster_bg("pferde")),
-        group(stats([(199, "€", "Ab 199 €", "Tier-Mini: 30 Minuten, 5 bearbeitete Bilder. Faire Festpreise."),
+        group(stats([(199, "€", "Ab 199 €", "Schritt: 30 Minuten, 5 bearbeitete Bilder. Faire Festpreise."),
                      (8, "Pferde", "Stalltage", "Bis zu 8 Pferde an einem Tag in deinem Stall, weniger Anfahrt für alle."),
                      (30, "km", "Anfahrt inklusive", "Rund um Germersheim komme ich ohne Aufpreis zu dir an den Stall."),
                      (100, "%", "Pferdeerfahren", "Eigener Reitbetrieb: ruhig, sicher und im Tempo deines Pferdes.")]),
               cls="rd-section rd-stats-section", align="full"),
-        group(marquee(["Portraits", "Pferd &amp; Reiter", "Fohlen", "Verkaufsfotos", "Stalltage", "Turniere", "Hund &amp; Familie"]), cls="rd-marquee-wrap", align="full", layout="default"),
+        group(marquee(["Portraits", "Pferd &amp; Reiter", "Fohlen", "Verkaufsfotos", "Stalltage", "Turniere", "Pferd &amp; Familie"]), cls="rd-marquee-wrap", align="full", layout="default"),
         group(p("Portfolio", "rd-eyebrow", align="center"), h("Momente, die bleiben", 2, align="center"),
               gallery([(m(479), "Grauer Wallach im Blütenhain"), (m(481), "Haflinger Portrait"), (m(483), "Pferd vor schwarzem Hintergrund"),
                        (m(480), "Portrait im Frühling"), (m(322), "Reiterin mit Schimmel"), (m(477), "Reiterin kniet bei ihrem Pferd")],
@@ -186,7 +186,7 @@ def build(M, PR, CAL=None):
               cls="rd-section", align="full"),
         group(p("Shootings", "rd-eyebrow", align="center"), h("Finde dein Paket", 2, align="center"),
               columns(*HORSE_CARDS(PR), cls="rd-cards"),
-              p("Bezahlt wird bequem vor Ort beim Shooting. Hunde und andere Tiere sind genauso willkommen.", "rd-small", align="center"),
+              p("Bezahlt wird bequem vor Ort beim Shooting.", "rd-small", align="center"),
               p('<a href="/pferde/shootings-preise/">Alle Preise, Stalltage, Turniere &amp; Extras →</a>', align="center"),
               cls="rd-section rd-tint", align="full"),
         group(columns(
@@ -225,7 +225,7 @@ def build(M, PR, CAL=None):
               p("Paket wählen, Termin anfragen, entspannt shooten. Bezahlt wird persönlich vor Ort beim Shooting. "
                 "Bei schlechtem Wetter verschieben wir kostenlos.", "rd-lead"),
               cls="rd-section", align="wide"),
-        group(h("Pferd, Hund &amp; Familie", 2), columns(*HORSE_CARDS(PR, long=True), cls="rd-cards"),
+        group(h("Pferd, Reiter &amp; Familie", 2), columns(*HORSE_CARDS(PR, long=True), cls="rd-cards"),
               p("Alle Preise sind Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.", "rd-small"),
               cls="rd-section rd-tint", align="full"),
         group(h("Spezial-Shootings", 2), columns(
@@ -250,7 +250,7 @@ def build(M, PR, CAL=None):
               cls="rd-section", align="wide", anchor="betriebe"),
         group(h("Extras &amp; Wandbilder", 2), table(["Extra", "Preis"], [
             ["Zusätzliches bearbeitetes Bild", "25 €"], ["Bilderpaket 5 / 10", "99 € / 179 €"], ["Alle Bilder (basis-bearbeitet)", "249 €"],
-            ["Weiteres Tier", "49 €"], ["Weitere Person", "25 €"], ["Drohnenaufnahmen", "59 €"], ["Express-Lieferung 48 h", "49 €"],
+            ["Weiteres Pferd", "49 €"], ["Weitere Person", "25 €"], ["Drohnenaufnahmen", "59 €"], ["Express-Lieferung 48 h", "49 €"],
             ["Fine-Art-Print 20×30 / 30×45 / 40×60", "39 € / 69 € / 99 €"], ["Leinwand 60×90", "189 €"], ["Acryl/Alu-Dibond 60×90", "269 €"],
             ["Fotoalbum 20×20 (20 Seiten) / 30×30 (30 Seiten)", "149 € / 349 €"]]),
             cls="rd-section", align="wide"),
@@ -268,7 +268,6 @@ def build(M, PR, CAL=None):
               details("Wann und wie bezahle ich?", p("Persönlich beim Shooting. Online musst du nichts bezahlen.")),
               details("Kann ich absagen?", p("Ja. Sag bitte so früh wie möglich Bescheid, dann finden wir einen neuen Termin.")),
               details("Darf ich die Bilder online teilen?", p("Ja, für private Zwecke und Social Media gern, mit Verlinkung. Gewerbliche Nutzung (z. B. Verkaufsanzeigen von Händlern) bitte vorher anfragen.")),
-              details("Fotografierst du auch Hunde?", p("Ja. Hunde und andere Tiere fotografiere ich gern, am schönsten zusammen mit Pferd oder Familie.")),
               details("Warum keine Mehrwertsteuer?", p("Als Kleinunternehmer gemäß § 19 UStG wird keine Umsatzsteuer berechnet. Alle Preise sind Endpreise.")),
               cls="rd-section", align="wide"),
     ]))
@@ -502,7 +501,7 @@ def build(M, PR, CAL=None):
             column(p("Über mich", "rd-eyebrow"), h("Hallo, ich bin Rui.", 1),
                    p("Pferde sind mein Alltag: Mit unserem eigenen Hof, Reitbetrieb und unserer Reitschule in der Südpfalz verbringe ich jeden Tag mit ihnen. "
                      "Genau das bringe ich in meine Fotografie mit. Ich weiß, wie Pferde ticken, bleibe ruhig, wenn es mal unruhig wird, und arbeite in ihrem Tempo."),
-                   p("Ich fotografiere Pferde mit ihren Menschen, Hunde und Familien, Turniere und Stalltage, und Hochzeiten, am liebsten auf dem Land und gern auch mit Pferd."),
+                   p("Ich fotografiere Pferde mit ihren Menschen und Familien, Turniere und Stalltage, und Hochzeiten, am liebsten auf dem Land und gern auch mit Pferd."),
                    p("Meine Basis ist Germersheim. Ich bin in der Südpfalz, in der Rhein-Neckar-Region, rund um Karlsruhe und bis ins Rhein-Main-Gebiet unterwegs, "
                      "und unser Hof ist selbst eine schöne Kulisse."),
                    buttons(button("Pferdefotografie", "/pferde/"), button("Hochzeitsfotografie", "/hochzeit/", outline=True))),
@@ -524,7 +523,7 @@ def build(M, PR, CAL=None):
                   '<!-- wp:jetpack/field-name {"label":"Name","required":true} /-->\n\n'
                   '<!-- wp:jetpack/field-email {"label":"E-Mail","required":true} /-->\n\n'
                   '<!-- wp:jetpack/field-telephone {"label":"Telefon"} /-->\n\n'
-                  '<!-- wp:jetpack/field-select {"label":"Worum geht es?","required":true,"options":["Pferde- oder Tier-Shooting","Familie mit Tier","Stalltag","Turnier / Pferdeevent","Betrieb (Hufschmied, Trainer, Stall …)","Hochzeit","Sonstiges"]} /-->\n\n'
+                  '<!-- wp:jetpack/field-select {"label":"Worum geht es?","required":true,"options":["Pferde-Shooting","Familie mit Pferd","Stalltag","Turnier / Pferdeevent","Betrieb (Hufschmied, Trainer, Stall …)","Hochzeit","Sonstiges"]} /-->\n\n'
                   '<!-- wp:jetpack/field-date {"label":"Wunschdatum / Hochzeitsdatum"} /-->\n\n'
                   '<!-- wp:jetpack/field-text {"label":"Ort / Location"} /-->\n\n'
                   '<!-- wp:jetpack/field-textarea {"label":"Nachricht","required":true} /-->\n\n'
