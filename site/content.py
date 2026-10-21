@@ -202,7 +202,7 @@ def build(M, PR, CAL=None):
               buttons(button("Angebote für Betriebe", "/pferde/shootings-preise/#betriebe", outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="wide"),
         group(p("Unser Hof", "rd-eyebrow", align="center"), h("Shooting auf dem Hof", 2, align="center"),
-              p("Kein passender Ort? Unser eigener Hof in der Südpfalz ist eine ruhige, pferdegerechte Kulisse, im Winter auch in der Halle. Dort steht auch unser Black-Background-Studio: einfach mit dem Anhänger kommen.", align="center"),
+              p("Kein passender Ort? Unser eigener Hof in der Südpfalz ist eine ruhige, pferdegerechte Kulisse, im Winter auch in der Halle.", align="center"),
               buttons(button("Termin anfragen", "/kontakt/?w=pferde"), cls="is-content-justification-center"),
               cls="rd-band rd-parallax", align="full", bg={"url": M[475]["url"], "id": 475, "pos": "50% 50%"}),
     ])
@@ -229,8 +229,7 @@ def build(M, PR, CAL=None):
               p("Alle Preise sind Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.", "rd-small"),
               cls="rd-section rd-tint", align="full"),
         group(h("Spezial-Shootings", 2), columns(
-            card("Black Background Studio", "149 €", ["Studio in unserer Halle auf dem Hof", "ca. 45 Minuten", "6 Studio-Portraits", "Platz für deinen Anhänger, keine Anfahrtskosten"], "/kontakt/?w=pferde", "Termin anfragen"),
-            card("Black Background Mini", "119 €", ["ca. 30 Minuten", "4 Studio-Portraits", "mobiles Studio an deinem Stall", "zzgl. Anfahrt"], "/kontakt/?w=pferde", "Termin anfragen"),
+            card("Black Background Mini", "119 €", ["ca. 30 Minuten", "4 Studio-Portraits", "mobiles Studio am Stall"], "/kontakt/?w=pferde", "Termin anfragen"),
             card("Fohlen- &amp; Verkaufsfotos", "169 €", ["Exterieur + Bewegung", "8 Bilder", "Lieferung in 48 h", "Verkaufsvideo auf Anfrage"], "/kontakt/?w=pferde", "Termin anfragen"),
             card("Stalltag", "89 € / Pferd", ["6–8 Pferde an einem Tag", "ca. 30 Min. und 3 Bilder pro Pferd", "Anfahrt wird geteilt, Organisator/in gratis"], "/pferde/stalltag/", "Mehr erfahren"),
             cls="rd-cards"), cls="rd-section", align="wide"),
@@ -335,7 +334,6 @@ def build(M, PR, CAL=None):
                                        "Location: ruhige Wiese, Allee, Waldrand oder eure Halle. Ich berate dich gern"]),
               details("Wann ist das beste Licht?", p("Die Stunde vor Sonnenuntergang (Golden Hour) oder ein leicht bewölkter Tag.")),
               details("Mein Pferd ist unruhig, geht das trotzdem?", p("Ja. Wir nehmen uns Zeit, machen Pausen und arbeiten im Tempo deines Pferdes.")),
-              details("Kann ich mit meinem Pferd zu euch kommen?", p("Ja. Für das Black-Background-Studio kommst du mit dem Anhänger zu uns auf den Hof. Dein Pferd kann in Ruhe ankommen, bevor es in die Halle geht. Bitte bring den Equidenpass mit gültiger Influenza-Impfung mit; dein Pferd sollte gesund und verladesicher sein.")),
               details("Wie bekomme ich die Bilder?", p("Per Download-Link in voller Auflösung, plus Web-Versionen für Social Media.")),
               details("Wann bezahle ich?", p("Persönlich beim Shooting, bar oder per Überweisung. Online wird nichts bezahlt.")),
               cls="rd-section", align="wide"),
