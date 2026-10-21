@@ -77,13 +77,11 @@ add_shortcode( 'rd_wedding_check', function () {
 		'api'      => esc_url_raw( rest_url( 'rd/v1/availability' ) ),
 		'nonce'    => wp_create_nonce( 'wp_rest' ),
 		'contact'  => home_url( '/kontakt/' ),
-		'calendar' => home_url( '/verfuegbarkeit/' ),
+		'calendar' => home_url( '/kontakt/?w=hochzeit' ),
 		'details'  => home_url( '/hochzeit/pakete-preise/' ),
 		'packages' => array(
-			array( 'id' => 'jawort', 'name' => 'Ja-Wort', 'price' => 890, 'feat' => array( 'Standesamt, 2,5 Stunden', 'ca. 150 Bilder', 'Online-Galerie' ), 'incl' => array() ),
-			array( 'id' => 'herz', 'name' => 'Herzstück', 'price' => 1890, 'feat' => array( '7 Stunden (Trauung bis Eröffnungstanz)', 'ca. 450 Bilder', 'Sneak Peek in 72 h', 'Gästegalerie' ), 'incl' => array() ),
-			array( 'id' => 'immer', 'name' => 'Für Immer', 'price' => 2690, 'feat' => array( '10 Stunden', 'ca. 700 Bilder', 'Paarshooting inklusive', 'Sneak Peek &amp; Gästegalerie' ), 'incl' => array( 'paar' ), 'popular' => true ),
-			array( 'id' => 'grenzenlos', 'name' => 'Grenzenlos', 'price' => 3790, 'feat' => array( '12 Stunden, 2 Fotografen', 'Paarshooting inklusive', 'Album 30×30, 40 Seiten', '2 Elternalben' ), 'incl' => array( 'paar', 'zweit', 'album' ) ),
+			array( 'id' => 'halbtag', 'name' => 'Halbtag', 'price' => 1490, 'feat' => array( '5 Stunden Begleitung', 'z. B. Trauung, Empfang &amp; Paarshooting', 'alle gelungenen Bilder bearbeitet' ), 'incl' => array() ),
+			array( 'id' => 'ganztag', 'name' => 'Ganztag', 'price' => 2490, 'feat' => array( '9 Stunden Begleitung', 'vom Getting Ready bis zur Party', 'alle gelungenen Bilder bearbeitet', 'Sneak Peek in 72 h' ), 'incl' => array(), 'popular' => true ),
 		),
 		'extras'   => array(
 			array( 'id' => 'zweit', 'name' => 'Zweitfotograf/in', 'price' => 590 ),
@@ -120,7 +118,7 @@ add_shortcode( 'rd_wedding_check', function () {
 	.rd-wcheck-status{max-width:560px;margin:1rem auto 0;padding:.9rem 1rem;border-radius:2px;font-weight:600;text-align:center}
 	.rd-wcheck-frei{background:#e7f1e6;color:#2d5a2b}.rd-wcheck-teilweise{background:#fbf1de;color:#7a5410}.rd-wcheck-belegt{background:#f7e3e0;color:#8a2f25}.rd-wcheck-wait{background:#f6f1ee;color:#777}
 	.rd-wcheck-h{font-weight:600;letter-spacing:.04em;margin:2rem 0 .8rem;text-align:center}
-	.rd-wcheck-pkgs{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+	.rd-wcheck-pkgs{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;max-width:760px;margin:0 auto}
 	@media (max-width:900px){.rd-wcheck-pkgs{grid-template-columns:1fr 1fr}}
 	@media (max-width:520px){.rd-wcheck-pkgs{grid-template-columns:1fr}}
 	.rd-wcheck button.rd-wpkg{position:relative;display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;width:100%;background:#fff;border:2px solid #eadfd8;border-radius:4px;padding:1.2rem;cursor:pointer;font:inherit;font-weight:400;text-transform:none;letter-spacing:normal;text-align:left;color:#3a2f2a}
@@ -150,7 +148,7 @@ add_shortcode( 'rd_wedding_check', function () {
 	    var date=$('input[name=date]'), st=$('.rd-wcheck-status'), offer=$('.rd-wcheck-offer'), pk=$('.rd-wcheck-pkgs'), ex=$('.rd-wcheck-extras'), sum=$('.rd-wcheck-sum');
 	    var tmr=new Date(); tmr.setDate(tmr.getDate()+1); var max=new Date(); max.setMonth(max.getMonth()+24);
 	    var iso=function(d){return d.toISOString().slice(0,10);}; date.min=iso(tmr); date.max=iso(max);
-	    var sel='immer', chosen={}, disc=0, discWhy='', seq=0, dtxt='';
+	    var sel='ganztag', chosen={}, disc=0, discWhy='', seq=0, dtxt='';
 	    cfg.extras.forEach(function(x){var l=document.createElement('label');l.innerHTML='<input type="checkbox" value="'+x.id+'"><span></span>';ex.appendChild(l);});
 	    function pkg(){return cfg.packages.find(function(p){return p.id===sel;});}
 	    function render(){
@@ -165,7 +163,7 @@ add_shortcode( 'rd_wedding_check', function () {
 	      var msg='Hallo Rui, wir heiraten am '+dtxt+' und interessieren uns für das Paket „'+p.name+'“'+(names.length?' mit '+names.join(', '):'')+' (Preis laut Website: '+eur(total)+'). Wann können wir uns kennenlernen?';
 	      sum.innerHTML='<div class="rd-wcheck-line">'+p.name+(names.length?' + '+names.join(' + '):'')+(disc?' · '+discWhy:'')+'</div>'+
 	        '<div class="rd-wcheck-total">'+eur(total)+'</div>'+
-	        '<p class="rd-wcheck-small">Anfahrt bis 60 km ab Germersheim inklusive, darüber nach Entfernung. Anzahlung 30 % nach Vertragsschluss, Rest 4 Wochen vor der Hochzeit. Gemäß § 19 UStG ohne Umsatzsteuer. Unverbindlich: gebucht wird nach einem persönlichen Kennenlernen. <a href="'+cfg.details+'">Alle Details zu den Paketen</a></p>'+
+	        '<p class="rd-wcheck-small">Anfahrt bis 60 km ab Germersheim inklusive, darüber nach Entfernung. Anzahlung 30 % bei Vertragsschluss, Rest 4 Wochen vor der Hochzeit, persönlich bezahlt (nicht online). Gemäß § 19 UStG ohne Umsatzsteuer. Unverbindlich: gebucht wird nach einem persönlichen Kennenlernen. <a href="'+cfg.details+'">Alle Details zu den Paketen</a></p>'+
 	        '<div class="rd-wcheck-actions"><a href="'+cfg.contact+'">Kennenlernen anfragen</a><a class="rd-alt" href="https://wa.me/491738505311?text='+encodeURIComponent(msg)+'">Per WhatsApp</a></div>';
 	    }
 	    pk.addEventListener('click',function(e){var b=e.target.closest('.rd-wpkg');if(b){sel=b.dataset.id;render();}});
@@ -183,7 +181,7 @@ add_shortcode( 'rd_wedding_check', function () {
 	      if(my!==seq)return;
 	      var t={frei:'Ich bin am '+dtxt+' noch frei! Hier eure Optionen:',teilweise:'Am '+dtxt+' habe ich schon einen kürzeren Termin. Schreibt mir, oft passt es trotzdem.',belegt:'Am '+dtxt+' bin ich leider schon gebucht.'}[s]||'Das konnte ich gerade nicht prüfen. Schreibt mir einfach. Hier schon mal die Preise:';
 	      st.className='rd-wcheck-status rd-wcheck-'+({frei:1,teilweise:1,belegt:1}[s]?s:'wait');
-	      st.innerHTML=t+(s==='belegt'?' <a href="'+cfg.calendar+'">Freie Tage im Kalender ansehen</a>':'');
+	      st.innerHTML=t+(s==='belegt'?' <a href="'+cfg.calendar+'">Schreibt mir trotzdem, vielleicht passt ein anderer Tag</a>':'');
 	      offer.hidden=(s==='belegt'); if(!offer.hidden){render();}
 	    }
 	    $('.rd-wcheck-date').addEventListener('submit',check); date.addEventListener('change',check);

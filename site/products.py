@@ -22,20 +22,24 @@ CATS = {
 }
 
 # key, name, price, category, virtual, short description, long description
+# Not offered right now (galleries / online sales parked): kept as drafts in the shop.
+DRAFT = {"turnier-flat-vvk", "turnier-flat", "turnier-zweitpferd", "gutschein-50", "gutschein-100", "gutschein-150",
+         "gutschein-250", "gutschein-pony", "gutschein-warmblut", "paar", "afterwedding", "album-hochzeit", "album-eltern"}
+
 P = [
     # --- Horse shoots ---
-    ("pony", "Pferde-Shooting „Pony“", 149, "pferde-shootings", True,
-     "45 Minuten · 1 Pferd · 5 bearbeitete Bilder in voller Auflösung",
-     "<p>Der schnelle Einstieg: ein kurzes, entspanntes Shooting mit Portraits und Bewegung. Ideal zum Kennenlernen oder als Geschenk.</p>"
-     "<ul><li>ca. 45 Minuten Shooting</li><li>1 Pferd</li><li>5 bearbeitete Bilder (digital, volle Auflösung)</li><li>Online-Auswahlgalerie</li><li>Weitere Bilder jederzeit nachkaufbar</li></ul>"),
-    ("warmblut", "Pferde-Shooting „Warmblut“", 289, "pferde-shootings", True,
-     "90 Minuten · Pferd & Reiter · 2 Outfits · 12 bearbeitete Bilder",
-     "<p>Unser beliebtestes Paket: genug Zeit für Portraits, Pferd & Reiter und Bewegung, ganz ohne Stress.</p>"
-     "<ul><li>ca. 90 Minuten Shooting</li><li>Pferd & Reiter, 2 Outfitwechsel</li><li>12 bearbeitete Bilder (digital, volle Auflösung)</li><li>Online-Auswahlgalerie</li><li>Vorbereitungs-Checkliste</li></ul>"),
-    ("kaltblut", "Pferde-Shooting „Kaltblut“", 479, "pferde-shootings", True,
-     "2,5 Stunden · Golden Hour oder Black Background · 25 Bilder + Fine-Art-Print",
-     "<p>Das Signature-Shooting für alle, die es ganz besonders wollen.</p>"
-     "<ul><li>ca. 2,5 Stunden, Golden Hour oder Black-Background-Studio am Stall</li><li>25 aufwendig bearbeitete Bilder</li><li>alle weiteren gelungenen Bilder basis-bearbeitet</li><li>1 Fine-Art-Print 30×45 cm</li><li>Online-Auswahlgalerie</li></ul>"),
+    ("pony", "Shooting „Tier-Mini“", 199, "pferde-shootings", True,
+     "ca. 30 Minuten · 1 Tier · 5 bearbeitete Bilder · Bezahlung vor Ort",
+     "<p>Der schnelle Einstieg: ein kurzes, entspanntes Shooting mit Portraits und Bewegung, für Pferd, Hund oder ein anderes Tier.</p>"
+     "<ul><li>ca. 30 Minuten Shooting</li><li>1 Tier</li><li>5 bearbeitete Bilder (digital, volle Auflösung)</li><li>Weitere Bilder jederzeit nachkaufbar</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
+    ("warmblut", "Shooting „Tier-Classic“", 349, "pferde-shootings", True,
+     "ca. 60 Minuten · Pferd & Reiter oder Hund & Halter · 12 bearbeitete Bilder · Bezahlung vor Ort",
+     "<p>Das beliebteste Paket: genug Zeit für Portraits, Mensch & Tier und Bewegung, ganz ohne Stress.</p>"
+     "<ul><li>ca. 60 Minuten Shooting</li><li>Pferd & Reiter oder Hund & Halter, 2 Outfits möglich</li><li>12 bearbeitete Bilder (digital, volle Auflösung)</li><li>Vorbereitungs-Checkliste</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
+    ("kaltblut", "Shooting „Tier & Familie Premium“", 549, "pferde-shootings", True,
+     "ca. 90 Minuten · ganze Familie mit Tier(en) · 25 bearbeitete Bilder + Wandbild · Bezahlung vor Ort",
+     "<p>Für alle, die es ganz besonders wollen: die ganze Familie mit Pferd, Hund und Co.</p>"
+     "<ul><li>ca. 90 Minuten Shooting</li><li>Familie mit Tier(en)</li><li>25 aufwendig bearbeitete Bilder</li><li>1 Wandbild inklusive</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
     ("black-background", "Black Background Mini", 119, "pferde-shootings", True,
      "30 Minuten · 4 Portraits vor schwarzem Hintergrund",
      "<p>Ausdrucksstarke Studio-Portraits direkt an deinem Stall, mit mobilem schwarzem Hintergrund.</p><ul><li>ca. 30 Minuten</li><li>4 bearbeitete Portraits</li></ul>"),

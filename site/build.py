@@ -123,9 +123,13 @@ def step_shop():
         api("POST", f"/wc/v3/shipping/zones/{z['id']}/methods", {"method_id": "flat_rate", "settings": {"title": "Versand (DHL)", "cost": "6.90"}})
         api("POST", f"/wc/v3/shipping/zones/{z['id']}/methods", {"method_id": "free_shipping", "settings": {"title": "Kostenloser Versand", "requires": "min_amount", "min_amount": "150"}})
     log("shipping zone Deutschland")
-    api("POST", "/wc/v3/payment_gateways/bacs", {"enabled": True, "title": "Überweisung (Vorkasse)",
-        "description": "Bitte überweise den Betrag nach der Bestellung. Die Bankverbindung erhältst du in der Bestätigungs-E-Mail. Termine werden nach Zahlungseingang bestätigt."})
-    log("payment: Vorkasse enabled (add IBAN in WooCommerce → Settings → Payments)")
+    # for now every payment happens in person; bank transfer stays configured but switched off
+    api("PUT", "/wc/v3/payment_gateways/cod", {"enabled": True, "title": "Bezahlung vor Ort beim Termin",
+        "description": "Du bezahlst persönlich beim Shooting bzw. Termin, bar oder per Überweisung. Online wird nichts abgebucht. Deine Buchung ist eine verbindliche Terminreservierung.",
+        "settings": {"instructions": "Du bezahlst persönlich beim Termin, bar oder per Überweisung. Ich melde mich innerhalb von 24 Stunden, um den Termin abzustimmen.",
+                     "enable_for_virtual": "yes", "enable_for_methods": []}})
+    api("PUT", "/wc/v3/payment_gateways/bacs", {"enabled": False, "title": "Überweisung (Vorkasse)"})
+    log("payment: Bezahlung vor Ort (Vorkasse configured but off)")
 
 
 # ------------------------------------------------------------------ 3. products
@@ -139,7 +143,7 @@ def step_products():
     PR = {}
     for key, name, price, cat, virtual, short, long in catalog.P:
         slug = "rd-" + key
-        body = {"name": name, "slug": slug, "type": "simple", "status": "publish", "regular_price": f"{price:.2f}",
+        body = {"name": name, "slug": slug, "type": "simple", "status": "draft" if key in catalog.DRAFT else "publish", "regular_price": f"{price:.2f}",
                 "virtual": virtual, "short_description": f"<p>{short}</p>", "description": catalog.description(key, cat, long),
                 "categories": [{"id": cats[cat]["id"]}], "catalog_visibility": "hidden" if cat in ("anfahrt",) else "visible",
                 "sold_individually": cat in catalog.SINGLE}
@@ -169,14 +173,11 @@ def nav_links(items):
 
 
 MENUS = {
-    "Menü Pferde": [("Portfolio", "/pferde/portfolio/"), ("Shootings &amp; Preise", "/pferde/shootings-preise/"), ("Stalltag", "/pferde/stalltag/"),
-                    ("Turnierfotos", "/pferde/turnierfotografie/"), ("Freie Termine", "/verfuegbarkeit/?w=pferde"), ("Gutscheine", "/gutscheine/?w=pferde"), ("FAQ", "/pferde/ablauf-faq/"),
-                    ("Kontakt", "/kontakt/?w=pferde"), ("Dein Event", "/pferde/dein-event/"), ("→ Hochzeit", "/hochzeit/")],
-    "Menü Hochzeit": [("Echte Hochzeiten", "/hochzeit/echte-hochzeiten/"), ("Pakete &amp; Preise", "/hochzeit/pakete-preise/"),
-                      ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben", "/hochzeit/alben-wandbilder/"), 
-                      ("Freie Termine", "/verfuegbarkeit/?w=hochzeit"), ("FAQ", "/hochzeit/ablauf-faq-hochzeit/"), ("Kontakt", "/kontakt/?w=hochzeit"), ("Euer Event", "/hochzeit/euer-event/"), ("→ Pferde", "/pferde/")],
-    "Menü Hauptseite": [("Pferde", "/pferde/"), ("Hochzeit", "/hochzeit/"), ("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("Shop", "/shop/"),
-                        ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/")],
+    "Menü Pferde": [("Portfolio", "/pferde/portfolio/"), ("Preise", "/pferde/shootings-preise/"), ("Über mich", "/ueber-mich/?w=pferde"),
+                    ("Kontakt", "/kontakt/?w=pferde"), ("→ Hochzeit", "/hochzeit/")],
+    "Menü Hochzeit": [("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), ("Über mich", "/ueber-mich/?w=hochzeit"),
+                      ("Kontakt", "/kontakt/?w=hochzeit"), ("→ Pferde", "/pferde/")],
+    "Menü Hauptseite": [("Pferde", "/pferde/"), ("Hochzeit", "/hochzeit/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/")],
 }
 
 
@@ -224,11 +225,11 @@ def footer():
 <!-- /wp:paragraph --></div>
 <!-- /wp:column -->
 
-{col("Pferde", [("Shootings &amp; Preise", "/pferde/shootings-preise/"), ("Stalltag", "/pferde/stalltag/"), ("Turnierfotos", "/pferde/turnierfotografie/"), ("Portfolio", "/pferde/portfolio/"), ("Dein Event", "/pferde/dein-event/")])}
+{col("Pferde", [("Portfolio", "/pferde/portfolio/"), ("Preise", "/pferde/shootings-preise/"), ("Für Betriebe", "/pferde/shootings-preise/#betriebe")])}
 
-{col("Hochzeit", [("Pakete &amp; Preise", "/hochzeit/pakete-preise/"), ("Paarshootings", "/hochzeit/paarshootings/"), ("Alben &amp; Wandbilder", "/hochzeit/alben-wandbilder/"), ("Euer Event", "/hochzeit/euer-event/")])}
+{col("Hochzeit", [("Pakete &amp; Preise", "/hochzeit/pakete-preise/")])}
 
-{col("Info", [("Freie Termine", "/verfuegbarkeit/"), ("Gutscheine", "/gutscheine/"), ("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("Cookie-Richtlinie", "/cookie-richtlinie-eu/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/"), ("Vertrag widerrufen", "/vertrag-widerrufen/")])}</div>
+{col("Info", [("Über mich", "/ueber-mich/"), ("Kontakt", "/kontakt/"), ("Versand &amp; Zahlung", "/versand-zahlung/"), ("Impressum", "/impressum/"), ("Datenschutz", "/datenschutz/"), ("Cookie-Richtlinie", "/cookie-richtlinie-eu/"), ("AGB", "/agb/"), ("Widerruf", "/widerruf/"), ("Vertrag widerrufen", "/vertrag-widerrufen/")])}</div>
 <!-- /wp:columns -->
 
 <!-- wp:paragraph {{"className":"rd-legal"}} -->
@@ -293,7 +294,7 @@ def step_pages():
         html = pg["content"]
         for slug, link in CAT.items():
             html = html.replace(f"/produkt-kategorie/{slug}/", link)
-        body = {"title": pg["title"], "slug": pg["slug"], "content": html, "status": "publish", "template": pg["template"],
+        body = {"title": pg["title"], "slug": pg["slug"], "content": html, "status": "draft" if pg["slug"] in content.DRAFT else "publish", "template": pg["template"],
                 "parent": ids.get(pg["parent"], 0) if pg["parent"] else 0}
         cur = existing.get(pg["slug"])
         res = api("POST", f"/wp/v2/pages/{cur['id']}", body) if cur else api("POST", "/wp/v2/pages", body)
@@ -310,6 +311,10 @@ def step_pages():
     log("front page + site title")
 
 
+# Client galleries (PhotoSorter upload, event codes, photo sales) are parked for now: kept in the repo, switched off on the site.
+INACTIVE_SNIPPETS = {"gallery-core", "gallery-api", "gallery-front", "gallery-shop", "gallery-admin"}
+
+
 def step_snippets():
     """PHP snippets via the Code Snippets plugin (upsert by name)."""
     have = {s["name"]: s for s in api("GET", "/code-snippets/v1/snippets")}
@@ -322,16 +327,17 @@ def step_snippets():
             code = code.replace("RD_TERMIN_IDS", "array( " + ", ".join(map(str, ids)) + " )")
         if "RD_ICS_URL" in code:
             code = code.replace("RD_ICS_URL", (HERE / "calendar_url.txt").read_text().strip())
-        body = {"name": name, "code": code, "scope": "global", "active": True,
+        on = f.stem not in INACTIVE_SNIPPETS
+        body = {"name": name, "code": code, "scope": "global", "active": on,
                 "desc": "Managed by site/build.py (Website-photography- repo)."}
         if name in have:
             res = api("POST", f"/code-snippets/v1/snippets/{have[name]['id']}", body)
         else:
             res = api("POST", "/code-snippets/v1/snippets", body)
         # Code Snippets sometimes deactivates a snippet while re-saving it (old version still loaded); switch it back on
-        if not api("GET", f"/code-snippets/v1/snippets/{res['id']}").get("active"):
+        if on and not api("GET", f"/code-snippets/v1/snippets/{res['id']}").get("active"):
             api("POST", f"/code-snippets/v1/snippets/{res['id']}/activate")
-            if not api("GET", f"/code-snippets/v1/snippets/{res['id']}").get("active"):
+            if on and not api("GET", f"/code-snippets/v1/snippets/{res['id']}").get("active"):
                 sys.exit(f"Snippet {name} could not be activated - check it in wp-admin → Snippets")
             log("snippet", name, "(re-activated)")
         log("snippet", name)

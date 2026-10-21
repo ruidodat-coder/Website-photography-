@@ -82,6 +82,23 @@ def card(title, price, items, url, label="Jetzt buchen", popular=False, sub=None
     )
 
 
+def HORSE_CARDS(PR, long=False):
+    """Packages from the business plan (Tier-Mini / Tier-Classic / Tier & Familie Premium)."""
+    return [
+        card("Tier-Mini", "199 €", ["ca. 30 Minuten", "1 Tier", "5 bearbeitete Bilder"] + (["Pferd, Hund oder anderes Tier"] if long else []), PR["pony"]["url"], "Termin buchen"),
+        card("Tier-Classic", "349 €", ["ca. 60 Minuten", "Pferd &amp; Reiter oder Hund &amp; Halter", "12 bearbeitete Bilder"] + (["2 Outfits möglich"] if long else []), PR["warmblut"]["url"], "Termin buchen", popular=True),
+        card("Tier &amp; Familie Premium", "549 €", ["ca. 90 Minuten", "ganze Familie mit Tier(en)", "25 bearbeitete Bilder", "Wandbild inklusive"], PR["kaltblut"]["url"], "Termin buchen"),
+    ]
+
+
+def WEDDING_CARDS(url, label, long=False):
+    """Wedding packages from the business plan."""
+    return [
+        card("Halbtag", "1.490 €", ["5 Stunden Begleitung", "z. B. Trauung, Empfang &amp; Paarshooting", "alle gelungenen Bilder bearbeitet"] + (["ideal für Standesamt &amp; kleine Feiern"] if long else []), url, label),
+        card("Ganztag", "2.490 €", ["9 Stunden Begleitung", "vom Getting Ready bis zur Party", "alle gelungenen Bilder bearbeitet", "Sneak Peek in 72 h"] + (["Paarshooting zur Golden Hour"] if long else []), url, label, popular=True),
+    ]
+
+
 def travel_table(world):
     rows = [
         ["1 · bis 30 km", "Speyer, Landau, Karlsruhe, Bruchsal, Hockenheim, Kandel", "inklusive"],
@@ -113,6 +130,11 @@ def cal_block(cal_url, world):
         cls="rd-section rd-cal", align="wide")
 
 
+# Online for now: portfolio, prices, about, contact, legal. Everything else stays as a draft.
+DRAFT = {"stalltag", "turnierfotografie", "dein-event", "deine-bilder", "ablauf-faq", "paarshootings", "alben-wandbilder",
+         "eure-bilder", "euer-event", "gaestegalerie", "echte-hochzeiten", "ablauf-faq-hochzeit", "verfuegbarkeit", "gutscheine"}
+
+
 def build(M, PR, CAL=None):
     m = lambda i: M[i]
     pages = []
@@ -134,7 +156,7 @@ def build(M, PR, CAL=None):
             buttons(button("Zur Hochzeitsfotografie", "/hochzeit/", outline=True)),
             cls="rd-half rd-half-hochzeit rd-half-photo", bg=stock("boho-braut-sand", "50% 40%"))),
         cls="rd-split", align="full")
-    bar = group(p('<a href="/gutscheine/">Gutscheine</a> <a href="/ueber-mich/">Über mich</a> '
+    bar = group(p('<a href="/ueber-mich/">Über mich</a> '
                   '<a href="/kontakt/">Kontakt</a> <a href="/impressum/">Impressum</a> <a href="/datenschutz/">Datenschutz</a>',
                   align="center"), cls="rd-splitbar", align="full")
     add(slug="home", title="Rui Dodat Fotografie", template="rd-blank", parent=None, content=home + "\n\n" + bar)
@@ -143,19 +165,19 @@ def build(M, PR, CAL=None):
     T = "rd-pferde"
     pferde = "\n\n".join([
         group(hero_video("pferde"),
-              p("Pferdefotografie · Südpfalz &amp; Umgebung", "rd-eyebrow"),
+              p("Pferdefotograf Südpfalz · Pferde, Tiere &amp; Familie", "rd-eyebrow"),
               h("Dein Pferd.<br>Eure Geschichte.", 1),
-              p("Ruhige, pferdeerfahrene Shootings: Portraits, Pferd &amp; Reiter, Black Background und Turnierfotografie, "
-                "rund um Germersheim, Speyer, Landau und Karlsruhe.", "rd-lead"),
-              buttons(button("Shooting buchen", "/pferde/shootings-preise/"),
-                      button("Turnierfotos", "/pferde/turnierfotografie/", outline=True)),
+              p("Pferdeerfahrene Shootings vom eigenen Reitbetrieb aus: Portraits, Pferd &amp; Reiter, Fohlen, Verkaufsfotos, "
+                "Stalltage und Turniere, rund um Germersheim, Speyer, Landau und Karlsruhe.", "rd-lead"),
+              buttons(button("Preise ansehen", "/pferde/shootings-preise/"),
+                      button("Portfolio", "/pferde/portfolio/", outline=True)),
               cls="rd-hero rd-hero-video", align="full", bg=poster_bg("pferde")),
-        group(stats([(10, "Tage", "Fertig in 10 Tagen", "Deine Online-Galerie kommt schnell. Express in 48 h möglich."),
-                     (149, "€", "Faire Festpreise", "Ab 149 €, alles vorab online bezahlt. Keine versteckten Kosten."),
+        group(stats([(199, "€", "Ab 199 €", "Tier-Mini: 30 Minuten, 5 bearbeitete Bilder. Faire Festpreise."),
+                     (8, "Pferde", "Stalltage", "Bis zu 8 Pferde an einem Tag in deinem Stall, weniger Anfahrt für alle."),
                      (30, "km", "Anfahrt inklusive", "Rund um Germersheim komme ich ohne Aufpreis zu dir an den Stall."),
-                     (100, "%", "Im Tempo deines Pferdes", "Ruhig, geduldig, ohne Stress. Wetter-Verschiebung kostenlos.")]),
+                     (100, "%", "Pferdeerfahren", "Eigener Reitbetrieb: ruhig, sicher und im Tempo deines Pferdes.")]),
               cls="rd-section rd-stats-section", align="full"),
-        group(marquee(["Portraits", "Pferd &amp; Reiter", "Black Background", "Golden Hour", "Turniere", "Stalltage", "Fohlen"]), cls="rd-marquee-wrap", align="full", layout="default"),
+        group(marquee(["Portraits", "Pferd &amp; Reiter", "Fohlen", "Verkaufsfotos", "Stalltage", "Turniere", "Hund &amp; Familie"]), cls="rd-marquee-wrap", align="full", layout="default"),
         group(p("Portfolio", "rd-eyebrow", align="center"), h("Momente, die bleiben", 2, align="center"),
               gallery([(m(479), "Grauer Wallach im Blütenhain"), (m(481), "Haflinger Portrait"), (m(483), "Pferd vor schwarzem Hintergrund"),
                        (m(480), "Portrait im Frühling"), (m(322), "Reiterin mit Schimmel"), (m(477), "Reiterin kniet bei ihrem Pferd")],
@@ -163,22 +185,25 @@ def build(M, PR, CAL=None):
               buttons(button("Ganzes Portfolio", "/pferde/portfolio/", outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="full"),
         group(p("Shootings", "rd-eyebrow", align="center"), h("Finde dein Paket", 2, align="center"),
-              columns(
-                  card("Pony", "149 €", ["45 Minuten", "1 Pferd", "5 bearbeitete Bilder"], PR["pony"]["url"]),
-                  card("Warmblut", "289 €", ["90 Minuten", "Pferd &amp; Reiter, 2 Outfits", "12 bearbeitete Bilder"], PR["warmblut"]["url"], popular=True),
-                  card("Kaltblut", "479 €", ["2,5 Stunden, Golden Hour", "25 Bilder + alle weiteren", "Fine-Art-Print 30×45"], PR["kaltblut"]["url"]),
-                  cls="rd-cards"),
-              p('<a href="/pferde/shootings-preise/">Alle Preise, Extras &amp; Stalltage →</a>', align="center"),
+              columns(*HORSE_CARDS(PR), cls="rd-cards"),
+              p("Bezahlt wird bequem vor Ort beim Shooting. Hunde und andere Tiere sind genauso willkommen.", "rd-small", align="center"),
+              p('<a href="/pferde/shootings-preise/">Alle Preise, Stalltage, Turniere &amp; Extras →</a>', align="center"),
               cls="rd-section rd-tint", align="full"),
         group(columns(
-            column(p("Turnierfotografie", "rd-eyebrow"), h("Deine Ritte. Am selben Abend online.", 2),
-                   p("Ich fotografiere Dressur- und Springturniere in der Region. Finde deine Bilder nach Startnummer oder sichere dir vorab die Turnier-Flatrate."),
-                   buttons(button("Turnierfotos &amp; Kalender", "/pferde/turnierfotografie/"))),
+            column(p("Turniere &amp; Pferdeevents", "rd-eyebrow"), h("Deine Ritte. Deine Schleife.", 2),
+                   p("Ich fotografiere Dressur- und Springturniere, Vereinsfeste und Lehrgänge in der Region. "
+                     "Bilder ab 15 € pro Stück oder 59 € im Paket, bestellt und bezahlt direkt bei mir."),
+                   p("Veranstalter? Ich komme gern als offizieller Fotograf zu eurem Turnier."),
+                   buttons(button("Turnier anfragen", "/kontakt/?w=pferde"))),
             column(gallery([(m(489), "Dressurprüfung"), (m(485), "Siegerehrung"), (m(487), "Pony-Prüfung"), (m(484), "Glückwunsch nach dem Ritt")])),
         ), cls="rd-section rd-dark", align="full"),
-        group(p("Gutscheine", "rd-eyebrow", align="center"), h("Das perfekte Geschenk", 2, align="center"),
-              p("Gutscheine für Shootings oder Wunschbetrag, sofort als PDF zum Ausdrucken.", align="center"),
-              buttons(button("Gutschein verschenken", "/gutscheine/"), cls="is-content-justification-center"),
+        group(p("Für Betriebe", "rd-eyebrow", align="center"), h("Fotos für die Pferdebranche", 2, align="center"),
+              p("Hufschmiede, Trainer, Sattler, Tierärzte, Ställe und Züchter: Bilder für Website, Social Media und Verkauf.", align="center"),
+              buttons(button("Angebote für Betriebe", "/pferde/shootings-preise/#betriebe", outline=True), cls="is-content-justification-center"),
+              cls="rd-section", align="wide"),
+        group(p("Unser Hof", "rd-eyebrow", align="center"), h("Shooting auf dem Hof", 2, align="center"),
+              p("Kein passender Ort? Unser eigener Hof in der Südpfalz ist eine ruhige, pferdegerechte Kulisse, im Winter auch in der Halle.", align="center"),
+              buttons(button("Termin anfragen", "/kontakt/?w=pferde"), cls="is-content-justification-center"),
               cls="rd-band rd-parallax", align="full", bg={"url": M[475]["url"], "id": 475, "pos": "50% 50%"}),
     ])
     add(slug="pferde", title="Pferdefotografie", template=T, parent=None, content=pferde)
@@ -195,39 +220,55 @@ def build(M, PR, CAL=None):
               cls="rd-section", align="wide"),
     ]))
 
-    add(slug="shootings-preise", title="Shootings & Preise", template=T, parent="pferde", content="\n\n".join([
-        group(p("Shootings &amp; Preise", "rd-eyebrow"), h("Ehrliche Festpreise. Vorab online bezahlt.", 1),
-              p("Wähle dein Paket, bezahle online und gib deine Wunschtermine an. Bei schlechtem Wetter verschieben wir kostenlos.", "rd-lead"),
+    add(slug="shootings-preise", title="Preise", template=T, parent="pferde", content="\n\n".join([
+        group(p("Preise", "rd-eyebrow"), h("Ehrliche Festpreise.", 1),
+              p("Paket wählen, Termin anfragen, entspannt shooten. Bezahlt wird persönlich vor Ort beim Shooting. "
+                "Bei schlechtem Wetter verschieben wir kostenlos.", "rd-lead"),
               cls="rd-section", align="wide"),
-        group(columns(
-            card("Pony", "149 €", ["ca. 45 Minuten", "1 Pferd", "5 bearbeitete Bilder", "Online-Galerie"], PR["pony"]["url"]),
-            card("Warmblut", "289 €", ["ca. 90 Minuten", "Pferd &amp; Reiter, 2 Outfits", "12 bearbeitete Bilder", "Online-Auswahlgalerie"], PR["warmblut"]["url"], popular=True),
-            card("Kaltblut", "479 €", ["ca. 2,5 Stunden", "Golden Hour oder Black Background", "25 Bilder + alle weiteren basis-bearbeitet", "Fine-Art-Print 30×45"], PR["kaltblut"]["url"]),
-            cls="rd-cards"), cls="rd-section rd-tint", align="full"),
+        group(h("Pferd, Hund &amp; Familie", 2), columns(*HORSE_CARDS(PR, long=True), cls="rd-cards"),
+              p("Alle Preise sind Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.", "rd-small"),
+              cls="rd-section rd-tint", align="full"),
         group(h("Spezial-Shootings", 2), columns(
-            card("Black Background Mini", "119 €", ["ca. 30 Minuten", "4 Studio-Portraits", "mobiles Studio am Stall"], PR["black-background"]["url"]),
-            card("Fohlen- &amp; Verkaufsfotos", "169 €", ["Exterieur + Bewegung", "8 Bilder", "Lieferung in 48 h"], PR["verkaufsfotos"]["url"]),
-            card("Stalltag (Gruppe)", "89 € / Pferd", ["ab 5 Pferden", "30 Min., 3 Bilder pro Pferd", "Organisator/in gratis"], "/pferde/stalltag/", "Mehr erfahren"),
+            card("Black Background Mini", "119 €", ["ca. 30 Minuten", "4 Studio-Portraits", "mobiles Studio am Stall"], PR["black-background"]["url"], "Termin buchen"),
+            card("Fohlen- &amp; Verkaufsfotos", "169 €", ["Exterieur + Bewegung", "8 Bilder", "Lieferung in 48 h", "Verkaufsvideo auf Anfrage"], PR["verkaufsfotos"]["url"], "Termin buchen"),
+            card("Stalltag", "89 € / Pferd", ["6–8 Pferde an einem Tag", "ca. 30 Min. und 3 Bilder pro Pferd", "Anfahrt wird geteilt, Organisator/in gratis"], "/kontakt/?w=pferde", "Stalltag anfragen"),
             cls="rd-cards"), cls="rd-section", align="wide"),
-        group(h("Extras", 2), table(["Extra", "Preis"], [
+        group(h("Turnierfotografie", 2),
+              table(["Für Reiter/innen", "Preis"], [["Einzelbild digital", "15–25 € je nach Prüfung"], ["Bilderpaket (alle Bilder eines Ritts)", "59 €"]]),
+              p("Bestellung und Bezahlung direkt bei mir am Turnier oder per Nachricht. Veranstalter: Ich komme gern als offizieller Fotograf, "
+                '<a href="/kontakt/?w=pferde">einfach anfragen</a>.', "rd-small"),
+              cls="rd-section", align="wide"),
+        group(h("Für Betriebe der Pferdebranche", 2),
+              table(["Für wen", "Was", "Preis"], [
+                  ["Hufschmiede &amp; Hufpfleger", "Arbeitsfotos, Portrait, Website &amp; Social Media", "ab 250 €"],
+                  ["Trainer &amp; Reitlehrer", "Portrait, Action im Unterricht, Kurs- und Lehrgangsfotos", "ab 300 €"],
+                  ["Sattler, Shops &amp; Marken", "Produktfotos, Fotos am Pferd für Shop und Katalog", "ab 15 € / Bild, Tagessatz ab 600 €"],
+                  ["Tierärzte, Osteopathen, Physios", "Team- und Behandlungsfotos für die Website", "ab 300 €"],
+                  ["Ställe &amp; Züchter", "Anlagenfotos, Verkaufspferde, Hengstfotos", "ab 400 €"],
+                  ["Futtermittel- &amp; Pferdehandel", "Werbe- und Social-Media-Content", "nach Projekt"]]),
+              p("Regelmäßiger Content, z. B. 4 Shootings im Jahr, zu Sonderkonditionen. Produktshootings auch auf unserem Hof.", "rd-small"),
+              cls="rd-section", align="wide", anchor="betriebe"),
+        group(h("Extras &amp; Wandbilder", 2), table(["Extra", "Preis"], [
             ["Zusätzliches bearbeitetes Bild", "25 €"], ["Bilderpaket 5 / 10", "99 € / 179 €"], ["Alle Bilder (basis-bearbeitet)", "249 €"],
-            ["Weiteres Pferd", "49 €"], ["Weitere Person", "25 €"], ["Drohnenaufnahmen", "59 €"], ["Express-Lieferung 48 h", "49 €"]]),
-            p('Extras kannst du direkt mitbuchen oder nach dem Shooting <a href="/produkt-kategorie/pferde-extras/">im Shop nachkaufen</a>.', "rd-small"),
+            ["Weiteres Tier", "49 €"], ["Weitere Person", "25 €"], ["Drohnenaufnahmen", "59 €"], ["Express-Lieferung 48 h", "49 €"],
+            ["Fine-Art-Print 20×30 / 30×45 / 40×60", "39 € / 69 € / 99 €"], ["Leinwand 60×90", "189 €"], ["Acryl/Alu-Dibond 60×90", "269 €"],
+            ["Fotoalbum 20×20 (20 Seiten) / 30×30 (30 Seiten)", "149 € / 349 €"]]),
             cls="rd-section", align="wide"),
-        cal_block(CAL, "pferde"),
         group(h("Anfahrt", 2), travel_table("pferde"),
-              p('Anfahrt Zone 2 und 3 kannst du <a href="' + PR["anfahrt-z2"]["url"] + '">hier</a> bzw. <a href="' + PR["anfahrt-z3"]["url"] + '">hier</a> mitbuchen. Beim Stalltag wird die Anfahrt auf alle Pferde aufgeteilt.', "rd-small"),
+              p("Beim Stalltag wird die Anfahrt auf alle Pferde aufgeteilt.", "rd-small"),
               cls="rd-section", align="wide"),
         group(h("So läuft's", 2), columns(
-            column(h("Buchen", 3), p("Paket wählen, online bezahlen und 2–3 Wunschtermine angeben.")),
+            column(h("Anfragen", 3), p("Paket wählen und 2–3 Wunschtermine schicken, online, per WhatsApp oder Formular.")),
             column(h("Vorbereiten", 3), p("Du bekommst eine Checkliste: Putzen, Outfits, Location, Uhrzeit fürs beste Licht.")),
-            column(h("Shooten", 3), p("Ganz entspannt, im Tempo deines Pferdes. Helfer zum Aufmerksam-Machen sind Gold wert.")),
-            column(h("Auswählen", 3), p("In 10 Tagen ist deine Online-Galerie da. Lieblingsbilder auswählen, fertig!")),
+            column(h("Shooten", 3), p("Ganz entspannt, im Tempo deines Pferdes. Bezahlt wird vor Ort, bar oder per Überweisung.")),
+            column(h("Auswählen", 3), p("Du suchst deine Lieblingsbilder aus, ich bearbeite sie und schicke sie dir.")),
             cls="rd-steps"), cls="rd-section rd-tint", align="full"),
         group(h("Gut zu wissen", 2),
               details("Was passiert bei schlechtem Wetter?", p("Wir verschieben kostenlos auf einen neuen Termin.")),
-              details("Kann ich stornieren?", p("Bis 14 Tage vor dem Termin: Erstattung abzüglich 40 € Bearbeitungsgebühr, oder der volle Betrag als Gutschein. Danach wandeln wir den Betrag in einen Gutschein um (3 Jahre gültig).")),
+              details("Wann und wie bezahle ich?", p("Persönlich beim Shooting. Online musst du nichts bezahlen.")),
+              details("Kann ich absagen?", p("Ja. Sag bitte so früh wie möglich Bescheid, dann finden wir einen neuen Termin.")),
               details("Darf ich die Bilder online teilen?", p("Ja, für private Zwecke und Social Media gern, mit Verlinkung. Gewerbliche Nutzung (z. B. Verkaufsanzeigen von Händlern) bitte vorher anfragen.")),
+              details("Fotografierst du auch Hunde?", p("Ja. Hunde und andere Tiere fotografiere ich gern, am schönsten zusammen mit Pferd oder Familie.")),
               details("Warum keine Mehrwertsteuer?", p("Als Kleinunternehmer gemäß § 19 UStG wird keine Umsatzsteuer berechnet. Alle Preise sind Endpreise.")),
               cls="rd-section", align="wide"),
     ]))
@@ -313,7 +354,7 @@ def build(M, PR, CAL=None):
     ph = lambda txt="Hochzeitsbild folgt": group(p(txt, align="center"), cls="rd-placeholder")
     add(slug="hochzeit", title="Hochzeitsfotografie", template=T, parent=None, content="\n\n".join([
         group(hero_video("hochzeit"),
-              p("Hochzeitsfotografie · Südpfalz · Speyer · Karlsruhe", "rd-eyebrow"),
+              p("Hochzeitsfotografie · Land- &amp; Pferdehochzeiten · Südpfalz", "rd-eyebrow"),
               h("Euer Tag.<br><em>Für immer.</em>", 1),
               p("Natürliche, ungestellte Hochzeitsreportagen: die Tränen beim Ja-Wort, das Lachen der Gäste, der letzte Tanz.", "rd-lead"),
               buttons(button("Verfügbarkeit &amp; Preis", "#verfuegbarkeit"), button("Pakete &amp; Preise", "/hochzeit/pakete-preise/", outline=True)),
@@ -324,7 +365,7 @@ def build(M, PR, CAL=None):
               raw("<!-- wp:shortcode -->\n[rd_wedding_check]\n<!-- /wp:shortcode -->"),
               cls="rd-section rd-tint rd-wcheck-section", align="full", anchor="verfuegbarkeit"),
         group(stats([(72, "h", "Sneak Peek", "Die ersten Lieblingsbilder habt ihr schon wenige Tage nach der Hochzeit."),
-                     (700, "Bilder", "Ungestellt &amp; ehrlich", "Ich begleite euch zurückhaltend und fange echte Momente ein."),
+                     (9, "Std", "Ganztags dabei", "Vom Getting Ready bis zur Party, ungestellt und zurückhaltend."),
                      (24, "h", "Schnelle Antwort", "Auf jede Anfrage melde ich mich innerhalb eines Tages."),
                      (1, "Paar", "Pro Tag", "Ich fotografiere nur eine Hochzeit am Tag. Eure.")]),
               cls="rd-section rd-stats-section", align="full"),
@@ -337,11 +378,8 @@ def build(M, PR, CAL=None):
               p("Symbolbilder von Unsplash. Eigene Hochzeitsreportagen folgen.", "rd-small", align="center"),
               cls="rd-section", align="full"),
         group(p("Pakete", "rd-eyebrow", align="center"), h("Für jede Hochzeit das <em>passende</em> Paket", 2, align="center"),
-              columns(
-                  card("Herzstück", "1.890 €", ["7 Stunden", "ca. 450 Bilder", "Sneak Peek &amp; Gästegalerie"], "/hochzeit/pakete-preise/", "Details"),
-                  card("Für Immer", "2.690 €", ["10 Stunden", "ca. 700 Bilder", "Paarshooting inklusive"], "/hochzeit/pakete-preise/", "Details", popular=True),
-                  card("Grenzenlos", "3.790 €", ["12 Stunden, 2 Fotografen", "Album + 2 Elternalben", "Paarshooting inklusive"], "/hochzeit/pakete-preise/", "Details"),
-                  cls="rd-cards"),
+              columns(*WEDDING_CARDS("/hochzeit/pakete-preise/", "Details"), cls="rd-cards rd-cards-2"),
+              p("Bezahlt wird persönlich, nicht online. Gebucht wird nach einem Kennenlernen.", "rd-small", align="center"),
               cls="rd-section rd-tint", align="full"),
         group(p("Lasst uns reden", "rd-eyebrow", align="center"), h("Erzählt mir <em>von euch</em>", 2, align="center"),
               p("Euer Datum ist noch frei? Schreibt mir, ich melde mich innerhalb von 24 Stunden.", align="center"),
@@ -351,36 +389,31 @@ def build(M, PR, CAL=None):
 
     add(slug="pakete-preise", title="Hochzeit – Pakete & Preise", template=T, parent="hochzeit", content="\n\n".join([
         group(p("Pakete &amp; Preise", "rd-eyebrow"), h("Transparent. <em>Ohne versteckte Kosten.</em>", 1),
-              p("Erst lernen wir uns persönlich kennen, dann bekommt ihr euren Vertrag. Mit der Anzahlung von 30 % ist euer Tag fest reserviert, der Rest ist 4 Wochen vor der Hochzeit fällig.", "rd-lead"),
-              buttons(button("Termin anfragen", "/kontakt/"), button("WhatsApp", WA, outline=True)),
+              p("Erst lernen wir uns persönlich kennen, dann bekommt ihr euren Vertrag. Mit der Anzahlung von 30 % ist euer Tag fest reserviert, der Rest ist 4 Wochen vor der Hochzeit fällig. Bezahlt wird persönlich, nicht online.", "rd-lead"),
+              buttons(button("Termin anfragen", "/kontakt/?w=hochzeit"), button("WhatsApp", WA, outline=True)),
               cls="rd-hero rd-hero-short rd-hero-boho", align="full", bg=stock("boho-paar-feld", "50% 50%")),
-        group(columns(
-            card("Ja-Wort", "890 €", ["Standesamt, 2,5 Stunden", "ca. 150 Bilder", "Online-Galerie"], "/kontakt/", "Termin anfragen"),
-            card("Herzstück", "1.890 €", ["7 Stunden (Trauung bis Eröffnungstanz)", "ca. 450 Bilder", "Sneak Peek in 72 h", "Gästegalerie"], "/kontakt/", "Termin anfragen"),
-            card("Für Immer", "2.690 €", ["10 Stunden", "ca. 700 Bilder", "Paarshooting inklusive", "Sneak Peek &amp; Gästegalerie"], "/kontakt/", "Termin anfragen", popular=True),
-            card("Grenzenlos", "3.790 €", ["12 Stunden, 2 Fotografen", "Paarshooting inklusive", "Album 30×30, 40 Seiten", "2 Elternalben"], "/kontakt/", "Termin anfragen"),
-            cls="rd-cards"),
+        group(columns(*WEDDING_CARDS("/kontakt/?w=hochzeit", "Termin anfragen", long=True), cls="rd-cards rd-cards-2"),
             p("Nebensaison (November–März) und Montag–Donnerstag: <strong>10 % Rabatt</strong> auf alle Pakete.", "rd-note"),
             cls="rd-section rd-tint", align="full"),
         group(h("Extras", 2), table(["Extra", "Preis"], [
             ["Zusätzliche Stunde", "190 €"], ["Zweitfotograf/in", "590 €"], ["Drohnenaufnahmen", "249 €"],
             ["Express-Lieferung (2 Wochen)", "190 €"], ["Fotobox mit 30 Fine-Art-Prints", "249 €"],
             ["Hochzeitsalbum 30×30, 40 Seiten", "590 €"], ["Elternalbum 20×20", "149 €"],
-            ['<a href="/hochzeit/paarshootings/">Verlobungs-/Paarshooting</a>', "290 € (190 € mit Hochzeit)"]]),
+            ["Verlobungs-/Paarshooting", "290 € (190 € mit Hochzeit)"]]),
             cls="rd-section", align="wide"),
-        cal_block(CAL, "hochzeit"),
         group(h("Anfahrt", 2), travel_table("hochzeit"), cls="rd-section", align="wide"),
         group(h("So läuft's", 2), columns(
             column(h("Anfragen", 3), p("Datum &amp; Location schicken. Ich prüfe sofort, ob ich an eurem Tag frei bin.")),
             column(h("Kennenlernen", 3), p("Wir treffen uns persönlich, bei einem Kaffee oder an eurer Location: Ablauf, Wünsche, Paket.")),
-            column(h("Vertrag", 3), p("Nach dem Treffen bekommt ihr euren Vertrag per E-Mail. In Ruhe lesen, unterschreiben, 30 % anzahlen. Euer Datum ist fest.")),
+            column(h("Vertrag", 3), p("Nach dem Treffen bekommt ihr euren Vertrag. In Ruhe lesen, unterschreiben, 30 % persönlich anzahlen. Euer Datum ist fest.")),
             column(h("Genießen", 3), p("Sneak Peek in 72 h, komplette Galerie in 4–6 Wochen.")),
             cls="rd-steps"), cls="rd-section rd-tint", align="full"),
         group(h("Häufige Fragen", 2),
               details("Warum erst ein persönliches Treffen?", p("Bei einer Hochzeit müsst ihr euch bei eurem Fotografen wohlfühlen. Deshalb buche ich Hochzeiten nur nach einem persönlichen Kennenlernen, nicht online. So könnt ihr alle Fragen stellen, bevor ihr unterschreibt.")),
               details("Was passiert, wenn ihr absagen müsst?", p("Bis 6 Monate vor der Hochzeit behalte ich die Anzahlung (30 %), bis 8 Wochen vorher 50 %, danach 80 % des Paketpreises. Weist ihr nach, dass mir ein geringerer Schaden entstanden ist, zahlt ihr nur diesen. Alles steht transparent im Vertrag.")),
               details("Und wenn du krank wirst?", p("Für den Notfall organisiere ich eine/n erfahrene/n Kollegin/Kollegen als Ersatz. Das ist im Vertrag geregelt.")),
-              details("Wie viele Bilder bekommen wir?", p("Je nach Paket 150 bis 700+ sorgfältig ausgewählte und bearbeitete Bilder, in Farbe und ausgewählte in Schwarzweiß.")),
+              details("Wie viele Bilder bekommen wir?", p("Alle gelungenen Bilder des Tages, sorgfältig ausgewählt und bearbeitet, in Farbe und ausgewählte in Schwarzweiß.")),
+              details("Wie bezahlen wir?", p("Persönlich bei mir: Anzahlung bei Vertragsschluss, Rest 4 Wochen vor der Hochzeit, bar oder per Überweisung. Online wird nichts bezahlt.")),
               details("Warum keine Mehrwertsteuer?", p("Als Kleinunternehmer gemäß § 19 UStG wird keine Umsatzsteuer berechnet. Alle Preise sind Endpreise.")),
               cls="rd-section", align="wide"),
     ]))
@@ -473,12 +506,22 @@ def build(M, PR, CAL=None):
 
     add(slug="ueber-mich", title="Über mich", template=T, parent=None, content="\n\n".join([
         group(columns(
-            column(group(p("Portrait von Rui folgt", align="center"), cls="rd-placeholder")),
+            column(img(m(477), "Pferd und Mensch im Blütenhain")),
             column(p("Über mich", "rd-eyebrow"), h("Hallo, ich bin Rui.", 1),
-                   p("[Text folgt: ein paar persönliche Sätze über dich, deinen Weg zur Fotografie, deine Liebe zu Pferden und was dir bei Hochzeiten wichtig ist.]"),
-                   p("Ich lebe in Germersheim und fotografiere in der Südpfalz, der Rhein-Neckar-Region und rund um Karlsruhe."),
+                   p("Pferde sind mein Alltag: Mit unserem eigenen Hof, Reitbetrieb und unserer Reitschule in der Südpfalz verbringe ich jeden Tag mit ihnen. "
+                     "Genau das bringe ich in meine Fotografie mit. Ich weiß, wie Pferde ticken, bleibe ruhig, wenn es mal unruhig wird, und arbeite in ihrem Tempo."),
+                   p("Ich fotografiere Pferde mit ihren Menschen, Hunde und Familien, Turniere und Stalltage, und Hochzeiten, am liebsten auf dem Land und gern auch mit Pferd."),
+                   p("Meine Basis ist Germersheim. Ich bin in der Südpfalz, in der Rhein-Neckar-Region, rund um Karlsruhe und bis ins Rhein-Main-Gebiet unterwegs, "
+                     "und unser Hof ist selbst eine schöne Kulisse."),
                    buttons(button("Pferdefotografie", "/pferde/"), button("Hochzeitsfotografie", "/hochzeit/", outline=True))),
         ), cls="rd-section", align="wide"),
+        group(p("Was mir wichtig ist", "rd-eyebrow", align="center"), h("Ehrliche Bilder, entspannte Shootings", 2, align="center"),
+              columns(
+                  column(h("Pferdekompetenz", 3), p("Eigener Reitbetrieb, sicherer Umgang mit Pferden. Dein Pferd steht im Mittelpunkt, nicht die Kamera.")),
+                  column(h("Faire Festpreise", 3), p("Klare Pakete ohne versteckte Kosten. Bezahlt wird persönlich, vor Ort.")),
+                  column(h("Aus der Region", 3), p("Verwurzelt in der Südpfalz und vernetzt mit Reitvereinen, Ställen und Reitschul-Familien.")),
+                  cls="rd-usps"),
+              cls="rd-section rd-tint", align="full"),
     ]))
 
     add(slug="kontakt", title="Kontakt", template=T, parent=None, content="\n\n".join([
@@ -489,7 +532,7 @@ def build(M, PR, CAL=None):
                   '<!-- wp:jetpack/field-name {"label":"Name","required":true} /-->\n\n'
                   '<!-- wp:jetpack/field-email {"label":"E-Mail","required":true} /-->\n\n'
                   '<!-- wp:jetpack/field-telephone {"label":"Telefon"} /-->\n\n'
-                  '<!-- wp:jetpack/field-select {"label":"Worum geht es?","required":true,"options":["Pferde-Shooting","Stalltag","Turnier (Veranstalter)","Turnierfotos","Hochzeit","Paarshooting","Gutschein","Sonstiges"]} /-->\n\n'
+                  '<!-- wp:jetpack/field-select {"label":"Worum geht es?","required":true,"options":["Pferde- oder Tier-Shooting","Familie mit Tier","Stalltag","Turnier / Pferdeevent","Betrieb (Hufschmied, Trainer, Stall …)","Hochzeit","Sonstiges"]} /-->\n\n'
                   '<!-- wp:jetpack/field-date {"label":"Wunschdatum / Hochzeitsdatum"} /-->\n\n'
                   '<!-- wp:jetpack/field-text {"label":"Ort / Location"} /-->\n\n'
                   '<!-- wp:jetpack/field-textarea {"label":"Nachricht","required":true} /-->\n\n'
@@ -521,10 +564,10 @@ def build(M, PR, CAL=None):
         cls="rd-section", align="wide"))
     add(slug="versand-zahlung", title="Versand & Zahlung", template=T, parent=None, content=group(
         h("Versand &amp; Zahlung", 1),
-        ul(["Shootings, Gutscheine und Downloads: kein Versand, digital per E-Mail",
+        ul(["Shootings: Bilder kommen digital per E-Mail oder Download-Link",
             "Alben, Prints, Wandbilder: Versand innerhalb Deutschlands 6,90 €, ab 150 € versandkostenfrei",
             "Lieferzeit Alben &amp; Wandbilder: ca. 2–3 Wochen nach Freigabe",
-            "Zahlung: Überweisung (Vorkasse), weitere Zahlungsarten folgen"]),
+            "Zahlung: persönlich vor Ort beim Termin (bar oder Überweisung). Online wird nichts bezahlt."]),
         p("Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.", "rd-small"),
         cls="rd-section", align="wide"))
     return pages
