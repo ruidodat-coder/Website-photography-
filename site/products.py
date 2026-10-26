@@ -29,27 +29,27 @@ DRAFT = {"turnier-flat-vvk", "turnier-flat", "turnier-zweitpferd", "gutschein-50
 P = [
     # --- Horse shoots ---
     ("pony", "Shooting „Schritt“", 199, "pferde-shootings", True,
-     "ca. 60 Minuten · 1 Pferd · 5 bearbeitete Bilder · Bezahlung vor Ort",
+     "bis zu 60 Minuten · 1 Pferd · 5 bearbeitete Bilder · Bezahlung vor Ort",
      "<p>Der kurze Einstieg: ein entspanntes Shooting mit Portraits und Bewegung.</p>"
-     "<ul><li>ca. 60 Minuten Shooting</li><li>1 Pferd</li><li>5 bearbeitete Bilder (digital, volle Auflösung)</li><li>Weitere Bilder jederzeit nachkaufbar</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
+     "<ul><li>bis zu 60 Minuten Shooting</li><li>1 Pferd</li><li>5 bearbeitete Bilder (digital, volle Auflösung)</li><li>Weitere Bilder jederzeit nachkaufbar</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
     ("warmblut", "Shooting „Trab“", 349, "pferde-shootings", True,
-     "ca. 2 Stunden · Pferd & Reiter · 12 bearbeitete Bilder · Bezahlung vor Ort",
+     "bis zu 2 Stunden · Pferd & Reiter · 12 bearbeitete Bilder · Bezahlung vor Ort",
      "<p>Das beliebteste Paket: genug Zeit für Portraits, Pferd & Reiter und Bewegung, ganz ohne Stress.</p>"
-     "<ul><li>ca. 2 Stunden Shooting</li><li>Pferd & Reiter, 2 Outfits möglich</li><li>12 bearbeitete Bilder (digital, volle Auflösung)</li><li>Vorbereitungs-Checkliste</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
+     "<ul><li>bis zu 2 Stunden Shooting</li><li>Pferd & Reiter, 2 Outfits möglich</li><li>12 bearbeitete Bilder (digital, volle Auflösung)</li><li>Vorbereitungs-Checkliste</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
     ("kaltblut", "Shooting „Galopp“", 549, "pferde-shootings", True,
-     "ca. 3 Stunden · Pferd & ganze Familie · 25 bearbeitete Bilder + Wandbild · Bezahlung vor Ort",
+     "bis zu 3 Stunden · Pferd & ganze Familie · 25 bearbeitete Bilder + Wandbild · Bezahlung vor Ort",
      "<p>Für alle, die es ganz besonders wollen: die ganze Familie mit ihrem Pferd.</p>"
-     "<ul><li>ca. 3 Stunden Shooting</li><li>Pferd & ganze Familie</li><li>25 aufwendig bearbeitete Bilder</li><li>1 Wandbild inklusive</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
+     "<ul><li>bis zu 3 Stunden Shooting</li><li>Pferd & ganze Familie</li><li>25 aufwendig bearbeitete Bilder</li><li>1 Wandbild inklusive</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
     ("black-background", "Black Background", 199, "pferde-shootings", True,
-     "30 Minuten · 4 Portraits vor schwarzem Hintergrund · ab 3 Pferden 150 € pro Pferd",
-     "<p>Ausdrucksstarke Studio-Portraits direkt an deinem Stall, mit mobilem schwarzem Hintergrund.</p><ul><li>ca. 30 Minuten</li><li>4 bearbeitete Portraits</li></ul>"),
+     "bis zu 45 Minuten · 4 Portraits vor schwarzem Hintergrund · ab 3 Pferden 150 € pro Pferd",
+     "<p>Ausdrucksstarke Studio-Portraits direkt an deinem Stall, mit mobilem schwarzem Hintergrund.</p><ul><li>bis zu 45 Minuten, inkl. Auf- und Abbau des mobilen Studios</li><li>4 bearbeitete Portraits</li></ul>"),
     ("verkaufsfotos", "Fohlen- & Verkaufsfotos", 169, "pferde-shootings", True,
      "Exterieur + Bewegung · 8 Bilder · Lieferung in 48 h",
      "<p>Professionelle Bilder für Verkaufsanzeigen und Zuchtdokumentation: korrekt aufgestelltes Exterieur und Bewegung in allen Gangarten.</p><ul><li>8 bearbeitete Bilder</li><li>Lieferung innerhalb von 48 Stunden</li></ul>"),
     ("stalltag", "Stalltag: Platz pro Pferd", 89, "pferde-shootings", True,
-     "Gruppenshooting · 30 Minuten · 3 Bilder · ab 5 Pferden",
+     "Gruppenshooting · bis zu 30 Minuten · 3 Bilder · ab 5 Pferden",
      "<p>Ein Shooting-Tag an eurem Stall. Ab 5 Pferden findet der Stalltag statt, die Anfahrt wird geteilt. Das Shooting der Organisatorin/des Organisators ist kostenlos.</p>"
-     "<ul><li>ca. 30 Minuten pro Pferd</li><li>3 bearbeitete Bilder</li><li>weitere Bilder nachkaufbar</li></ul><p>Bitte Stall, Datum und Name des Pferdes in den Bestell-Anmerkungen angeben.</p>"),
+     "<ul><li>bis zu 30 Minuten pro Pferd</li><li>3 bearbeitete Bilder</li><li>weitere Bilder nachkaufbar</li></ul><p>Bitte Stall, Datum und Name des Pferdes in den Bestell-Anmerkungen angeben.</p>"),
     # --- Horse extras ---
     ("extra-bild", "Zusätzliches Bild", 25, "pferde-extras", True, "1 weiteres bearbeitetes Bild aus deiner Galerie", ""),
     ("bilder-5", "Bilderpaket 5", 99, "pferde-extras", True, "5 weitere bearbeitete Bilder", ""),
