@@ -85,9 +85,9 @@ def card(title, price, items, url, label="Jetzt buchen", popular=False, sub=None
 def HORSE_CARDS(PR, long=False):
     """Packages from the business plan, named after the gaits: Schritt / Trab / Galopp."""
     return [
-        card("Schritt", "199 €", ["ca. 30 Minuten", "1 Pferd", "5 bearbeitete Bilder"] + (["der kurze Einstieg"] if long else []), "/kontakt/?w=pferde", "Termin anfragen"),
-        card("Trab", "349 €", ["ca. 60 Minuten", "Pferd &amp; Reiter", "12 bearbeitete Bilder"] + (["2 Outfits möglich"] if long else []), "/kontakt/?w=pferde", "Termin anfragen", popular=True),
-        card("Galopp", "549 €", ["ca. 90 Minuten", "Pferd &amp; ganze Familie", "25 bearbeitete Bilder", "Wandbild inklusive"], "/kontakt/?w=pferde", "Termin anfragen"),
+        card("Schritt", "199 €", ["ca. 60 Minuten", "1 Pferd", "5 bearbeitete Bilder"] + (["der kurze Einstieg"] if long else []), "/kontakt/?w=pferde", "Termin anfragen"),
+        card("Trab", "349 €", ["ca. 2 Stunden", "Pferd &amp; Reiter", "12 bearbeitete Bilder"] + (["2 Outfits möglich"] if long else []), "/kontakt/?w=pferde", "Termin anfragen", popular=True),
+        card("Galopp", "549 €", ["ca. 3 Stunden", "Pferd &amp; ganze Familie", "25 bearbeitete Bilder", "Wandbild inklusive"], "/kontakt/?w=pferde", "Termin anfragen"),
     ]
 
 
@@ -172,7 +172,7 @@ def build(M, PR, CAL=None):
               buttons(button("Preise ansehen", "/pferde/shootings-preise/"),
                       button("Portfolio", "/pferde/portfolio/", outline=True)),
               cls="rd-hero rd-hero-video", align="full", bg=poster_bg("pferde")),
-        group(stats([(199, "€", "Ab 199 €", "Schritt: 30 Minuten, 5 bearbeitete Bilder. Faire Festpreise."),
+        group(stats([(199, "€", "Ab 199 €", "Schritt: 60 Minuten, 5 bearbeitete Bilder. Faire Festpreise."),
                      (8, "Pferde", "Stalltage", "Bis zu 8 Pferde an einem Tag in deinem Stall, weniger Anfahrt für alle."),
                      (30, "km", "Anfahrt inklusive", "Rund um Germersheim komme ich ohne Aufpreis zu dir an den Stall."),
                      (100, "%", "Pferdeerfahren", "Eigener Reitbetrieb: ruhig, sicher und im Tempo deines Pferdes.")]),
@@ -229,7 +229,7 @@ def build(M, PR, CAL=None):
               p("Alle Preise sind Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.", "rd-small"),
               cls="rd-section rd-tint", align="full"),
         group(h("Spezial-Shootings", 2), columns(
-            card("Black Background Mini", "119 €", ["ca. 30 Minuten", "4 Studio-Portraits", "mobiles Studio am Stall"], "/kontakt/?w=pferde", "Termin anfragen"),
+            card("Black Background", "199 €", ["ca. 30 Minuten", "4 Studio-Portraits", "mobiles Studio an deinem Stall", "ab 3 Pferden: 150 € pro Pferd"], "/kontakt/?w=pferde", "Termin anfragen"),
             card("Fohlen- &amp; Verkaufsfotos", "169 €", ["Exterieur + Bewegung", "8 Bilder", "Lieferung in 48 h", "Verkaufsvideo auf Anfrage"], "/kontakt/?w=pferde", "Termin anfragen"),
             card("Stalltag", "89 € / Pferd", ["6–8 Pferde an einem Tag", "ca. 30 Min. und 3 Bilder pro Pferd", "Anfahrt wird geteilt, Organisator/in gratis"], "/pferde/stalltag/", "Mehr erfahren"),
             cls="rd-cards"), cls="rd-section", align="wide"),

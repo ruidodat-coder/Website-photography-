@@ -29,19 +29,19 @@ DRAFT = {"turnier-flat-vvk", "turnier-flat", "turnier-zweitpferd", "gutschein-50
 P = [
     # --- Horse shoots ---
     ("pony", "Shooting „Schritt“", 199, "pferde-shootings", True,
-     "ca. 30 Minuten · 1 Pferd · 5 bearbeitete Bilder · Bezahlung vor Ort",
+     "ca. 60 Minuten · 1 Pferd · 5 bearbeitete Bilder · Bezahlung vor Ort",
      "<p>Der kurze Einstieg: ein entspanntes Shooting mit Portraits und Bewegung.</p>"
-     "<ul><li>ca. 30 Minuten Shooting</li><li>1 Pferd</li><li>5 bearbeitete Bilder (digital, volle Auflösung)</li><li>Weitere Bilder jederzeit nachkaufbar</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
+     "<ul><li>ca. 60 Minuten Shooting</li><li>1 Pferd</li><li>5 bearbeitete Bilder (digital, volle Auflösung)</li><li>Weitere Bilder jederzeit nachkaufbar</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
     ("warmblut", "Shooting „Trab“", 349, "pferde-shootings", True,
-     "ca. 60 Minuten · Pferd & Reiter · 12 bearbeitete Bilder · Bezahlung vor Ort",
+     "ca. 2 Stunden · Pferd & Reiter · 12 bearbeitete Bilder · Bezahlung vor Ort",
      "<p>Das beliebteste Paket: genug Zeit für Portraits, Pferd & Reiter und Bewegung, ganz ohne Stress.</p>"
-     "<ul><li>ca. 60 Minuten Shooting</li><li>Pferd & Reiter, 2 Outfits möglich</li><li>12 bearbeitete Bilder (digital, volle Auflösung)</li><li>Vorbereitungs-Checkliste</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
+     "<ul><li>ca. 2 Stunden Shooting</li><li>Pferd & Reiter, 2 Outfits möglich</li><li>12 bearbeitete Bilder (digital, volle Auflösung)</li><li>Vorbereitungs-Checkliste</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
     ("kaltblut", "Shooting „Galopp“", 549, "pferde-shootings", True,
-     "ca. 90 Minuten · Pferd & ganze Familie · 25 bearbeitete Bilder + Wandbild · Bezahlung vor Ort",
+     "ca. 3 Stunden · Pferd & ganze Familie · 25 bearbeitete Bilder + Wandbild · Bezahlung vor Ort",
      "<p>Für alle, die es ganz besonders wollen: die ganze Familie mit ihrem Pferd.</p>"
-     "<ul><li>ca. 90 Minuten Shooting</li><li>Pferd & ganze Familie</li><li>25 aufwendig bearbeitete Bilder</li><li>1 Wandbild inklusive</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
-    ("black-background", "Black Background Mini", 119, "pferde-shootings", True,
-     "30 Minuten · 4 Portraits vor schwarzem Hintergrund",
+     "<ul><li>ca. 3 Stunden Shooting</li><li>Pferd & ganze Familie</li><li>25 aufwendig bearbeitete Bilder</li><li>1 Wandbild inklusive</li><li>Bezahlung persönlich beim Shooting</li></ul>"),
+    ("black-background", "Black Background", 199, "pferde-shootings", True,
+     "30 Minuten · 4 Portraits vor schwarzem Hintergrund · ab 3 Pferden 150 € pro Pferd",
      "<p>Ausdrucksstarke Studio-Portraits direkt an deinem Stall, mit mobilem schwarzem Hintergrund.</p><ul><li>ca. 30 Minuten</li><li>4 bearbeitete Portraits</li></ul>"),
     ("verkaufsfotos", "Fohlen- & Verkaufsfotos", 169, "pferde-shootings", True,
      "Exterieur + Bewegung · 8 Bilder · Lieferung in 48 h",
