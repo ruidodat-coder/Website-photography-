@@ -458,3 +458,16 @@ body.rd-in-pferde{--rd-bg:var(--rd-sand);--rd-fg:var(--rd-forest);--rd-accent:va
 body.rd-in-hochzeit{--rd-bg:var(--rd-ivory);--rd-fg:var(--rd-ink);--rd-accent:var(--rd-rose);--rd-muted:var(--rd-blush);--rd-head:var(--rd-serif)}
 /* two package cards (weddings) stay centred and not too wide */
 .rd-cards-2{max-width:860px!important;margin-left:auto!important;margin-right:auto!important}
+
+/* mobile: tables stack row by row instead of squeezing columns (no words cut mid-word) */
+@media (max-width:600px){
+.wp-block-table thead,.wp-block-table tr:has(th){display:none}
+.wp-block-table tr{display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem 1rem;padding:.9rem 1.1rem;border-bottom:1px solid color-mix(in srgb,var(--rd-fg) 9%,transparent)}
+.wp-block-table tr:last-child{border-bottom:0}
+.wp-block-table td{display:block;border:0!important;padding:0!important;overflow-wrap:normal;word-break:normal;hyphens:auto;font-size:.95rem}
+.wp-block-table td:first-child{flex:1 1 0;min-width:0;font-weight:600}
+.wp-block-table td:last-child{flex:0 1 auto;max-width:48%;text-align:right}
+.wp-block-table td:not(:first-child):not(:last-child){order:3;flex:1 1 100%;font-size:.88rem;opacity:.75;font-weight:400}
+h1.wp-block-heading,h2.wp-block-heading{overflow-wrap:break-word;hyphens:auto}
+:not(.rd-band)>h2.wp-block-heading{font-size:clamp(1.55rem,7.4vw,2.2rem)!important}
+}
