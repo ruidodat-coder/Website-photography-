@@ -179,8 +179,8 @@ def build(M, PR, CAL=None):
               cls="rd-section rd-stats-section", align="full"),
         group(marquee(["Portraits", "Pferd &amp; Reiter", "Fohlen", "Verkaufsfotos", "Stalltage", "Turniere", "Pferd &amp; Familie"]), cls="rd-marquee-wrap", align="full", layout="default"),
         group(p("Portfolio", "rd-eyebrow", align="center"), h("Momente, die bleiben", 2, align="center"),
-              gallery([(m(479), "Grauer Wallach im Blütenhain"), (m(481), "Haflinger Portrait"), (m(483), "Pferd vor schwarzem Hintergrund"),
-                       (m(480), "Portrait im Frühling"), (m(322), "Reiterin mit Schimmel"), (m(477), "Reiterin kniet bei ihrem Pferd")],
+              gallery([(m(930), "Reiterin küsst ihren Schimmel im Abendlicht"), (m(481), "Haflinger Portrait"), (m(929), "Schimmel schnuppert an seiner Reiterin"),
+                       (m(483), "Pferd vor schwarzem Hintergrund"), (m(933), "Reiterin lehnt auf dem Rücken ihres Schimmels"), (m(479), "Grauer Wallach im Blütenhain")],
                       cls="rd-gallery rd-mosaic"),
               buttons(button("Ganzes Portfolio", "/pferde/portfolio/", outline=True), cls="is-content-justification-center"),
               cls="rd-section", align="full"),
@@ -210,7 +210,10 @@ def build(M, PR, CAL=None):
 
     add(slug="portfolio", title="Portfolio Pferde", template=T, parent="pferde", content="\n\n".join([
         group(p("Portfolio", "rd-eyebrow"), h("Pferde &amp; ihre Menschen", 1), cls="rd-section", align="wide"),
-        group(h("Pferd &amp; Reiter", 2),
+        group(h("Shooting im Spätsommer", 2),
+              gallery([(m(930), "Reiterin küsst ihren Schimmel im Abendlicht"), (m(929), "Schimmel schnuppert an seiner Reiterin"), (m(932), "Reiterin kniet bei ihrem Schimmel"),
+                       (m(931), "Reiterin küsst ihren Schimmel, Schwarzweiß"), (m(928), "Reiterin sitzt vor ihrem Schimmel"), (m(934), "Reiterin lehnt lachend auf ihrem Schimmel")]),
+              h("Pferd &amp; Reiter", 2),
               gallery([(m(475), "Reiterin im Blütenhain"), (m(476), "Reiterin mit Schimmel"), (m(479), "Schimmel unter dem Sattel"),
                        (m(322), "Reiterin mit Schimmel im Wald"), (m(320), "Schimmel in der Bahn"), (m(327), "Reiterin mit Kuh und Pferd")]),
               h("Portraits &amp; Black Background", 2),
@@ -229,6 +232,12 @@ def build(M, PR, CAL=None):
               p("Alle Preise sind Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet. "
                 "Die Zeiten sind Höchstwerte: Wir shooten im Tempo deines Pferdes, und wenn es genug hat, hören wir auf. Der Preis bleibt gleich.", "rd-small"),
               cls="rd-section rd-tint", align="full"),
+        group(p("Beispiel", "rd-eyebrow"), h("So sieht ein Shooting aus", 2),
+              p("Ein Spätsommerabend auf dem Stoppelfeld, Reiterin und Schimmel, ganz in Ruhe. Du bekommst deine Bilder bearbeitet, in Farbe und auf Wunsch in Schwarzweiß."),
+              gallery([(m(930), "Reiterin küsst ihren Schimmel im Abendlicht"), (m(929), "Schimmel schnuppert an seiner Reiterin"),
+                       (m(932), "Reiterin kniet bei ihrem Schimmel")]),
+              p('<a href="/pferde/portfolio/">Mehr im Portfolio →</a>', "rd-small"),
+              cls="rd-section", align="wide"),
         group(h("Spezial-Shootings", 2), columns(
             card("Black Background", "199 €", ["bis zu 45 Minuten", "4 Studio-Portraits", "mobiles Studio an deinem Stall, inkl. Auf- und Abbau", "ab 3 Pferden: 150 € pro Pferd"], "/kontakt/?w=pferde", "Termin anfragen"),
             card("Fohlen- &amp; Verkaufsfotos", "169 €", ["Exterieur + Bewegung", "8 Bilder", "Lieferung in 48 h", "Verkaufsvideo auf Anfrage"], "/kontakt/?w=pferde", "Termin anfragen"),
