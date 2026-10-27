@@ -66,6 +66,14 @@ def marquee(words):
     return raw(f'<!-- wp:html -->\n<div class="rd-marquee" aria-hidden="true"><div class="rd-marquee-track">{run}{run}</div></div>\n<!-- /wp:html -->')
 
 
+def before_after(before, after, before_alt, after_alt):
+    """Draggable before/after comparison (works with mouse, touch and arrow keys; JS in motion.php)."""
+    return raw(f'<!-- wp:html -->\n<div class="rd-ba" style="--pos:50%"><img src="{after["url"]}" alt="{after_alt}" width="1200" height="1800" loading="lazy"/>'
+               f'<img class="rd-ba-before" src="{before["url"]}" alt="{before_alt}" width="1200" height="1800" loading="lazy"/>'
+               '<span class="rd-ba-label rd-ba-l">Vorher</span><span class="rd-ba-label rd-ba-r">Nachher</span><span class="rd-ba-handle" aria-hidden="true"></span>'
+               '<input type="range" min="0" max="100" value="50" aria-label="Vorher-Nachher-Vergleich: Regler verschieben"/></div>\n<!-- /wp:html -->')
+
+
 def eur(v):
     s = f"{v:,.0f}".replace(",", ".")
     return f"{s} €"
@@ -237,6 +245,10 @@ def build(M, PR, CAL=None):
               gallery([(m(930), "Reiterin küsst ihren Schimmel im Abendlicht"), (m(929), "Schimmel schnuppert an seiner Reiterin"),
                        (m(932), "Reiterin kniet bei ihrem Schimmel")]),
               p('<a href="/pferde/portfolio/">Mehr im Portfolio →</a>', "rd-small"),
+              h("Vorher &amp; Nachher", 3, align="center"),
+              p("Zieh den Regler: links das Original aus der Kamera, rechts das fertige Bild. Seil entfernt, Licht, Farben und Hintergrund bearbeitet.", "rd-small", align="center"),
+              before_after(m(942), m(943), "Unbearbeitetes Original: Reiterin sitzt vor ihrem Schimmel am Longierseil",
+                           "Bearbeitetes Bild: Reiterin sitzt vor ihrem Schimmel, Seil entfernt"),
               cls="rd-section", align="wide"),
         group(h("Spezial-Shootings", 2), columns(
             card("Black Background", "199 €", ["bis zu 45 Minuten", "4 Studio-Portraits", "mobiles Studio an deinem Stall, inkl. Auf- und Abbau", "ab 3 Pferden: 150 € pro Pferd"], "/kontakt/?w=pferde", "Termin anfragen"),

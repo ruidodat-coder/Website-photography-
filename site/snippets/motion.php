@@ -11,6 +11,17 @@ add_action( 'wp_footer', function () {
 	<script>
 	(function(){
 	  var d=document, b=d.body, reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	  // before/after slider: drag (mouse or touch) anywhere on the image, or use the arrow keys
+	  d.querySelectorAll('.rd-ba').forEach(function(box){
+	    var inp=box.querySelector('input'), down=false;
+	    var set=function(v){ v=Math.max(0,Math.min(100,v)); box.style.setProperty('--pos', v+'%'); inp.value=Math.round(v); };
+	    var fromX=function(e){ var r=box.getBoundingClientRect(); set((e.clientX-r.left)/r.width*100); };
+	    box.addEventListener('pointerdown', function(e){ down=true; box.setPointerCapture(e.pointerId); fromX(e); });
+	    box.addEventListener('pointermove', function(e){ if(down) fromX(e); });
+	    box.addEventListener('pointerup', function(){ down=false; });
+	    box.addEventListener('pointercancel', function(){ down=false; });
+	    inp.addEventListener('input', function(){ set(+inp.value); });
+	  });
 	  // header: solid once the page is scrolled
 	  var onScroll=function(){ b.classList.toggle('rd-scrolled', window.scrollY>60); };
 	  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
